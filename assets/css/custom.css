@@ -1,0 +1,30 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.h-font {
+    font-family: 'Markazi', cursive;
+}
+
+.custom-bg {
+    background-color: #2ec1ac;
+    border:solid 1px  #2ec1ac ;
+}
+
+.custom-bg:hover {
+    background-color: #279e8c;
+    border-color: #279e8c;
+}
+
+.availability-form {
+    margin-top: -50px;
+    z-index: 2;
+    position: relative;
+}
+
+@media screen and (max-width:575px) {
+    .availability-form {
+        margin-top:25px;
+        padding: 0 35px;
+    }
+}
