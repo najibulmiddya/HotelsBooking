@@ -1,3 +1,7 @@
+:root{
+    --teal:#2ec1ac;
+    --teal_hover:#279e8c;
+}
 * {
     font-family: 'Poppins', sans-serif;
 }
@@ -7,13 +11,13 @@
 }
 
 .custom-bg {
-    background-color: #2ec1ac;
-    border:solid 1px  #2ec1ac ;
+    background-color: var(--teal);
+    border: solid 1px var(--teal);
 }
 
 .custom-bg:hover {
-    background-color: #279e8c;
-    border-color: #279e8c;
+    background-color:var(--teal_hover);
+    border-color: var(--teal_hover);
 }
 
 .availability-form {
@@ -24,7 +28,21 @@
 
 @media screen and (max-width:575px) {
     .availability-form {
-        margin-top:25px;
+        margin-top: 25px;
         padding: 0 35px;
     }
+}
+
+.custom-shadow:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.h-line{
+    width: 150px;
+    margin: 0 auto;
+    height: 1.7px;
+}
+.pop:hover{
+    border-top-color: var(--teal) !important;
+    transform: scale(1.03);
+    transition: all 0.3s;
 }
