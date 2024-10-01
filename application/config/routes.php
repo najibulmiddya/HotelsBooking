@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -53,8 +53,17 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+//  url/FolderName/ControllerName/FunctionName
 $route['facilities'] = 'Users/facilities';
-
-// http://example.com/index.php/admin/dashboard
-// $route['admin-panel'] = 'admin/dashboard';
+$route['admin'] = 'Admin/admin/index';
+$route['admin/login'] = 'Admin/admin/login';
+$route['logout'] = 'Admin/admin/logout';
+$route['dashboard'] = 'Admin/dashboard/index';
+$route['settings'] = 'Admin/settings/index';
+$route['settings-get'] = 'Admin/settings/get';
+$route['settings-update'] = 'Admin/settings/update';
+$route['settings-update-shutdown'] = 'Admin/settings/update_shutdown';
+$route['settings-get_contacts'] = 'Admin/settings/get_contacts';
+$route['settings-contacts-details-update'] = 'Admin/settings/contacts_details_update';
+$route['settings-add-member'] = 'Admin/settings/add_member';
 

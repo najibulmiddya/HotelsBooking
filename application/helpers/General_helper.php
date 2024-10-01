@@ -14,6 +14,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 
 // ------------------------------------------------------------------------
+//  Image Path Set
+define('SERVER_PATH', $_SERVER['DOCUMENT_ROOT'] . '/HotelsBooking/');
+define('SITE_PATH', 'http://localhost/HotelsBooking/');
+define('TIME_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/teams');
+define('TIME_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/teams/');
+
+if (!function_exists('pp')) {
+  /**
+   * pp - data show for development purposesss
+   *  @param any $data -- required
+   *  @return mixed
+   */
+  function pp($data = null)
+  {
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+    exit;
+  }
+}
 
 if (!function_exists('view')) {
   /**
@@ -34,6 +54,74 @@ if (!function_exists('view')) {
     $ci->load->view("users/include/footer");
   }
 }
+
+if (!function_exists('adminView')) {
+  /**
+   * view
+   *
+   * This view helpers for auto add heder and footer
+   *
+   * @param   string $body_path
+   * @param   array $body_data
+   * @param   string $title
+   * @return  ...
+   */
+  function adminView($body_path, $body_data = [], $title = "Admin Pnael")
+  {
+    $ci = get_instance();
+    $ci->load->view("admin/include/header", ["title" => $title]);
+    $ci->load->view($body_path, $body_data);
+    $ci->load->view("admin/include/footer");
+  }
+}
+
+if (!function_exists('admin_loggedIn')) {
+  /**
+   * has_loggedIn
+   *
+   * This has_loggedIn for Has logged id or not
+   *
+   * @return  array
+   */
+  function admin_loggedIn()
+  {
+    $ci = get_instance();
+    $type = $ci->session->flashdata('type');
+    $message = $ci->session->flashdata('message');
+    if ($ci->session->has_userdata('loggedInAdmin')) {
+      if ($data = $ci->session->userdata('loggedInAdmin')) {
+        return $data;
+        redirect(base_url('dashboard'));
+      } else {
+        redirect(base_url('admin/login'));
+      }
+    } else {
+      redirect(base_url('admin/login'));
+    }
+    session_regenerate_id(true);
+  }
+}
+
+if (!function_exists('dataFilter')) {
+  /**
+   * dataFilter
+   *
+   * This dataFilter 
+   *
+   * @return  array
+   */
+  function dataFilter($data)
+  {
+    foreach ($data as $key => $val) {
+      $data[$key]=trim($val);
+      $data[$key]=stripcslashes($val);
+      $data[$key]=htmlspecialchars($val);
+      $data[$key]=strip_tags($val);
+    }
+    return $data;
+  }
+}
+
 
 if (!function_exists('alert')) {
   /**
@@ -74,45 +162,9 @@ if (!function_exists('bs_alert')) {
   }
 }
 
-if (!function_exists('has_loggedIn')) {
-  /**
-   * has_loggedIn
-   *
-   * This has_loggedIn for Has logged id or not
-   *
-   * @return  array
-   */
-  function has_loggedIn()
-  {
-    $ci = get_instance();
-    $type = $ci->session->flashdata('type');
-    $message = $ci->session->flashdata('message');
-    if ($ci->session->has_userdata('loggedIn')) {
-      if ($data = $ci->session->userdata('loggedIn')) {
-        return $data;
-      } else {
-        redirect(base_url('login'));
-      }
-    } else {
-      redirect(base_url('login'));
-    }
-  }
-}
 
-if (!function_exists('pp')) {
-  /**
-   * pp - data show for development purposesss
-   *  @param any $data -- required
-   *  @return mixed
-   */
-  function pp($data = null)
-  {
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
-    exit;
-  }
-}
+
+
 
 // responce message json or array
 if (!function_exists('jresp')) {
@@ -131,6 +183,20 @@ if (!function_exists('jresp')) {
       'message' => $message,
       'response' => $resp
     ]);
+  }
+
+  if (!function_exists('is_active')) {
+    function is_active($controller, $method = '')
+    {
+      $CI = &get_instance();
+      $current_controller = $CI->router->fetch_class();
+      $current_method = $CI->router->fetch_method();
+
+      if ($controller == $current_controller && ($method == '' || $method == $current_method)) {
+        return 'active';
+      }
+      return '';
+    }
   }
 }
 

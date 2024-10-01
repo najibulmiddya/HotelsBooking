@@ -46,3 +46,6 @@
     transform: scale(1.03);
     transition: all 0.3s;
 }
+.box:hover{
+    border-top-color: var(--teal) !important;
+}
