@@ -1,12 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
 // application/models/Admin/Admin_model.php
+
 class Settings_model extends CI_Model
 {
     private $settings = 'settings';
     private $contact_details = 'contact_details';
     private $teams_details = 'teams_details';
 
+    // ************* General Settings *************
 
     public function get()
     {
@@ -20,6 +23,9 @@ class Settings_model extends CI_Model
         $this->db->update($this->settings, $data);
         return $this->db->affected_rows();
     }
+    
+
+    // *********************  Contacts details  *******************
 
     public function get_contacts()
     {
@@ -35,25 +41,33 @@ class Settings_model extends CI_Model
     }
 
 
-    
-
-
-
-    // Insert new admin
+    //  *************  Teams Member  ********************
     public function add_member($data)
     {
         $this->db->insert($this->teams_details, $data);
         return $this->db->insert_id();
     }
 
-    // Update admin details
-   
-
-    // Delete an admin by ID
-    public function delete($id)
+    public function getall_member()
     {
-        return $this->db->delete($this->table, ['id' => $id]); // Delete an admin record
+        $this->db->select("*");
+        $this->db->from($this->teams_details);
+        return $this->db->get()->result_array();
     }
+
+
+    public function get_member($id)
+    {
+        $this->db->select("*");
+        $this->db->from($this->teams_details);
+        $this->db->where('id', $id);
+        return $this->db->get()->row();
+    }
+
+    public function delete_member($id)
+    {
+        return $this->db->delete($this->teams_details, ['id' => $id]);
+    }
+
+
 }
-
-

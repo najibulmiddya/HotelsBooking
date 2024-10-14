@@ -64,47 +64,16 @@
     <!-- Swiper -->
     <div class="swiper MANAGEMENT-TEAMS">
         <div class="swiper-wrapper mb-5">
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team1.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team3.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/teams.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team3.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team1.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team3.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/teams.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
-
-            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
-                <img src="assets/images/about/team3.jpg" class="w-100">
-                <h5 class="mt-2">Random</h5>
-            </div>
+            <?php
+            foreach ($team_members as $key => $val) {
+            ?>
+                <div class="swiper-slide bg-white text-center overflow-hidden rounded">
+                    <img src="<?= TEAM_IMAGE_SITE_PATH.$val->picture ?>" class="w-100">
+                    <h5 class="mt-2"><?= $val->name ?></h5>
+                </div>
+            <?php
+            }
+            ?>
         </div>
         <div class="swiper-pagination"></div>
     </div>

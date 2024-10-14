@@ -145,30 +145,81 @@ class Settings extends CI_Controller
     {
         try {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                $config['upload_path']   = TIME_IMAGE_SERVER_PATH;
+                $config['upload_path']   = TEAM_IMAGE_SERVER_PATH;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                $config['max_size']      = 100;
-                $config['max_width']     = 1024;
-                $config['max_height']    = 768;
+                $config['max_size']      = 1024;
+                // $config['max_width']     = 1024;
+                // $config['max_height']    = 768;
                 $this->load->library('upload', $config);
-
                 $image = rand(111111111, 999999999) . '_' . $_FILES['member_picture_inp']['name'];
-                move_uploaded_file($_FILES['member_picture_inp']['tmp_name'], TIME_IMAGE_SERVER_PATH . $image);
+                if (! move_uploaded_file($_FILES['member_picture_inp']['tmp_name'], TEAM_IMAGE_SERVER_PATH . $image)) {
 
-                $data = array(
-                    'name' => $this->input->post('member_name_inp'),
-                    'picture' => $image
-                );
-
-                if ($resp = $this->settings_model->add_member($data)) {
-                    echo jresp(true, "Member add Successfully", $resp);
+                    $error = $this->upload->display_errors();
+                    echo jresp(2, "File upload failed: onlay allowed_types ( GIF | JPG | PNG |JPEG )" . $error);
                     exit;
                 } else {
-                    echo jresp(false, "Member add Failed");
+                    $data = array(
+                        'name' => $this->input->post('member_name_inp'),
+                        'picture' => $image
+                    );
+
+                    if ($resp = $this->settings_model->add_member($data)) {
+                        echo jresp(true, "Member add Successfully", $resp);
+                        exit;
+                    } else {
+                        echo jresp(false, "Member add Failed");
+                        exit;
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            echo jresp(false, "Server Internal error");
+            exit;
+        }
+    }
+
+    public function get_member()
+    {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                if ($data = $this->settings_model->getall_member()) {
+                    echo jresp(true, "data get Successfully", $data);
+                    exit;
+                } else {
+                    echo jresp(false, "Data get Failed");
                     exit;
                 }
-               
+            }
+        } catch (\Throwable $th) {
+            echo jresp(false, "Server Internal error");
+            exit;
+        }
+    }
+
+    public function delete_member()
+    {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                if ($memberId = $this->input->post('id')) {
+                    $member = $this->settings_model->get_member($memberId);
+                    $img_path = $member->picture;
+                    if (file_exists(TEAM_IMAGE_SERVER_PATH . $img_path)) {
+                        unlink(TEAM_IMAGE_SERVER_PATH . $img_path);
+                    }
+
+                    if ($data = $this->settings_model->delete_member($memberId)) {
+
+                        echo jresp(true, "Member deleted successfully.", $data);
+                        exit;
+                    } else {
+                        echo jresp(false, "Failed to delete member");
+                        exit;
+                    }
+                } else {
+                    echo jresp(false, "Server Internal error");
+                    exit;
+                }
             }
         } catch (\Throwable $th) {
             echo jresp(false, "Server Internal error");

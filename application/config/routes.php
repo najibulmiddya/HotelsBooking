@@ -49,12 +49,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //  url/FolderName/ControllerName/FunctionName
 $route['facilities'] = 'Users/facilities';
+$route['contact'] = 'Users/contact/index';
+$route['about'] = 'Users/about/index';
+
+
+// Admin Panel
 $route['admin'] = 'Admin/admin/index';
 $route['admin/login'] = 'Admin/admin/login';
 $route['logout'] = 'Admin/admin/logout';
@@ -66,4 +71,10 @@ $route['settings-update-shutdown'] = 'Admin/settings/update_shutdown';
 $route['settings-get_contacts'] = 'Admin/settings/get_contacts';
 $route['settings-contacts-details-update'] = 'Admin/settings/contacts_details_update';
 $route['settings-add-member'] = 'Admin/settings/add_member';
+$route['settings-get-member'] = 'Admin/settings/get_member';
+$route['settings-delete-member'] = 'Admin/settings/delete_member';
+$route['carousel'] = 'Admin/carousel/index';
+$route['carousel-add-image'] = 'Admin/carousel/add_image';
+$route['carousel-get-image'] = 'Admin/carousel/get_image';
+$route['carousel-delete-image'] = 'Admin/carousel/delete_image';
 

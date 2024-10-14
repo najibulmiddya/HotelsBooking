@@ -17,8 +17,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 //  Image Path Set
 define('SERVER_PATH', $_SERVER['DOCUMENT_ROOT'] . '/HotelsBooking/');
 define('SITE_PATH', 'http://localhost/HotelsBooking/');
-define('TIME_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/teams');
-define('TIME_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/teams/');
+
+// Team image path
+define('TEAM_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/teams/');
+define('TEAM_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/teams/');
+
+// Carousel image path
+// Server path
+define('CAROUSEL_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/carousel/');
+// Site path
+define('CAROUSE_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/carousel/');
+
 
 if (!function_exists('pp')) {
   /**

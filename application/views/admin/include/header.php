@@ -63,6 +63,9 @@
                                 <a class="nav-link text-white  <?= is_active('Uses'); ?>" href="#">Uses</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-white  <?= is_active('carousel'); ?>" href="<?= base_url('carousel') ?>">Carousel</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-white <?= is_active('settings'); ?>" href="<?= base_url('settings') ?>">Settings</a>
                             </li>
                         </ul>

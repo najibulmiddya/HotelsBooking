@@ -236,7 +236,7 @@
 </div>
 <!-- Contacts us Modal End -->
 
-<!-- Management Teams Section -->
+<!-- Management  Section -->
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
         <div class="d-flex align-items-center justify-content-between mb-3">
@@ -545,12 +545,6 @@
 
 
 
-        //  add Member function
-        function add_member() {
-
-
-        }
-
         //  add Member function call
         $('#team-from').submit(function(event) {
             event.preventDefault();
@@ -585,7 +579,13 @@
                 async: false,
                 success: function(resp) {
                     if (resp.status == true) {
+                        get_member();
                         $('#team-from')[0].reset();
+                        $('#team-s').modal('hide');
+                        js_alert(resp.status, resp.message)
+                    }
+                    if (resp.status == 2) {
+                        $('#member_picture_inp').val('');
                         $('#team-s').modal('hide');
                         js_alert(resp.status, resp.message)
                     } else {
@@ -599,6 +599,63 @@
             });
         });
 
+        function get_member() {
+            $.ajax({
+                type: "GET",
+                url: `<?= base_url("settings-get-member") ?>`,
+                dataType: "JSON",
+                success: function(resp) {
+                    let teamHtml = '';
+                    for (let i = 0; i < resp.response.length; i++) {
+                        let name = resp.response[i]['name'];
+                        let picture = resp.response[i]['picture'];
+                        let id = resp.response[i]['id'];
+                        teamHtml += `
+        <div class="col-md-2 mb-3 team-member" data-id="${id}">
+            <div class="card bg-dark text-white">
+                <img class="card-img" src="<?= TEAM_IMAGE_SITE_PATH ?>${picture}">
+                <div class="card-img-overlay text-end">
+                    <button type="button" class="btn btn-danger btn-ms text-end shadow-none delete-btn">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </div>
+                <p class="card-text text-center px-3 py-2">${name}</p>
+            </div>
+        </div>`;
+                    }
+                    $('#team-data').html(teamHtml);
+                },
+                error: function(status = "error", error) {
+                    js_alert(status, error)
+                }
+            });
+        }
+        get_member();
 
+        $('#team-data').on('click', '.delete-btn', function() {
+            let memberCard = $(this).closest('.team-member');
+            let memberId = memberCard.data('id');
+            if (confirm('Are you sure you want to delete this member?')) {
+                $.ajax({
+                    url: `<?= base_url("settings-delete-member") ?>`,
+                    type: 'POST',
+                    data: {
+                        id: memberId
+                    },
+                    dataType: 'json',
+                    success: function(resp) {
+                        if (resp.status == true) {
+                            memberCard.remove();
+                            js_alert(resp.status, resp.message);
+                        } else {
+                            js_alert(resp.status, resp.message)
+                        }
+                    },
+                    error: function(status = "error", error) {
+                        js_alert(status, error)
+                    }
+                });
+            }
+        });
     })
 </script>
