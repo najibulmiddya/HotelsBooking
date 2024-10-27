@@ -66,6 +66,7 @@ var swiper = new Swiper(".MANAGEMENT-TEAMS", {
 
 $(document).ready(function () {
     $('#js-alert').hide();
+
     // js bs alert
     function js_alert(status, message) {
         if (status == true) {

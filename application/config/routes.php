@@ -54,9 +54,10 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //  url/FolderName/ControllerName/FunctionName
-$route['facilities'] = 'Users/facilities';
+$route['facilities'] = 'Users/facilities/index';
 $route['contact'] = 'Users/contact/index';
 $route['about'] = 'Users/about/index';
+$route['contact-from-submit'] = 'Users/contact/contact_from_submit';
 
 
 // Admin Panel
@@ -77,4 +78,17 @@ $route['carousel'] = 'Admin/carousel/index';
 $route['carousel-add-image'] = 'Admin/carousel/add_image';
 $route['carousel-get-image'] = 'Admin/carousel/get_image';
 $route['carousel-delete-image'] = 'Admin/carousel/delete_image';
+$route['users-queries'] = 'Admin/users_queries/index';
+$route['users-querie-delete'] = 'Admin/users_queries/delete_user_querie';
+$route['users-querie-seen'] = 'Admin/users_queries/user_querie_seen';
+$route['users-querie-delete-all'] = 'Admin/users_queries/delete_user_querie_all';
+$route['users-querie-seen-all'] = 'Admin/users_queries/user_querie_seen_all';
+$route['admin-facilities'] = 'Admin/facilities/index';
+$route['add-feature'] = 'Admin/facilities/add_feature';
+$route['get-all-feature'] = 'Admin/facilities/getFeature';
+$route['get-singal-feature'] = 'Admin/facilities/get_feature';
+
+
+
+
 

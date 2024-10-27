@@ -236,7 +236,7 @@
 </div>
 <!-- Contacts us Modal End -->
 
-<!-- Management  Section -->
+<!-- Management Teams  Section -->
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
         <div class="d-flex align-items-center justify-content-between mb-3">

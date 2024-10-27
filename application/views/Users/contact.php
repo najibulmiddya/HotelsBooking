@@ -7,7 +7,6 @@
 
 <div class="container">
     <div class="row">
-
         <div class="col-lg-6 col-md-6 mb-5 px-4">
             <div class="bg-white rounded p-4 shadow">
                 <iframe class="w-100 rounded mb-4"
@@ -21,7 +20,7 @@
 
                 <h5 class="mt-4">Call us</h5>
                 <a class="text-decoration-none d-inline-block mb-2 text-dark" href="tel:<?= $contact_details->ph1 ?>"> <i
-                        class="bi bi-telephone-fill"></i> <?= $contact_details->ph1?>
+                        class="bi bi-telephone-fill"></i> <?= $contact_details->ph1 ?>
                 </a>
                 <br>
                 <a class="text-decoration-none d-inline-block text-dark" href="tel:<?= $contact_details->ph2 ?>"> <i
@@ -51,26 +50,31 @@
         <!-- Send Message form -->
         <div class="col-lg-6 col-md-6 px-4">
             <div class="bg-white rounded p-4 shadow">
-                <form>
+                <form id="user_contact_us_form">
                     <h5>Send a Message</h5>
+
                     <div class="mt-3">
                         <label class="form-label" style="font-weight: 500;">Name</label>
-                        <input type="text" class="form-control shadow-none">
+                        <input type="text" id="user_name_inp" name="name" class="form-control shadow-none">
+                        <span id="user_name_error" class="text-danger"></span>
                     </div>
 
                     <div class="mt-3">
                         <label class="form-label" style="font-weight: 500;">Email</label>
-                        <input type="email" class="form-control shadow-none">
+                        <input type="email" id="user_email_inp" name="email" class="form-control shadow-none">
+                        <span id="user_email_error" class="text-danger"></span>
                     </div>
 
                     <div class="mt-3">
                         <label class="form-label" style="font-weight: 500;">Subject</label>
-                        <input type="text" class="form-control shadow-none">
+                        <input type="text" id="user_subject_inp" name="subject" class="form-control shadow-none">
+                        <span id="user_subject_error" class="text-danger"></span>
                     </div>
 
                     <div class="mt-3">
                         <label class="form-label" style="font-weight: 500;">Message</label>
-                        <textarea class="form-control shadow-none" rows="5" style="resize: none;"></textarea>
+                        <textarea class="form-control shadow-none" id="user_message_inp" name="message" rows="5" style="resize: none;"></textarea>
+                        <div id="user_message_error" class="text-danger"></div>
                     </div>
 
                     <button class="btn text-white custom-bg mt-3" type="submit">Send</button>
@@ -79,3 +83,50 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+
+        $('#user_contact_us_form').on('submit', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: `<?= base_url("contact-from-submit") ?>`,
+                type: 'POST',
+                data: {
+                    name: $('#user_name_inp').val(),
+                    email: $('#user_email_inp').val(),
+                    subject: $('#user_subject_inp').val(),
+                    message: $('#user_message_inp').val()
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == "validation errors") {
+                        // Display validation errors
+                        $('#user_name_error').text(response.errors.name);
+                        $('#user_email_error').text(response.errors.email);
+                        $('#user_subject_error').text(response.errors.subject);
+                        $('#user_message_error').text(response.errors.message);
+                    } else {
+                        $('#user_name_error').text('');
+                        $('#user_email_error').text('');
+                        $('#user_subject_error').text('');
+                        $('#user_message_error').text('');
+                    }
+                    if (response.status == true) {
+                        $('#user_contact_us_form')[0].reset();
+                        js_alert(response.status, response.message);
+                    }
+
+                    if (response.status == false) {
+                        js_alert(response.status, response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("An error occurred: " + error);
+                }
+            });
+        });
+    });
+</script>

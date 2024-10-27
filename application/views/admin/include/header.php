@@ -34,7 +34,6 @@
 </head>
 
 <body class="bg-white">
-
     <?php if (isset($_SESSION['loggedInAdmin']) == true) { ?>
         <div class="container-fluid bg-dark text-light p-3 d-flex align-item-center justify-content-between sticky-top">
             <h3 class="h-font">HOTELS ADMIN PANEL</h3>
@@ -60,7 +59,10 @@
                                 <a class="nav-link text-white <?= is_active('rooms'); ?>" href="#">Rooms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white  <?= is_active('Uses'); ?>" href="#">Uses</a>
+                                <a class="nav-link text-white <?= is_active('users_queries'); ?>" href="<?= base_url('users-queries') ?>">Users Queries</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white  <?= is_active('facilities',); ?>" href="admin-facilities">Facilities</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white  <?= is_active('carousel'); ?>" href="<?= base_url('carousel') ?>">Carousel</a>
@@ -78,6 +80,4 @@
             <div class="row">
                 <div class="col-lg-10 ms-auto p-4 overflow-hidden">
                     <?= bs_alert() ?>
-
-
                 <?php } ?>

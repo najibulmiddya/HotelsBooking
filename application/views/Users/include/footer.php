@@ -45,9 +45,10 @@ if ($data = $this->session->userdata('data')) {
 
 <!-- Bootstrap Js -->
 <?php require(APPPATH . 'views/users/include/scripts.php'); ?>
-
 <!-- Custom js -->
 <script src="<?= base_url('assets/js/swiper/custom.js') ?>"></script>
+
+
 
 </body>
 

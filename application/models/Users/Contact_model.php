@@ -6,6 +6,7 @@ class Contact_model extends CI_Model
     private $contact_details = 'contact_details';
     private $settings = 'settings';
     private $carousel_image = 'carousel_image';
+    private $users_query = 'users_query';
 
     public function get_contacts()
     {
@@ -28,6 +29,12 @@ class Contact_model extends CI_Model
         $this->db->select("*");
         $this->db->from($this->carousel_image);
         return $this->db->get()->result_array();
+    }
+
+    public function submit_user_query($data)
+    {
+        $this->db->insert($this->users_query, $data);
+        return $this->db->insert_id();
     }
 
    

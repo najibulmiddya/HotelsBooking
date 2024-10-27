@@ -17,6 +17,10 @@
 <link rel="stylesheet" href="<?= base_url('assets/admin/css/common.css') ?>" />
 <link rel="stylesheet" href="<?= base_url('assets/admin/css/custom.css') ?>" />
 
+<!-- Data Table CSS CDN Link -->
+<link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+
+
 <!-- Carousel JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 

@@ -8,7 +8,28 @@
     <?php require(APPPATH.'views/users/include/link.php');
 ?>
    
+   <script>
+        // ja alert function
+        function js_alert(status, message) {
+            if (status == true) {
+                status = "success";
+                mes_type = "Successfully ! "
+            } else {
+                status = "warning";
+                mes_type = "Warning ! ";
+            }
+            if (status == 'error') {
+                status == 'danger'
+                mes_type = "Failed ! "
+            }
 
+            let mes = ` <div class="alert alert-${status} alert-dismissible fade show custom-alert" role="alert">
+                            <strong>${mes_type}</strong>${message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+            $(document.body).append(mes);
+        }
+    </script>
 </head>
 
 <body class="bg-light">
@@ -31,7 +52,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="#">Facilities</a>
+                        <a class="nav-link me-2  <?= is_active('facilities'); ?>" href="<?= base_url('facilities') ?>">Facilities</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?=base_url('contact')?>">Contact us</a>
