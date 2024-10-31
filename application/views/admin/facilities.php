@@ -10,9 +10,9 @@
             </button>
         </div>
 
-        <table class="table">
+        <table class="table table-hover border">
             <thead>
-                <tr>
+                <tr class="bg-secondary text-light">
                     <th scope="col">S.NO</th>
                     <th scope="col">Feature Name</th>
                     <th scope="col">Action</th>
@@ -58,7 +58,7 @@
 <!-- add Feature Modal End -->
 
 <!--Edit Feature Modal -->
-<div class="modal fade" id="feature-update" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+<div class="modal fade" id="edit-model" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
 
@@ -89,32 +89,30 @@
 
 <script>
     // Get all Feature
+    
     function get_features() {
+        $('#feature-records-show').html('');
         $.ajax({
             url: "<?php echo base_url('get-all-feature'); ?>",
             type: "GET",
             dataType: "json",
             success: function(resp) {
-
                 if (resp.status == true) {
-                    var rows = '';
-                    var sno = 1;
-                    $.each(resp.response, function(index, record) {
-                        rows += '<tr>';
-                        rows += '<th scope="row">' + sno + '</th>';
-                        rows += '<td>' + record.feature_name + '</td>';
-                        rows += '<td>';
-
-                        rows += '<a href="javascript:void(0);" class="btn btn-success shadow-none btn-ms" onclick="updateFeature(' + record.id + ')"><i class="bi bi-pencil-square"></i> </a>';
-
-                        rows += '<a href="javascript:void(0);"  class="btn btn-danger shadow-none btn-ms" onclick="deleteRecord(' + record.id + ')"><i class="bi bi-archive-fill"></i></a>';
-                        rows += '</td>';
-                        rows += '</tr>';
-                        sno++;
+                    let i = 0
+                    $.each(resp.response, function(key, val) {
+                        i++
+                        $('#feature-records-show').append(`
+                                    <tr  id="${val.id}"> 
+                                        <td>${i}</td>
+                                        <td>${val.feature_name}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-id="${val.id}" id="feature-delete-btn"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                     </tr>`);
                     });
-                    $('#feature-records-show').html(rows); // Append rows to table body
+                } else {
+                    $('#feature-records-show').append(` <tr> <td class="text-danger text-center" colspan="3">${resp.message}</td></tr>`);
                 }
-
             },
             error: function() {
                 alert("Error fetching data");
@@ -143,9 +141,9 @@
             success: function(response) {
                 if (response.status == true) {
                     get_features();
-                    js_alert(response.status, response.message);
                     $('#feature-from')[0].reset();
                     $('#feature-s').modal('hide');
+                    js_alert(response.status, response.message);
                 } else {
                     if (response.errors.feature_name) {
                         $('#feature_name_error').text(response.errors.feature_name).show();
@@ -158,42 +156,28 @@
         });
     });
 
-    // Show Modal with Current Data
-    function updateFeature(id) {
-        // Fetch the current data for the selected feature
-        $.ajax({
-            url: '<?= base_url("get-singal-feature") ?>?' + id,
-            type: 'GET',
-            success: function(resp) {
-                if (resp.status==true) {
-                    $('#feature-name-inp').val(resp.feature_name); // Set current feature name
-                    $('#feature-update-modal').modal('show'); // Show the modal
-                } else {
-                   js_alert(resp.status,resp.message);
+    // Feature delete 
+    $('body').on('click', '#feature-delete-btn', function() {
+        const id = $(this).data('id');
+        const row = $(this).closest('tr'); // Get the closest table row
+        // Confirm before deletion
+        if (confirm(`Are you sure you want to delete this Recrod`)) {
+            $.ajax({
+                url: `<?= base_url("delete-feature/") ?>${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(resp) {
+                    if (resp.status === true) {
+                        row.fadeOut();
+                        js_alert(resp.status.resp.message);
+                    } else {
+                        js_alert(resp.status.resp.message);
+                    }
+                },
+                error: function() {
+                    alert('Error occurred while deleting the item.');
                 }
-            }
-        });
-    }
-
-    // Update Feature on Form Submit
-    $('#edit-feature-form').submit(function(e) {
-        e.preventDefault(); // Prevent form from submitting traditionally
-
-        // Send updated data to backend
-        $.ajax({
-            url: '/yourcontroller/update_feature', // Adjust to your CI3 controller method
-            type: 'POST',
-            data: $(this).serialize(), // Serialize form data for easy POST
-            success: function(response) {
-                if (response.status) {
-                    alert(response.message || 'Feature updated successfully');
-                    $('#feature-update-modal').modal('hide'); // Close modal
-                    // Optionally, refresh the table to show updated data
-                    loadFeatures(); // Assumes a function to reload data
-                } else {
-                    $('#feature-name-error').text(response.errors.feature_name).show();
-                }
-            }
-        });
+            });
+        }
     });
 </script>

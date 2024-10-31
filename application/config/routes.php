@@ -86,7 +86,9 @@ $route['users-querie-seen-all'] = 'Admin/users_queries/user_querie_seen_all';
 $route['admin-facilities'] = 'Admin/facilities/index';
 $route['add-feature'] = 'Admin/facilities/add_feature';
 $route['get-all-feature'] = 'Admin/facilities/getFeature';
-$route['get-singal-feature'] = 'Admin/facilities/get_feature';
+$route['delete-feature/(:num)'] = 'Admin/facilities/delete_feature/$1';
+
+
 
 
 

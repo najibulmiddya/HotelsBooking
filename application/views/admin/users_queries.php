@@ -32,8 +32,8 @@
                             $id = $d['id'];
                             if ($d['seen'] != 1) {
                                 $seen = "<a href='javascript:void(0);' data-id='$id'class='btn btn-ms  btn-success seen_update'> <i class='bi bi-eye-fill'></i></a>";
-                            }else{
-                                $seen="<a href='javascript:void(0);' class='btn btn-ms btn-success'> <i class='bi bi-file-earmark-check-fill'></i></a>";
+                            } else {
+                                $seen = "<a href='javascript:void(0);' class='btn btn-ms btn-success'> <i class='bi bi-file-earmark-check-fill'></i></a>";
                             }
                     ?>
                             <tr>
@@ -93,8 +93,10 @@
         var table = $('#users-queries-table').DataTable();
 
         // singal data delete
-        $('.user_queries_delete').on('click', function(e) {
-            e.preventDefault();
+
+        $('body').on('click', '.user_queries_delete', function() {
+            // $('.user_queries_delete').on('click', function(e) {
+            //     e.preventDefault();
 
             var id = $(this).data('id');
             var row = $(this).closest('tr'); // Get the row element
@@ -106,15 +108,15 @@
                         id: id
                     },
                     success: function(resp) {
-                        if (resp.status == true) {
-                            js_alert(resp.status, resp.message);
-                            table.row(row).remove().draw(); // Remove the row and redraw the table
+                        if (resp.status === true) {
+                            alert(resp.message);
+                            row.fadeOut();
                         } else {
-                            js_alert(resp.status, resp.message)
+                            alert(resp.message);
                         }
                     },
-                    error: function(status = "error", error) {
-                        js_alert(status, error)
+                    error: function() {
+                        alert('Error occurred while deleting the item.');
                     }
                 });
             }

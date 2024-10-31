@@ -31,21 +31,10 @@ class Facilities_model extends CI_Model
         return $this->db->insert($this->table, $data);
     }
 
-    public function get_feature_by_id($id)
+    // Function to delete a feature by ID
+    public function delete_feature($id)
     {
-        $this->db->select("id");
-        $this->db->from($this->table);
         $this->db->where('id', $id);
-        return $this->db->get()->row();
-    }
-
-    public function feature_exists($feature_name, $feature_id) {
-        $this->db->where('feature_name', $feature_name);
-        $this->db->where('id !=', $feature_id); // Ignore current record
-        return $this->db->get($this->table)->num_rows() > 0;
-    }
-
-    public function update_feature($id, $data) {
-        return $this->db->where('id', $id)->update($this->table, $data);
+        return $this->db->delete($this->table);
     }
 }

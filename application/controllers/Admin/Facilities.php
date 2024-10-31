@@ -16,6 +16,7 @@ class Facilities extends CI_Controller
         adminView('admin/facilities', [], 'ADMIN PANEL - FACILITIES');
     }
 
+    // All Feature Get
     public function getFeature()
     {
         try {
@@ -25,7 +26,7 @@ class Facilities extends CI_Controller
                     echo jresp(true, "data get Successfully", $resp);
                     exit;
                 } else {
-                    echo jresp(false, "Data get Failed");
+                    echo jresp(false, "Date not found!");
                     exit;
                 }
             }
@@ -69,13 +70,15 @@ class Facilities extends CI_Controller
         echo json_encode($response);
     }
 
-    public function get_feature($id = null)
+    // Delete feature with ID from URL
+    public function delete_feature($id)
     {
-        if ($feature = $this->Facilities_model->get_feature_by_id($id)) {
-            pp($feature);
-            echo jresp(true, "data get Successfully", $feature);
+
+        if ($resp=$this->Facilities_model->delete_feature($id)) {
+            echo jresp(true, "Feature deleted successfully.",$resp);
+            exit;
         } else {
-            echo jresp(false, "Feature not found");
+            echo jresp(false, "Failed to delete item.");
             exit;
         }
     }
