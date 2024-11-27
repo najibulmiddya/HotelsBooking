@@ -29,6 +29,19 @@ define('CAROUSEL_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/carousel/');
 define('CAROUSE_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/carousel/');
 
 
+// Carousel image path
+// Server path
+define('FACILIITIES_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/facilities/');
+// Site path
+define('FACILIITIES_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/facilities/');
+
+// Rooms Image Path
+//  sarver path
+define('ROOMS_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/rooms/');
+// Site path
+define('ROOMS_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/rooms/');
+
+
 if (!function_exists('pp')) {
   /**
    * pp - data show for development purposesss
@@ -170,9 +183,6 @@ if (!function_exists('bs_alert')) {
     }
   }
 }
-
-
-
 
 
 // responce message json or array

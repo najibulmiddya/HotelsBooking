@@ -8,83 +8,28 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
+        <?php
+        if ($data) {
+            $path=FACILIITIES_IMAGE_SITE_PATH;
+            foreach ($data as $key => $val) {
+        ?>
+                <div class="col-lg-4 col-md-6 mb-5 px-4">
+                    <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
+                        <img src="<?=$path.$val['icon']?>" width="40px">
+                        <div class="d-inline-block mb-2">
+                            <h5 class="m-0 ms-3"><?=$val['facility_name']?></h5>
+                        </div>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Labore recusandae tempora soluta illum, error sit necessitatibus!
+                        </p>
+                    </div>
                 </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-5 px-4">
-            <div class="bg-white rounded p-4 shadow border-top border-4 border-dark pop">
-                <img src="assets/images/facilities/wifi.svg" width="40px">
-                <div class="d-inline-block mb-2">
-                    <h5 class="m-0 ms-3">Wifi</h5>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore recusandae tempora soluta illum, error sit necessitatibus!
-                </p>
-            </div>
-        </div>
-
+        <?php
+            }
+        } else {
+            echo"<p>No facilities found.</p>";
+        }
+        ?>
     </div>
 </div>

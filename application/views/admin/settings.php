@@ -290,9 +290,6 @@
 </div>
 <!-- Management Teams Modal End -->
 
-
-
-
 <script>
     $(document).ready(function() {
 
@@ -616,7 +613,7 @@
                 <img class="card-img" src="<?= TEAM_IMAGE_SITE_PATH ?>${picture}">
                 <div class="card-img-overlay text-end">
                     <button type="button" class="btn btn-danger btn-ms text-end shadow-none delete-btn">
-                        <i class="bi bi-trash"></i> Delete
+                        <i class="bi bi-trash"></i> 
                     </button>
                 </div>
                 <p class="card-text text-center px-3 py-2">${name}</p>

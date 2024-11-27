@@ -25,6 +25,7 @@ class Contact extends CI_Controller
 	public function contact_from_submit()
 	{
 		try {
+			$this->form_validation->set_error_delimiters('', '');
 			$this->form_validation->set_rules('name', 'Name', 'required|trim');
 			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
 			$this->form_validation->set_rules('subject', 'Subject', 'required|trim');

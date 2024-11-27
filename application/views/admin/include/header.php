@@ -23,12 +23,15 @@
                 status == 'danger'
                 mes_type = "Failed ! "
             }
-
             let mes = ` <div class="alert alert-${status} alert-dismissible fade show custom-alert" role="alert">
                             <strong>${mes_type}</strong>${message}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
             $(document.body).append(mes);
+            setTimeout(remAlert, 2000);
+        }
+        function remAlert() {
+            document.getElementsByClassName('alert')[0].remove();
         }
     </script>
 </head>
@@ -56,14 +59,15 @@
                                 <a class="nav-link text-white <?= is_active('dashboard'); ?>" href="<?= base_url('dashboard') ?>">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('rooms'); ?>" href="#">Rooms</a>
+                                <a class="nav-link text-white  <?= is_active('facilities',); ?>" href="admin-facilities">Feature & Facilities</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white <?= is_active('Rooms'); ?>" href="<?= base_url('rooms') ?>">Rooms</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white <?= is_active('users_queries'); ?>" href="<?= base_url('users-queries') ?>">Users Queries</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white  <?= is_active('facilities',); ?>" href="admin-facilities">Facilities</a>
-                            </li>
+                           
                             <li class="nav-item">
                                 <a class="nav-link text-white  <?= is_active('carousel'); ?>" href="<?= base_url('carousel') ?>">Carousel</a>
                             </li>

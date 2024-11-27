@@ -87,6 +87,28 @@ $route['admin-facilities'] = 'Admin/facilities/index';
 $route['add-feature'] = 'Admin/facilities/add_feature';
 $route['get-all-feature'] = 'Admin/facilities/getFeature';
 $route['delete-feature/(:num)'] = 'Admin/facilities/delete_feature/$1';
+$route['add-facility'] = 'Admin/facilities/add_facility';
+$route['get-all-facilitys'] = 'Admin/facilities/get_all_facilitys';
+$route['delete-facility/(:num)'] = 'Admin/facilities/delete_facility/$1';
+$route['get-feature/(:num)'] = 'Admin/facilities/get_feature/$1';
+$route['update-feature'] = 'Admin/facilities/update_feature';
+
+
+$route['get-facility/(:num)'] = 'Admin/facilities/get_facility/$1';
+// $route['update-feature'] = 'Admin/facilities/update_feature';
+
+$route['rooms'] = 'Admin/Rooms/index';
+$route['room-add'] = 'Admin/Rooms/add';
+$route['get-all-rooms'] = 'Admin/Rooms/get_all_rooms';
+$route['update-room-status'] = 'Admin/Rooms/toggle_room_status';
+$route['delete-room/(:num)'] = 'Admin/Rooms/delete_room/$1';
+$route['get-room-details/(:num)'] = 'Admin/Rooms/get_room_details/$1';
+$route['room-data-update'] = 'Admin/Rooms/update_room';
+
+$route['room-image-add'] = 'Admin/Rooms/room_image_add';
+
+
+
 
 
 

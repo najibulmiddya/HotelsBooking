@@ -19,7 +19,7 @@ class Admin extends CI_Controller
     {
         try {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+                $this->form_validation->set_error_delimiters('', '');
                 $this->form_validation->set_rules('username', 'Admin Name', 'required|trim|htmlspecialchars|min_length[4]|max_length[10]');
                 $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[4]|max_length[10]');
 
@@ -30,7 +30,7 @@ class Admin extends CI_Controller
                     $password = $this->security->xss_clean($this->input->post('password'));
 
                     if ($bd_data = $this->admin_model->get($username)) {
-                       
+
                         if ($bd_data->password === $password) {
                             $adminData = [
                                 'adminId' => $bd_data->id,
@@ -57,8 +57,9 @@ class Admin extends CI_Controller
         }
     }
 
-    public function logout(){
-        if($_SESSION['loggedInAdmin']==true){
+    public function logout()
+    {
+        if ($_SESSION['loggedInAdmin'] == true) {
             unset($_SESSION['loggedInAdmin']);
             redirect('admin');
         }
