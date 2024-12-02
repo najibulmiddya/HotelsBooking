@@ -132,8 +132,6 @@
 </div>
 <!-- add Room Modal End -->
 
-
-
 <!-- Edit Room Modal -->
 <div class="modal fade" id="edit-room-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
     aria-labelledby="editRoomModalLabel" aria-hidden="true">
@@ -250,49 +248,50 @@
 <!-- Room details view Model End -->
 
 <!-- Room Image Upload Model  -->
-<div class="modal fade" id="room-image-upload-Modal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="room-image-upload-Modal" data-bs-backdrop="static" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title room-img-model-room_name" id="uploadModalLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="room-image-upload-Modal-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="room-image-upload-form" enctype="multipart/form-data">
-                    <input type="hidden" id="room-id" name="room_id">
+                <dvi class="border-bottom border-3 pb-3 mb-3">
+                    <form id="room-image-upload-form" enctype="multipart/form-data">
+                        <input type="hidden" id="room-id" name="room_id">
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Select Image</label>
-                        <input id="room-image-input" name="room_image" type="file"
-                            class="form-control shadow-none">
-                        <div id="room_image_error" class="text-danger" style="display:none;"></div>
-                    </div>
-                    <button type="submit" class="btn btn-primary shadow-none btn-sm" id="upload-image-btn"> <i class="bi bi-person-add"></i> Add</button>
-                </form>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Select Image</label>
+                            <input id="room-image-input" name="room_image" type="file"
+                                class="form-control shadow-none">
+                            <div id="room_image_error" class="text-danger" style="display:none;"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary shadow-none btn-sm" id="upload-image-btn"> <i class="bi bi-person-add"></i> Add</button>
+                    </form>
+                </dvi>
             </div>
+            <div class="table-responsive-lg border-3 pb-3 mb-3" style="max-height: 350px; overflow-y: scroll;">
+                <table class="table table-hover table-bordered" id="room-images-table">
+                    <thead class="bg-info sticky-top">
+                        <tr>
+                            <th>S.No</th>
+                            <th width="60%">Image</th>
+                            <th>Thumb Set</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="overflow-auto" id="rooms_image_show">
 
-            <table class="table table-hover table-bordered" id="room-images-table">
-                <thead class="bg-info">
-                    <tr>
-                        <th>S No</th>
-                        <th>Image</th>
-                        <th>Thumb</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody class="overflow-auto">
-                    <!-- Rows will be appended here dynamically -->
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <!-- Room Image Upload Model End -->
 
-
 <script>
     $(document).ready(function() {
-
         // Room add
         $('#room-from').on('submit', function(e) {
             e.preventDefault(); // Prevents default form submission
@@ -333,8 +332,7 @@
             });
         });
 
-
-        // Get all facilitys
+        // Get all Rooms
         function get_rooms() {
             $('#room-data').html('');
             $.ajax({
@@ -420,7 +418,6 @@
                 }
             });
         });
-
 
         // Delete Room 
         $(document).on('click', '#room-delete-btn', function() {
@@ -542,7 +539,6 @@
             });
         });
 
-
         // Room Details View
         $(document).on('click', '#room-details-view-btn', function() {
             const roomId = $(this).data('id');
@@ -576,63 +572,61 @@
             });
         });
 
+        //  get rooms image by room_id
+        function get_room_image(roomId) {
+            $('#rooms_image_show').html('');
+            $.ajax({
+                url: "<?php echo base_url('get-room-images'); ?>/" + roomId,
+                type: "GET",
+                dataType: "json",
+                success: function(resp) {
+                    if (resp.status == true) {
+                        let i = 0;
+                        $.each(resp.data, function(key, val) {
+                            let iconClass = val.thumb == 1 ? "btn-success" : "btn-warning";
+                            i++
+                            $('#rooms_image_show').append(`
+                                    <tr  id="${val.id}">
+                                        <td>${i}</td>
+                                        <td>
+                                            <img class="shadow border-white" style="width: 100px; height:100px;" src="<?= ROOMS_IMAGE_SITE_PATH ?>${val.image}">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn- ${iconClass} shadow-none" data-id="${val.id}" data-rid="${val.room_id}" data-thumb="${val.thumb}" id="thumb-update-btn"><i class="bi bi-check-square-fill"></i> </button>
+                                        </td>
+                                        
+                                         <td>
+                                            <button type="button" class="btn btn-danger shadow-none" data-id="${val.id}" id="room-image-delete-btn"><i class="bi bi-archive-fill"></i></button>
+                                        </td>
+                                     </tr>`);
+
+                        });
+                    } else {
+                        $('#rooms_image_show').append(` <tr> <td class="text-danger text-center" colspan="4"> <strong>${resp.message}</strong></td></tr>`);
+                    }
+                },
+                error: function() {
+                    alert("Error fetching room data.");
+                }
+            });
+        }
 
         // Room Image updode Model Show date 
-        // $(document).on('click', '#room-image-upload-btn', function() {
-        //     const roomId = $(this).data('id');
-        //     const name = $(this).data('name');
-        //     // Validate room ID
-        //     if (!roomId || isNaN(roomId)) {
-        //         alert('Invalid Room ID.');
-        //         return;
-        //     }
-        //     $('#room-id').val(roomId);
-        //     $('.room-img-model-room_name').text(name);
-        //     $('#room-image-upload-Modal').modal('show');
-        // });
-
-        // Handle the image  upload process
-        // $('#upload-image-btn').on('click', function() {
-        //     let formData = new FormData($('#room-image-upload-form')[0]);
-        //     $.ajax({
-        //         url: "<?php echo base_url('room-image-add'); ?>",
-        //         type: 'POST',
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false,
-        //         success: function(response) {
-        //             if (response.status === true) {
-        //                 js_alert(response.status, response.message);
-        //             } else if (response.error) {
-        //                 if (response.errors.room_image) {
-        //                     $('#room_image_error').text(response.errors.room_image).show();
-        //                 }
-        //             }else{
-        //                 if (response.status===false) {
-        //                     js_alert(response.status,response.message)
-        //                 }
-        //             }
-        //         },
-        //         error: function() {
-        //             alert('An error occurred during the upload.');
-        //         }
-        //     });
-        // });
-
         $(document).on('click', '#room-image-upload-btn', function() {
             const roomId = $(this).data('id');
             const name = $(this).data('name');
-
             if (!roomId || isNaN(roomId)) {
                 alert('Invalid Room ID.');
                 return;
             }
-
             $('#room-id').val(roomId); // Set room ID in hidden input
             $('.room-img-model-room_name').text(name); // Set room name
+            get_room_image(roomId); //call get room function
+
             $('#room-image-upload-Modal').modal('show'); // Show modal
         });
 
+        // add Room Images
         $('#room-image-upload-form').on('submit', function(e) {
             e.preventDefault();
             var formData = new FormData(this);
@@ -646,17 +640,21 @@
                     try {
                         response = typeof response === "string" ? JSON.parse(response) : response;
                         if (response.status == true) {
-                            js_alert(response.status, response.message); // Show success alert
+                            // js_alert(response.status, response.message);
+                            $('#room-image-upload-form')[0].reset();
+                            alert(response.message);
                         } else {
                             if (response.errors) {
                                 if (response.errors && response.errors.room_image) {
                                     $('#room_image_error').text(response.errors.room_image).show();
-                                } 
+                                }else{
+                                   
+                                }
                             }
-                            if (response.status==false) {
-                                js_alert(response.status, response.message);
+                            if (response.status == false) {
+                                // js_alert(response.status, response.message);
+                                alert(response.message);
                             }
-
                         }
                     } catch (e) {
                         console.error('Invalid JSON response', e);
@@ -670,11 +668,71 @@
             });
         });
 
+        // room-image-Modal-close
+        $(document).on('click', '#room-image-upload-Modal-close', function() {
+            $('#room_image_error').text('').hide();
+            $('#room-image-upload-form')[0].reset();
+        });
 
+        // Delete Room Image 
+        $(document).on('click', '#room-image-delete-btn', function() {
+            const imageId = $(this).data('id');
+            if (!imageId) {
+                alert('Invalid image ID.');
+                return;
+            }
+            if (!confirm('Are you sure you want to delete this image?')) {
+                return;
+            }
+            $.ajax({
+                url: `<?= base_url("room-image-delete/") ?>${imageId}`,
+                type: 'GET',
+                dataType: "json",
+                success: function(resp) {
+                    if (resp.status === true) {
+                        alert(resp.message)
+                        $(`#room-image-delete-btn[data-id="${imageId}"]`).closest('tr').remove();
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while deleting the image.');
+                }
+            });
+        });
 
-
-
-
+        // thumb set 
+        $(document).on('click', '#thumb-update-btn', function() {
+            const id = $(this).data('id'); // Get the specific ID
+            const room_id = $(this).data('rid');
+            const thumb = $(this).data('thumb');
+            const newThumb = 1;
+            if (!confirm('Are you sure you want to Set Room Thumb ?')) {
+                return;
+            }
+            $.ajax({
+                url: '<?php echo base_url("set-room-thumb"); ?>',
+                type: 'POST',
+                data: {
+                    room_id: room_id,
+                    id: id,
+                    thumb: newThumb
+                },
+                dataType: 'json',
+                success: function(resp) {
+                  if (resp.status==true) {
+                    alert(resp.message);
+                    get_room_image(room_id);
+                  }else{
+                    alert(resp.message);
+                  }
+                },
+                error: function() {
+                    alert('An error occurred while updating the thumb. Please try again.');
+                }
+            });
+        });
 
     });
 </script>

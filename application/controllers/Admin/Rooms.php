@@ -92,7 +92,6 @@ class Rooms extends CI_Controller
         }
     }
 
-
     // all Rooms Get
     public function get_all_rooms()
     {
@@ -302,77 +301,7 @@ class Rooms extends CI_Controller
         }
     }
 
-    // room image add
-    // public function room_image_add()
-    // {
-    //     try {
-    //         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //             // pp($_FILES);
-    //             if ($room_id = $this->input->post('room_id', TRUE)) {
-
-    //                 $response = ['success' => false, 'errors' => []];
-
-    //                 if (empty($_FILES['room_image']['name'])) {
-    //                     echo json_encode(['errors' => false, 'errors' => ['room_image' => 'Please select a Room Image to upload.']]);
-    //                     return;
-    //                 }
-
-    //                 $image_path = null;
-    //                 if (!empty($_FILES['room_image']['name'])) {
-    //                     $config['upload_path']   = ROOMS_IMAGE_SERVER_PATH;
-    //                     $config['allowed_types'] = 'gif|jpg|jpeg|png';
-    //                     $config['max_size'] = 2048; // 2MB
-    //                     $this->load->library('upload', $config);
-
-    //                     if ($this->upload->do_upload('room_image')) {
-    //                         $fileData = $this->upload->data();
-    //                         $image_path = rand(1111, 9999) . '_' . $fileData['file_name'];
-    //                         if (!rename($fileData['full_path'], ROOMS_IMAGE_SERVER_PATH . $image_path)) {
-    //                             $response['errors']['room_image'] = "Failed to move the uploaded file.";
-    //                             echo json_encode($response);
-    //                             return;
-    //                         }
-    //                     } else {
-    //                         $upload_error = $this->upload->display_errors('', '');
-
-
-    //                         if (strpos($upload_error, 'filetype you are attempting to upload is not allowed') !== false) {
-    //                             $response['errors']['room_image'] = "Only SVG files are allowed.";
-    //                         } elseif (strpos($upload_error, 'The file you are attempting to upload is larger than the permitted size') !== false) {
-    //                             $response['errors']['room_image'] = "The file size exceeds the 2MB limit.";
-    //                         } else {
-    //                             $response['errors']['room_image'] = "File upload failed: " . $upload_error;
-    //                         }
-    //                     }
-    //                 }
-    //                 $data = [
-    //                     'room_id' => $room_id,
-    //                     'image' => $image_path,
-    //                 ];
-    //                 pp($data);
-
-    //                 if ($resp = $this->Rooms_model->image_add($data)) {
-    //                     echo jresp(true, "Room Image added successfully!'", $resp);
-    //                     exit;
-    //                 } else {
-    //                     echo jresp(false, "Room image Upload failed !");
-    //                     exit;
-    //                 }
-    //                 echo json_encode($response);
-    //             } else {
-    //                 echo jresp(false, "Server Internal error");
-    //                 exit;
-    //             }
-    //         } else {
-    //             echo jresp(false, "Server Internal error");
-    //             exit;
-    //         }
-    //     } catch (\Throwable $th) {
-    //         echo jresp(false, "Server Internal error");
-    //         exit;
-    //     }
-    // }
-
+    // add room image
     public function room_image_add()
     {
         header('Content-Type: application/json');
@@ -426,6 +355,75 @@ class Rooms extends CI_Controller
             }
         } catch (Exception $e) {
             echo json_encode(['success' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+        }
+    }
+
+    // get Room image by room_Id
+    public function get_room_image($room_id)
+    {
+        if ($data = $this->Rooms_model->get_room_image($room_id)) {
+            echo json_encode(['status' => true, 'data' => $data]);
+            exit;
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Room Image not available.']);
+            exit;
+        }
+    }
+
+    // room image delete
+    public function delete_room_image($imageId)
+    {
+        try {
+            if ($imageId) {
+                $resp = $this->Rooms_model->get_image($imageId);
+                $img_path = $resp->image;
+                if (file_exists(ROOMS_IMAGE_SERVER_PATH . $img_path)) {
+                    unlink(ROOMS_IMAGE_SERVER_PATH . $img_path);
+                }
+                if ($data = $this->Rooms_model->deleteImageById($imageId)) {
+                    echo jresp(true, "Room Image deleted successfully.", $data);
+                    exit;
+                } else {
+                    echo jresp(false, "Failed to delete Room Image");
+                    exit;
+                }
+            } else {
+                echo jresp(false, "Server Internal error");
+                exit;
+            }
+        } catch (\Throwable $th) {
+            echo jresp(false, "Server Internal error");
+            exit;
+        }
+    }
+
+    // room thumb set 
+    public function room_thumb_set()
+    {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $roomId = $this->input->post('room_id');
+                $id = $this->input->post('id');
+                $thumb = $this->input->post('thumb');
+
+                if (!$roomId || !$id || !isset($thumb)) {
+                    echo jresp(false, "Missing required data.");
+                    exit;
+                }
+
+                if ($unset = $this->Rooms_model->unset_thumb($roomId)) {
+                    if ($isUpdated = $this->Rooms_model->set_thumb($roomId, $id, $thumb)) {
+                        echo jresp(true, "Thumb Set successfully");
+                        exit;
+                    } else {
+                        echo jresp(false, "Thumb Set Failed");
+                        exit;
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            echo jresp(false, "Server Internal error");
+            exit;
         }
     }
 }
