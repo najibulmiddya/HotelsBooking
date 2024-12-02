@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2024 at 11:46 AM
+-- Generation Time: Dec 02, 2024 at 11:58 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -40,7 +40,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `created_at`, `update_at`) VALUES
-(2, 'najibul', '1234', '2024-09-26 01:01:12', '0000-00-00 00:00:00');
+(2, 'najibul', '1234', '2024-09-26 01:01:12', '0000-00-00 00:00:00'),
+(3, 'admin', 'admin', '2024-12-02 16:26:22', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -426,7 +427,7 @@ ALTER TABLE `users_query`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `carousel_image`
