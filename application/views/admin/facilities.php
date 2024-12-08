@@ -1,85 +1,4 @@
-<h3 class="mb-4">FEATURE & FACILITIES</h3>
-<!-- Feature Table -->
-<div class="card border-0 shadow mb-4">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">FEATURE</h5>
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                data-bs-target="#feature-s">
-                <i class="bi bi-person-add"></i> Add
-            </button>
-        </div>
-
-        <table class="table table-hover table-bordered">
-            <thead>
-                <tr class="bg-secondary text-light">
-                    <th scope="col">S.NO</th>
-                    <th scope="col">Feature Name</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody id="feature-records-show">
-
-            </tbody>
-        </table>
-
-    </div>
-</div>
-
-<!-- add Feature Modal -->
-<div class="modal fade" id="feature-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" id="general-model">
-
-        <form id="feature-from">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Feature</h5>
-                </div>
-                <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Feature Name</label>
-                        <input name="feature_name_inp" type="text" class="form-control shadow-none">
-                        <div id="feature_name_error" class="text-danger" style="display:none;"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none"
-                        data-bs-dismiss="modal">CENCEL</button>
-                    <button type="submit" class="btn custom-bg text-white shadow-none">SUBMIT</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- add Feature Modal End -->
-
-<!-- Feature Edit Model -->
-<div class="modal fade" id="updateFeatureModal" tabindex="-1" aria-labelledby="updateFeatureLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="updateFeatureForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateFeatureLabel">Update Feature</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="feature_id" />
-                    <div class="mb-3">
-                        <label for="featureName" class="form-label">Feature Name</label>
-                        <input type="text" class="form-control" name="feature_name" id="featureName" />
-                        <small id="featureNameError" class="text-danger"></small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update Feature</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<h3 class="mb-4">FACILITIES & FEATURE</h3>
 
 <!-- FACILITIES Table -->
 <div class="card border-0 shadow mb-4">
@@ -111,12 +30,13 @@
 <!-- add FACILITIES Modal -->
 <div class="modal fade" id="facilities-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" id="general-model">
+    <div class="modal-dialog modal-lg" id="general-model">
 
         <form id="facilitie-from" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Facility</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -151,16 +71,15 @@
 </div>
 <!-- add FACILITIES Modal End -->
 
-
 <!-- Edit FACILITIES Modal -->
 <div class="modal fade" id="updateFacilitieModal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-
-        <form id="facilitie-from" enctype="multipart/form-data">
+    <div class="modal-dialog modal-lg">
+        <form id="facilitie-edit-from" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Facility</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -185,11 +104,12 @@
                         <div id="facilityIconError" class="text-danger" style="display:none;"></div>
                     </div>
 
+
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea name="facility_desc" class="form-control shadow-none"></textarea>
-                        <div id="facilityDescError" class="text-danger" style="display:none;"></div>
-                    </div>
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea id="facility_desc"  name="facility_desc" rows="4" class="form-control shadow-none"></textarea>
+                            <div id="facilityDescError" class="text-danger" style="display:none;"></div>
+                        </div>
 
                 </div>
                 <div class="modal-footer">
@@ -202,6 +122,89 @@
     </div>
 </div>
 <!-- Edit FACILITIES Modal End -->
+
+<!-- Feature Table -->
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="card-title m-0">FEATURE</h5>
+            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
+                data-bs-target="#feature-s">
+                <i class="bi bi-person-add"></i> Add
+            </button>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr class="bg-secondary text-light">
+                    <th scope="col">S.NO</th>
+                    <th scope="col">Feature Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="feature-records-show">
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- add Feature Modal -->
+<div class="modal fade" id="feature-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="general-model">
+
+        <form id="feature-from">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Feature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Feature Name</label>
+                        <input name="feature_name_inp" type="text" class="form-control shadow-none">
+                        <div id="feature_name_error" class="text-danger" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn text-secondary shadow-none"
+                        data-bs-dismiss="modal">CENCEL</button>
+                    <button type="submit" class="btn custom-bg text-white shadow-none">SUBMIT</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- add Feature Modal End -->
+
+<!-- Feature Edit Model -->
+<div class="modal fade" id="updateFeatureModal" tabindex="-1" aria-labelledby="updateFeatureLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="updateFeatureForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateFeatureLabel">Update Feature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="feature_id" />
+                    <div class="mb-3">
+                        <label for="featureName" class="form-label">Feature Name</label>
+                        <input type="text" class="form-control" name="feature_name" id="featureName" />
+                        <small id="featureNameError" class="text-danger"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Feature</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
     // Get all Feature
@@ -446,8 +449,7 @@
                     console.log(resp.data.description);
                     $('#updateFacilitieModal input[name="facility_id"]').val(resp.data.id);
                     $('#updateFacilitieModal input[name="facility_name"]').val(resp.data.facility_name);
-                    $('#updateFacilitieModal input[name="facility_desc"]').val(resp.data.description);
-                    // $('#updateFacilitieModal input[name="facility_icon"]').val(resp.data.icon);
+                    $('#facility_desc').val(resp.data.description);
                     if (resp.data.icon) {
                         $('#updateFacilitieModal img#facility-icon-preview').attr('src', `<?= FACILIITIES_IMAGE_SITE_PATH ?>${resp.data.icon}`).show();
                     }
@@ -463,6 +465,51 @@
         });
     });
 
+    // Update Facilitie submit
+    $('#facilitie-edit-from').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: "<?= base_url('update-facility'); ?>", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function() {
+                $('#facilityNameError').text('');
+                $('#facilityIconError').text('').hide();
+                $('#facilityDescError').text('').hide();
+            },
+            success: function(response) {
+                if (response.status==true) {
+                   js_alert(response.status,response.message);
+                   $('#facilitie-edit-from')[0].reset();
+                    get_facilitys();
+                    $('#updateFacilitieModal').modal('hide');
+                } else {
+                    if (response.status==false) {
+                        js_alert(response.status,response.message);
+                        $('#updateFacilitieModal').modal('hide');
+                    }
+                    if (response.errors) {
+                        if (response.errors.facility_name) {
+                            $('#facilityNameError').text(response.errors.facility_name);
+                        }
+                        if (response.errors.facility_icon) {
+                            $('#facilityIconError').text(response.errors.facility_icon).show();
+                        }
+                        if (response.errors.facility_desc) {
+                            $('#facilityDescError').text(response.errors.facility_desc).show();
+                        }
+                    }
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
 
     // facilitys delete 
     $('body').on('click', '#facilitys-delete-btn', function() {

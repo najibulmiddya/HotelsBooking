@@ -177,10 +177,10 @@
                     type: 'POST',
                     success: function(resp) {
                         if (resp.status == true) {
-                            js_alert(resp.status, resp.message);
+                            js_alert(resp.status,resp.message);
                             table.ajax.reload(null, false);
                         } else {
-                            js_alert(resp.status, resp.message);
+                            js_alert(resp.status,resp.message);
                         }
                     },
                     error: function(status = "error", error) {

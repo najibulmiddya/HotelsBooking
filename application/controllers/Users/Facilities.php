@@ -12,10 +12,6 @@ class Facilities extends CI_Controller {
 	public function index()
 	{
 		$data = $this->Facilities_model->get_all_facilitys();
-		// pp($data);
-		// view('users/facilities',compact('data'),'FACILITIES');
-		// view('users/about',[''],'HOTELS ABOUT');
-		// view('users/contact',[''],'CONTACT US');
-		view('users/rooms',[''],'ROOMS');
+		view('users/facilities',compact('data'),'FACILITIES');
 	}
 }

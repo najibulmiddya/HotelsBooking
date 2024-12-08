@@ -76,6 +76,14 @@ class Facilities_model extends CI_Model
         ->row_array();
     }
 
+    // Facility Update
+    public function update_facility($id, $data)
+    {
+        $this->db->where("id", $id);
+        $this->db->update($this->facilities, $data);
+        return $this->db->affected_rows();
+    }
+
     // Function to delete a feature by ID
     public function delete_facility($id)
     {

@@ -48,7 +48,7 @@
                         <a class="nav-link <?= is_active('home'); ?> me-2" aria-current="page" href="<?=base_url('home')?>">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="#">Rooms</a>
+                        <a class="nav-link me-2  <?= is_active('rooms'); ?>" href="<?=base_url('hotels-rooms')?>">Rooms</a>
                     </li>
 
                     <li class="nav-item">
@@ -58,7 +58,7 @@
                         <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?=base_url('contact')?>">Contact us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= is_active('about'); ?>" href="<?=base_url('about')?>">About</a>
+                        <a class="nav-link <?= is_active('about'); ?>" href="<?=base_url('hotels-about')?>">About</a>
                     </li>
 
                 </ul>

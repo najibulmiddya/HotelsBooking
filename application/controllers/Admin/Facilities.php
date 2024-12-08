@@ -82,7 +82,6 @@ class Facilities extends CI_Controller
         }
     }
 
-
     // update Feature
     public function update_feature()
     {
@@ -126,7 +125,6 @@ class Facilities extends CI_Controller
             exit;
         }
     }
-
 
     // Delete feature with ID from URL
     public function delete_feature($id)
@@ -221,7 +219,7 @@ class Facilities extends CI_Controller
                     echo jresp(true, "Facility added successfully!'", $resp);
                     exit;
                 } else {
-                    echo jresp(false, "Facility added successfully!");
+                    echo jresp(false, "Facility add Failed !");
                     exit;
                 }
                 echo json_encode($response);
@@ -261,6 +259,85 @@ class Facilities extends CI_Controller
         } else {
             echo json_encode(['status' => false, 'message' => 'Feature not found.']);
             exit;
+        }
+    }
+
+    // Update Facilitie 
+    public function update_facility()
+    {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->form_validation->set_error_delimiters('', '');
+                $this->form_validation->set_rules('facility_name', 'Facility Name', 'required');
+                $this->form_validation->set_rules('facility_desc', 'Description', 'required');
+                if ($this->form_validation->run() === FALSE) {
+                    // Return validation errors
+                    echo json_encode([
+                        'success' => false,
+                        'errors' => [
+                            'facility_name' => form_error('facility_name'),
+                            'facility_desc' => form_error('facility_desc'),
+                        ]
+                    ]);
+                } else {
+                    $facility_id = $this->input->post('facility_id');
+                    $facility_name = $this->input->post('facility_name');
+                    $facility_desc = $this->input->post('facility_desc');
+                    $icon_path = null;
+                    if (!empty($_FILES['facility_icon']['name'])) {
+                        $config['upload_path']   = FACILIITIES_IMAGE_SERVER_PATH;
+                        $config['allowed_types'] = 'svg';
+                        $config['max_size'] = 2048; // 2MB
+                        $this->load->library('upload', $config);
+
+                        if ($this->upload->do_upload('facility_icon')) {
+                            $fileData = $this->upload->data();
+                            $icon_path = rand(1111, 9999) . '_' . $fileData['file_name'];
+                            if (!rename($fileData['full_path'], FACILIITIES_IMAGE_SERVER_PATH . $icon_path)) {
+                                $response['errors']['facility_icon'] = "Failed to move the uploaded file.";
+                                echo json_encode($response);
+                                return;
+                            }
+                        } else {
+                            $upload_error = $this->upload->display_errors('', '');
+                            if (strpos($upload_error, 'filetype you are attempting to upload is not allowed') !== false) {
+                                $response['errors']['facility_icon'] = "Only SVG files are allowed.";
+                            } elseif (strpos($upload_error, 'The file you are attempting to upload is larger than the permitted size') !== false) {
+                                $response['errors']['facility_icon'] = "The file size exceeds the 2MB limit.";
+                            } else {
+                                $response['errors']['facility_icon'] = "File upload failed: " . $upload_error;
+                            }
+                        }
+                    }
+                    if ($icon_path) {
+                        $resp = $this->Facilities_model->get_facility($facility_id);
+                        $img_path = $resp->icon;
+                        if (file_exists(FACILIITIES_IMAGE_SERVER_PATH . $img_path)) {
+                            unlink(FACILIITIES_IMAGE_SERVER_PATH . $img_path);
+                        }
+                        $data = [
+                            'facility_name' => $facility_name,
+                            'description' => $facility_desc,
+                            'icon' => $icon_path,
+                        ];
+                    } else {
+                        $data = [
+                            'facility_name' => $facility_name,
+                            'description' => $facility_desc,
+                        ];
+                    }
+
+                    if ($resp = $this->Facilities_model->update_facility($facility_id, $data)) {
+                        echo jresp(true, "Facility updated successfully !", $resp);
+                        exit;
+                    } else {
+                        echo jresp(false, "Facility Updated Failed !");
+                        exit;
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 

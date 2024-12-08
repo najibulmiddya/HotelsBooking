@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -11,7 +10,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | and its corresponding controller class/method. The segments in a
 | URL normally follow this pattern:
 |
-|	example.com/class/method/id/
+|example.com/class/method/id/
 |
 | In some instances, however, you may want to remap this relationship
 | so that a different class/function is called than the one
@@ -19,7 +18,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 | Please see the user guide for complete details:
 |
-|	https://codeigniter.com/userguide3/general/routing.html
+| https://codeigniter.com/userguide3/general/routing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
@@ -49,18 +48,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//  url/FolderName/ControllerName/FunctionName
+//url/FolderName/ControllerName/FunctionName
+// Front-End
 $route['facilities'] = 'Users/facilities/index';
+$route['hotels-rooms'] = 'Users/rooms/index';
+$route['hotels-about'] = 'Users/about/index';
 $route['contact'] = 'Users/contact/index';
-$route['about'] = 'Users/about/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
+$route['test'] = 'Users/rooms/test';
 
-
-// Admin Panel
+// Admin Panel Routes
 $route['admin'] = 'Admin/admin/index';
 $route['admin/login'] = 'Admin/admin/login';
 $route['logout'] = 'Admin/admin/logout';
@@ -92,11 +94,8 @@ $route['get-all-facilitys'] = 'Admin/facilities/get_all_facilitys';
 $route['delete-facility/(:num)'] = 'Admin/facilities/delete_facility/$1';
 $route['get-feature/(:num)'] = 'Admin/facilities/get_feature/$1';
 $route['update-feature'] = 'Admin/facilities/update_feature';
-
-
 $route['get-facility/(:num)'] = 'Admin/facilities/get_facility/$1';
-// $route['update-feature'] = 'Admin/facilities/update_feature';
-
+$route['update-facility'] = 'Admin/facilities/update_facility';
 $route['rooms'] = 'Admin/Rooms/index';
 $route['room-add'] = 'Admin/Rooms/add';
 $route['get-all-rooms'] = 'Admin/Rooms/get_all_rooms';
@@ -104,18 +103,7 @@ $route['update-room-status'] = 'Admin/Rooms/toggle_room_status';
 $route['delete-room/(:num)'] = 'Admin/Rooms/delete_room/$1';
 $route['get-room-details/(:num)'] = 'Admin/Rooms/get_room_details/$1';
 $route['room-data-update'] = 'Admin/Rooms/update_room';
-
 $route['room-image-add'] = 'Admin/Rooms/room_image_add';
 $route['get-room-images/(:num)'] = 'Admin/Rooms/get_room_image/$1';
 $route['room-image-delete/(:num)'] = 'Admin/Rooms/delete_room_image/$1';
 $route['set-room-thumb'] = 'Admin/Rooms/room_thumb_set';
-
-
-
-
-
-
-
-
-
-

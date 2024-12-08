@@ -77,7 +77,7 @@ class Rooms_model extends CI_Model
         $this->db->join("{$this->facilities} f", 'rf.facilities_id = f.id');
         $this->db->where('rf.room_id', $room_id);
         $query = $this->db->get();
-        return $query->result_array(); // Returns an array of features names
+        return $query->result_array(); // Returns an array of facilities names
     }
 
     public function delete_room_features($room_id)
