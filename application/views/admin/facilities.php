@@ -39,7 +39,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
                     <div class="mb-3">
                         <label class="form-label fw-bold">Facility Name</label>
                         <input name="facility_name_inp" type="text" class="form-control shadow-none">
@@ -106,10 +105,10 @@
 
 
                     <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
-                            <textarea id="facility_desc"  name="facility_desc" rows="4" class="form-control shadow-none"></textarea>
-                            <div id="facilityDescError" class="text-danger" style="display:none;"></div>
-                        </div>
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea id="facility_desc" name="facility_desc" rows="4" class="form-control shadow-none"></textarea>
+                        <div id="facilityDescError" class="text-danger" style="display:none;"></div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -248,6 +247,7 @@
     // add Fecture
     $('#feature-from').on('submit', function(e) {
         e.preventDefault();
+
         $('#feature_name_error').hide().text('');
         var featureName = $('input[name="feature_name_inp"]').val().trim();
         var formData = $(this).serialize();
@@ -470,7 +470,7 @@
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
-            url: "<?= base_url('update-facility'); ?>", 
+            url: "<?= base_url('update-facility'); ?>",
             type: "POST",
             data: formData,
             processData: false,
@@ -482,14 +482,14 @@
                 $('#facilityDescError').text('').hide();
             },
             success: function(response) {
-                if (response.status==true) {
-                   js_alert(response.status,response.message);
-                   $('#facilitie-edit-from')[0].reset();
+                if (response.status == true) {
+                    js_alert(response.status, response.message);
+                    $('#facilitie-edit-from')[0].reset();
                     get_facilitys();
                     $('#updateFacilitieModal').modal('hide');
                 } else {
-                    if (response.status==false) {
-                        js_alert(response.status,response.message);
+                    if (response.status == false) {
+                        js_alert(response.status, response.message);
                         $('#updateFacilitieModal').modal('hide');
                     }
                     if (response.errors) {

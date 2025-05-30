@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?=$title?></title>
-    <?php require(APPPATH.'views/users/include/link.php');
-?>
-   
-   <script>
+    <title><?= $title ?></title>
+    <?php require(APPPATH . 'views/users/include/link.php'); ?>
+
+    <script>
         // ja alert function
         function js_alert(status, message) {
             if (status == true) {
@@ -45,20 +44,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link <?= is_active('home'); ?> me-2" aria-current="page" href="<?=base_url('home')?>">Home</a>
+                        <a class="nav-link <?= is_active('home'); ?> me-2" aria-current="page" href="<?= base_url('home') ?>">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2  <?= is_active('rooms'); ?>" href="<?=base_url('hotels-rooms')?>">Rooms</a>
+                        <a class="nav-link me-2  <?= is_active('rooms'); ?>" href="<?= base_url('hotels-rooms') ?>">Rooms</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link me-2  <?= is_active('facilities'); ?>" href="<?= base_url('facilities') ?>">Facilities</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?=base_url('contact')?>">Contact us</a>
+                        <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?= base_url('contact') ?>">Contact us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= is_active('about'); ?>" href="<?=base_url('hotels-about')?>">About</a>
+                        <a class="nav-link <?= is_active('about'); ?>" href="<?= base_url('hotels-about') ?>">About</a>
                     </li>
 
                 </ul>

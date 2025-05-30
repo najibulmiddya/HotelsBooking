@@ -6,7 +6,7 @@ class Rooms extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['Admin/Facilities_model', 'Admin/Rooms_model']);
+        $this->load->model(['Admin/Facilities_model','Admin/Rooms_model']);
         admin_loggedIn();
     }
 

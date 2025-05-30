@@ -19,6 +19,11 @@
 
 <!-- Custom CSS -->
 
-<link rel="stylesheet" href="<?=base_url('assets/css/custom.css')?>" />
+<link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>" />
 <!-- Carousel JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

@@ -3,14 +3,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // application/models/Admin/Rooms_model.php
 class Rooms_model extends CI_Model
 {
-
     // Define the table name
     private $table = 'rooms';
     private $rooms_facilities = 'rooms_facilities';
     private $rooms_features = 'rooms_features';
     private $features = "features";
     private $facilities = "facilities";
-    private $rooms_images= "rooms_images";
+    private $rooms_images = "rooms_images";
 
     public function __construct()
     {
@@ -37,6 +36,7 @@ class Rooms_model extends CI_Model
     public function get_all_rooms()
     {
         $this->db->select("*");
+        // $this->db->where('status', 1);
         $this->db->from($this->table);
         return $this->db->get()->result_array();
     }
@@ -118,21 +118,22 @@ class Rooms_model extends CI_Model
     }
 
     // get Room Images by room_id
-    public function get_room_image($room_id){
+    public function get_room_image($room_id)
+    {
         $this->db->select("*");
         $this->db->from($this->rooms_images);
         $this->db->where('room_id', $room_id);
         return $this->db->get()->result_array();
     }
 
-     // get room image by image_id 
-     public function get_image($image_id)
-     {
-         $this->db->select("image");
-         $this->db->from($this->rooms_images);
-         $this->db->where('id', $image_id);
-         return $this->db->get()->row();
-     }
+    // get room image by image_id 
+    public function get_image($image_id)
+    {
+        $this->db->select("image");
+        $this->db->from($this->rooms_images);
+        $this->db->where('id', $image_id);
+        return $this->db->get()->row();
+    }
 
     // delete room image  
     public function deleteImageById($imageId)
@@ -154,5 +155,32 @@ class Rooms_model extends CI_Model
         $this->db->where('room_id', $roomId);
         $this->db->where('id', $id);
         return $this->db->update($this->rooms_images, ['thumb' => $thumb]);
+    }
+
+
+    // new add 30-05-250
+    public function getAllRoomsImages($id = null)
+    {
+        $this->db->select("*");
+        if ($id) {
+            $this->db->where('room_id', $id);
+            $this->db->where('thumb',1);
+        }
+        $this->db->from($this->rooms_images);
+        return $this->db->get()->result_array();
+    }
+
+    public function getAllFacilities()
+    {
+        $this->db->select("*");
+        $this->db->from($this->rooms_facilities);
+        return $this->db->get()->result_array();
+    }
+
+    public function getAllFeatures()
+    {
+        $this->db->select("*");
+        $this->db->from($this->rooms_features);
+        return $this->db->get()->result_array();
     }
 }

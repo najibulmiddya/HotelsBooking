@@ -16,9 +16,9 @@ class Facilities_model extends CI_Model
 
     public function get_all_feature()
     {
-        $this->db->select("id,feature_name"); // Select all columns
-        $this->db->from($this->features); // From the teams table
-        return $this->db->get()->result_array(); // Return the result as an array
+        $this->db->select("id,feature_name");
+        $this->db->from($this->features);
+        return $this->db->get()->result_array();
     }
 
     public function get_feature_name($feature_name)
@@ -72,8 +72,8 @@ class Facilities_model extends CI_Model
     public function get_facility_by_id($id)
     {
         return $this->db
-        ->get_where($this->facilities, ['id' => $id])
-        ->row_array();
+            ->get_where($this->facilities, ['id' => $id])
+            ->row_array();
     }
 
     // Facility Update
@@ -95,13 +95,13 @@ class Facilities_model extends CI_Model
     public function get_feature_by_id($id)
     {
         return $this->db
-        ->get_where($this->features, ['id' => $id])
-        ->row_array();
+            ->get_where($this->features, ['id' => $id])
+            ->row_array();
     }
 
     public function update_feature($id, $data)
     {
         return $this->db
-        ->where('id', $id)->update($this->features, $data);
+            ->where('id', $id)->update($this->features, $data);
     }
 }

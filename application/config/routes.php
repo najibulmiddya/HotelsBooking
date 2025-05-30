@@ -107,3 +107,4 @@ $route['room-image-add'] = 'Admin/Rooms/room_image_add';
 $route['get-room-images/(:num)'] = 'Admin/Rooms/get_room_image/$1';
 $route['room-image-delete/(:num)'] = 'Admin/Rooms/delete_room_image/$1';
 $route['set-room-thumb'] = 'Admin/Rooms/room_thumb_set';
+
