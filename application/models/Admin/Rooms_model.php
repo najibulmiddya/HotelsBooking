@@ -33,13 +33,33 @@ class Rooms_model extends CI_Model
         return $this->db->insert($this->rooms_features, $data);
     }
 
-    public function get_all_rooms()
+    // public function get_all_rooms()
+    // {
+    //     $this->db->select("*");
+    //     // $this->db->where('status', 1);
+    //     $this->db->from($this->table);
+    //     return $this->db->get()->result_array();
+    // }
+
+    public function get_all_rooms($limit = null, $offset = 0, $status = null)
     {
         $this->db->select("*");
-        // $this->db->where('status', 1);
         $this->db->from($this->table);
+        $this->db->order_by('id', 'ASC');
+        if ($status == 1) {
+            $this->db->where('status', 1);
+        }
+
+        if (!is_null($limit)) {
+            $this->db->limit($limit, $offset);
+        }
+
         return $this->db->get()->result_array();
     }
+
+
+
+
 
     public function update_room_status($room_id, $status)
     {
@@ -148,7 +168,6 @@ class Rooms_model extends CI_Model
         $this->db->where('room_id', $roomId);
         return $this->db->update($this->rooms_images, ['thumb' => 0]);
     }
-
     // room thumb set
     public function set_thumb($roomId, $id, $thumb)
     {
@@ -157,14 +176,13 @@ class Rooms_model extends CI_Model
         return $this->db->update($this->rooms_images, ['thumb' => $thumb]);
     }
 
-
     // new add 30-05-250
     public function getAllRoomsImages($id = null)
     {
         $this->db->select("*");
         if ($id) {
             $this->db->where('room_id', $id);
-            $this->db->where('thumb',1);
+            $this->db->where('thumb', 1);
         }
         $this->db->from($this->rooms_images);
         return $this->db->get()->result_array();

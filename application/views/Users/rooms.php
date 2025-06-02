@@ -6,7 +6,6 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-3 col-md-12  mb-lg-0 mb-4 px-lg-0">
-
             <nav class="navbar navbar-expand-lg navbar-light bg-white rounded shadow">
                 <div class="container-fluid flex-lg-column align-items-stretch ">
                     <h4 class="mt-2">FILTERS</h4>
@@ -20,9 +19,9 @@
                         <div class="border bg-ligth p-3 rounded mb-3">
                             <h5 class="mb-3" style="font-size: 18px;">CHECK ABAILABILITY</h5>
                             <label class="form-label">Chack-in</label>
-                            <input type="date" class="form-control shadow-none mb-3">
+                            <input id="checkin" type="date" class="form-control shadow-none mb-3">
                             <label class="form-label">Chack-out</label>
-                            <input type="date" class="form-control shadow-none">
+                            <input id="checkout" type="date" class="form-control shadow-none" placeholder="Select">
                         </div>
                         <!-- FACILITIES -->
                         <div class="border bg-ligth p-3 rounded mb-3">
@@ -57,198 +56,90 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </nav>
         </div>
-
+        <!-- OUR ROOMS -->
         <div class="col-lg-9 col-md-12 px-4">
-            <div class="card mb-4 border-0 shadow">
-                <div class="row g-0 p-3 align-items-center">
-
-                    <!-- Rooms Image -->
-                    <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
-                        <img src="<?=base_url('assets/images/rooms/1.jpg')?>" class="img-fluid rounded">
-                    </div>
-
-                    <div class="col-md-5 px-lg-3 px-md-3 px-0">
-                        <h5 class="mb-3">Simpel Room Name</h5>
-                        <!-- Rooms Features -->
-                        <div class="features mb-3">
-                            <h6 class="mb-1">Features</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Rooms
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Bathroom
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Balcony
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Sofa
-                            </span>
-                        </div>
-                        <!-- Rooms Facilities -->
-                        <div class="facilities mb-3">
-                            <h6 class="mb-1">Facilities</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Wifi
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Television
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Ac
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Room Heater
-                            </span>
+            <?php
+            // $roomsData = $this->session->userdata('roomsData');
+            foreach ($allRoomsData as $key => $room) { ?>
+                <div class="card mb-4 border-0 shadow">
+                    <div class="row g-0 p-3 align-items-center">
+                        <!-- Rooms Image -->
+                        <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
+                            <img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="img-fluid rounded" alt="">
                         </div>
 
-                        <!-- Rooms Gueste -->
-                        <div class="gueste">
-                            <h6 class="mb-1">Gueste</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                5 Adults
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                4 Children
-                            </span>
-                        </div>
+                        <div class="col-md-5 px-lg-3 px-md-3 px-0">
+                            <h5 class="mb-3"><?= $room['room_name']; ?></h5>
+                            <!-- Rooms Features -->
+                            <div class="features mb-3">
+                                <h6 class="mb-1">Features</h6>
+                                <?php if (!empty($room['features'])):
+                                    foreach ($room['features'] as $feature): ?>
+                                        <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($feature['feature_name']) ?></span>
+                                    <?php endforeach;
+                                else: ?>
+                                    <span class="badge bg-light text-dark text-wrap">N/A</span>
+                                <?php endif; ?>
+                            </div>
 
-                    </div>
-                    <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">
-                        <h6 class="mb-4">₹500 Par Night</h6>
-                        <a href="#" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</a>
-						<a href="#" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
+                            <!-- Rooms Facilities -->
+                            <div class="facilities mb-3">
+                                <h6 class="mb-1">Facilities</h6>
+                                <?php if (!empty($room['facilities'])):
+                                    foreach ($room['facilities'] as $facility): ?>
+                                        <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($facility['facility_name']) ?></span>
+                                    <?php endforeach;
+                                else: ?>
+                                    <span class="badge bg-light text-dark text-wrap">N/A</span>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Rooms Gueste -->
+                            <div class="gueste">
+                                <h6 class="mb-1">Gueste</h6>
+                                <span class="badge bg-light text-dark text-wrap">
+                                    <?= htmlspecialchars($room['adult']) ?> Adults
+                                </span>
+                                <span class="badge bg-light text-dark text-wrap">
+                                    <?= htmlspecialchars($room['children']) ?> Children
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">
+                            <h6 class="mb-4">₹<?= htmlspecialchars($room['price']) ?> Per Night</h6>
+                            <a href="<?= base_url("room-booking?id=" . $room['id']) ?>" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</a>
+                             <a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card mb-4 border-0 shadow">
-                <div class="row g-0 p-3 align-items-center">
-
-                    <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
-                        <img src="<?=base_url('assets/images/rooms/1.jpg')?>" class="img-fluid rounded">
-                    </div>
-
-                    <div class="col-md-5 px-lg-3 px-md-3 px-0">
-                        <h5 class="mb-3">Simpel Room Name</h5>
-                        <!-- Rooms Features -->
-                        <div class="features mb-3">
-                            <h6 class="mb-1">Features</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Rooms
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Bathroom
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Balcony
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Sofa
-                            </span>
-                        </div>
-                        <!-- Rooms Facilities -->
-                        <div class="facilities mb-3">
-                            <h6 class="mb-1">Facilities</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Wifi
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Television
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Ac
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Room Heater
-                            </span>
-                        </div>
-
-                        <!-- Rooms Gueste -->
-                        <div class="gueste">
-                            <h6 class="mb-1">Gueste</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                5 Adults
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                4 Children
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h6 class="mb-4">₹500 Par Night</h6>
-                        <a href="#" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</a>
-						<a href="#" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mb-4 border-0 shadow">
-                <div class="row g-0 p-3 align-items-center">
-
-                    <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
-                        <img src="<?=base_url('assets/images/rooms/1.jpg')?>" class="img-fluid rounded">
-                    </div>
-
-                    <div class="col-md-5 px-lg-3 px-md-3 px-0">
-                        <h5 class="mb-3">Simpel Room Name</h5>
-                        <!-- Rooms Features -->
-                        <div class="features mb-3">
-                            <h6 class="mb-1">Features</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Rooms
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Bathroom
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                1 Balcony
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                2 Sofa
-                            </span>
-                        </div>
-                        <!-- Rooms Facilities -->
-                        <div class="facilities mb-3">
-                            <h6 class="mb-1">Facilities</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Wifi
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Television
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Ac
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                Room Heater
-                            </span>
-                        </div>
-
-                        <!-- Rooms Gueste -->
-                        <div class="gueste">
-                            <h6 class="mb-1">Gueste</h6>
-                            <span class="badge bg-light text-dark text-wrap">
-                                5 Adults
-                            </span>
-                            <span class="badge bg-light text-dark text-wrap">
-                                4 Children
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <h6 class="mb-4">₹500 Par Night</h6>
-                        <a href="#" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</a>
-						<a href="#" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
-                    </div>
-                </div>
-            </div>
-
+            <?php }
+            ?>
         </div>
     </div>
 </div>
+
+<script>
+    // Check-in calendar
+    const checkinCalendar = flatpickr("#checkin", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        defaultDate: "today",
+        clickOpens: true,
+        onChange: function(selectedDates, dateStr) {
+            checkoutCalendar.set("minDate", dateStr);
+        }
+    });
+
+    // Check-out calendar
+    const checkoutCalendar = flatpickr("#checkout", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        clickOpens: true
+    });
+</script>

@@ -9,27 +9,33 @@ class Home extends CI_Controller
 		parent::__construct();
 		$this->load->model('Users/Contact_model');
 		$this->load->model('Admin/Rooms_model');
+		$this->load->model('Admin/Facilities_model');
 	}
 
 	public function index()
 	{
 		try {
 			// OUR ROOMS DATA STRAT
-			$allRooms = $this->Rooms_model->get_all_rooms();
+			$allRooms = $this->Rooms_model->get_all_rooms(3,0,1);
 			$roomsData = [];
-
+			// pp($allRooms);
 			foreach ($allRooms as $room) {
 				$room_status = $room['status'];
-				if ($room_status == 1) { 
+				if ($room_status == 1) {
 					$room_id = $room['id'];
 					$images = $this->Rooms_model->getAllRoomsImages($room_id);
-					$room['image'] = !empty($images) ? $images[0]['image'] : null;
+					$room['image'] = !empty($images) ? $images[0]['image'] : '7686_thumbnail.jpg';
 					$room['features'] = $this->Rooms_model->get_room_features($room_id);
 					$room['facilities'] = $this->Rooms_model->get_room_facilities($room_id);
 					$roomsData[] = $room;
 				}
 			}
+			// pp($images);
 			$this->session->set_userdata('roomsData', $roomsData);
+			// Our Facilities
+			$allFacilities = $this->Facilities_model->get_all_facilitys();
+			// pp($allFacilities);
+			$this->session->set_userdata('facilities', $allFacilities);
 
 			if ($carousel_image = $this->Contact_model->getall_image()) {
 			}

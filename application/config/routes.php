@@ -61,6 +61,7 @@ $route['hotels-about'] = 'Users/about/index';
 $route['contact'] = 'Users/contact/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
 $route['test'] = 'Users/rooms/test';
+$route['room-details/(:num)'] = 'Users/rooms/room_details/$1';
 
 // Admin Panel Routes
 $route['admin'] = 'Admin/admin/index';

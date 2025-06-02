@@ -16,7 +16,6 @@
 	</div>
 </div>
 
-
 <!-- check Availability form -->
 <div class="container availability-form">
 	<div class="row">
@@ -33,7 +32,6 @@
 						<input id="checkout" type="date" class="form-control shadow-none">
 					</div>
 
-					
 					<div class="col-lg-3 mb-3">
 						<label class="form-label" style="font-size: 500;">Adult</label>
 						<select class="form-select shadow-none">
@@ -65,9 +63,6 @@
 <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
 <div class="container">
 	<div class="row">
-
-
-
 		<?php
 		$roomsData = $this->session->userdata('roomsData');
 		if (!empty($roomsData)):
@@ -76,6 +71,8 @@
 					<div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
 
 						<img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="card-img-top" alt="">
+
+
 
 						<div class="card-body">
 							<!-- Room Name -->
@@ -129,7 +126,7 @@
 							<!-- Action Buttons -->
 							<div class="d-flex justify-content-evenly mb-2">
 								<a href="<?= base_url('booking/room/' . $room['id']) ?>" class="btn btn-sm text-white shadow-none custom-bg">Book Now</a>
-								<a href="<?= base_url('rooms/details/' . $room['id']) ?>" class="btn btn-sm btn-outline-dark shadow-none">More Details</a>
+								<a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm btn-outline-dark shadow-none">More Details</a>
 							</div>
 						</div>
 					</div>
@@ -139,105 +136,30 @@
 			echo "<p>No rooms available.</p>";
 		endif;
 		?>
-
-		<!-- <div class="col-lg-4 col-md-6 my-3">
-			<div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
-				<img src="<?= base_url('assets/images/rooms/1.jpg') ?>" class="card-img-top" alt="...">
-				<div class="card-body">
-					<h5>Room Name</h5>
-					<h6 class="mb-4">₹500 Par Night</h6> -->
-		<!-- Rooms features -->
-		<!-- <div class="features mb-4">
-						<h6 class="mb-1">Features</h6>
-						<span class="badge bg-light text-dark text-wrap">
-							2 Rooms
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							1 Bathroom
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							1 Balcony
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							2 Sofa
-						</span>
-					</div> -->
-
-		<!-- Rooms Facilities -->
-		<!-- <div class="facilities mb-4">
-						<h6 class="mb-1">Facilities</h6>
-						<span class="badge bg-light text-dark text-wrap">
-							Wifi
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							Television
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							Ac
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							Room Heater
-						</span>
-					</div> -->
-
-		<!-- Rooms Gueste -->
-		<!-- <div class="gueste mb-4">
-						<h6 class="mb-1">Gueste</h6>
-						<span class="badge bg-light text-dark text-wrap">
-							5 Adults
-						</span>
-						<span class="badge bg-light text-dark text-wrap">
-							4 Children
-						</span>
-					</div> -->
-
-		<!-- Rooms Rating -->
-		<!-- <div class="rating mb-4">
-						<h6 class="mb-1">Rating</h6>
-						<span class="badge rounded-pill bg-light">
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-						</span>
-					</div>
-					<div class="d-flex justify-content-evenly mb-2">
-						<a href="#" class="btn btn-sm text-white shadow-none custom-bg">Book Now</a>
-						<a href="#" class="btn btn-sm btn-outline-dark shadow-none">More Details</a>
-					</div>
-
-				</div>
-			</div>
-		</div> -->
-
-
 		<!-- Our Facilities -->
 		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR FACILITIES</h2>
 		<div class="container">
 			<div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
-				<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
-					<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="80px">
-					<h5 class="mt-3">Wifi</h5>
-				</div>
-				<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
-					<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="80px">
-					<h5 class="mt-3">Wifi</h5>
-				</div>
-				<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
-					<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="80px">
-					<h5 class="mt-3">Wifi</h5>
-				</div>
-				<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
-					<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="80px">
-					<h5 class="mt-3">Wifi</h5>
-				</div>
-				<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
-					<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="80px">
-					<h5 class="mt-3">Wifi</h5>
-				</div>
+				<?php
+				$facilities = $this->session->userdata('facilities');
+				if (!empty($facilities)) {
+					$count = 0;
+					foreach ($facilities as $facility) {
+						if ($count >= 5) break;
+				?>
+						<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
+							<img src="<?= base_url('assets/images/facilities/' . $facility['icon']) ?>" width="60px" alt="">
+							<h5 class="mt-3"><?= $facility['facility_name'] ?></h5>
+							<!-- <p><?=$facility["description"]?></p> -->
+						</div>
+				<?php
+						$count++;
+					}
+				}
+				?>
 
 				<div class="col-lg-12 text-center mt-5">
-					<a href="" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
+					<a href="<?=base_url("facilities");?>" id="showMoreFacilities" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
 				</div>
 			</div>
 		</div>
@@ -283,7 +205,6 @@
 						</div>
 					</div>
 
-
 					<div class="swiper-slide bg-white p-4 shadow">
 						<div class="profile d-flex align-items-center mb-3">
 							<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="">
@@ -321,7 +242,7 @@
 			</div>
 
 			<div class="col-lg-12 text-center mt-5">
-				<a href="" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
+				<a href="<?=base_url("hotels-about");?>" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
 			</div>
 		</div>
 
@@ -366,8 +287,6 @@
 						</a>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 
@@ -376,8 +295,8 @@
 			const checkinCalendar = flatpickr("#checkin", {
 				dateFormat: "Y-m-d",
 				minDate: "today",
-				defaultDate: "today", 
-				clickOpens: true, 
+				defaultDate: "today",
+				clickOpens: true,
 				onChange: function(selectedDates, dateStr) {
 					checkoutCalendar.set("minDate", dateStr);
 				}

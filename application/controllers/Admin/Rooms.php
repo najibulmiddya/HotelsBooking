@@ -280,8 +280,9 @@ class Rooms extends CI_Controller
                             }
                         }
                     }
+                    $room_resp = $this->Rooms_model->room_details_update($roomId, $roomData);
 
-                    if ($resp3 = $this->Rooms_model->room_details_update($roomId, $roomData)) {
+                    if ($room_resp || $resp1 || $resp2) {
                         echo jresp(true, "Room updated successfully!");
                         exit;
                     } else {
@@ -291,9 +292,7 @@ class Rooms extends CI_Controller
                 }
             }
         } catch (\Throwable $th) {
-            // Log the error
             log_message('error', $th->getMessage());
-            // Respond with a server error
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(jresp(false, 'Server internal error'));

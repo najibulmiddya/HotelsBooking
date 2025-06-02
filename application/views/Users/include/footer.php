@@ -1,7 +1,5 @@
 <!-- Footer -->
 <?php
-
-
 if ($data = $this->session->userdata('data')) {
 }
 ?>
