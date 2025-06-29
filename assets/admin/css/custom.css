@@ -1,28 +1,27 @@
-.login-from{
+.login-from {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: 400px;
 }
 
-#dashboard-menu{
+#dashboard-menu {
     position: fixed;
     height: 100%;
     z-index: 11;
-   }
+}
 
-   @media screen and (max-width:991px) {
-    #dashboard-menu{
+@media screen and (max-width:991px) {
+    #dashboard-menu {
         position: fixed;
         height: auto;
         width: 100%;
-       }
-   }
+    }
+}
 
-   .custom-alert{
+.custom-alert {
     position: fixed;
     top: 80px;
     right: 25px;
-   }
-   
+}

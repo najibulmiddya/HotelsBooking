@@ -33,14 +33,6 @@ class Rooms_model extends CI_Model
         return $this->db->insert($this->rooms_features, $data);
     }
 
-    // public function get_all_rooms()
-    // {
-    //     $this->db->select("*");
-    //     // $this->db->where('status', 1);
-    //     $this->db->from($this->table);
-    //     return $this->db->get()->result_array();
-    // }
-
     public function get_all_rooms($limit = null, $offset = 0, $status = null)
     {
         $this->db->select("*");
@@ -56,10 +48,6 @@ class Rooms_model extends CI_Model
 
         return $this->db->get()->result_array();
     }
-
-
-
-
 
     public function update_room_status($room_id, $status)
     {

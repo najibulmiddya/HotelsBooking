@@ -41,6 +41,12 @@ define('ROOMS_IMAGE_SERVER_PATH', SERVER_PATH . 'assets/images/rooms/');
 // Site path
 define('ROOMS_IMAGE_SITE_PATH', SITE_PATH . '/assets/images/rooms/');
 
+// Uses profile path 
+
+define('USER_PROFILE_SERVER_PATH', SERVER_PATH . 'assets/images/userprofile/');
+define('USER_PROFILE_SITE_PATH', SITE_PATH . '/assets/images/userprofile/');
+
+
 
 if (!function_exists('pp')) {
   /**
@@ -75,6 +81,7 @@ if (!function_exists('view')) {
     $ci->load->view($body_path, $body_data);
     $ci->load->view("users/include/footer");
   }
+
 }
 
 if (!function_exists('adminView')) {
@@ -135,10 +142,10 @@ if (!function_exists('dataFilter')) {
   function dataFilter($data)
   {
     foreach ($data as $key => $val) {
-      $data[$key]=trim($val);
-      $data[$key]=stripcslashes($val);
-      $data[$key]=htmlspecialchars($val);
-      $data[$key]=strip_tags($val);
+      $data[$key] = trim($val);
+      $data[$key] = stripcslashes($val);
+      $data[$key] = htmlspecialchars($val);
+      $data[$key] = strip_tags($val);
     }
     return $data;
   }
@@ -210,7 +217,6 @@ if (!function_exists('jresp')) {
       $CI = &get_instance();
       $current_controller = $CI->router->fetch_class();
       $current_method = $CI->router->fetch_method();
-
       if ($controller == $current_controller && ($method == '' || $method == $current_method)) {
         return 'active';
       }
@@ -218,6 +224,7 @@ if (!function_exists('jresp')) {
     }
   }
 }
+
 
 
 

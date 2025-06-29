@@ -62,6 +62,23 @@ $route['contact'] = 'Users/contact/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
 $route['test'] = 'Users/rooms/test';
 $route['room-details/(:num)'] = 'Users/rooms/room_details/$1';
+$route['user-registration'] = 'Admin/admin/user_Registration';
+$route['check-email-exists'] = 'Admin/admin/check_email_exists';
+$route['user-login'] = 'Admin/admin/userLogin';
+$route['user-logout'] = 'Admin/admin/user_logout';
+$route['verify-email/(:any)'] = 'Admin/admin/verify_email/$1';
+$route['forgot-password'] = 'Admin/admin/forgot_password';
+$route['check-reset-token'] = 'Admin/admin/check_reset_token';
+$route['update-password'] = 'Admin/admin/update_password';
+// Room Booking Management Routes
+$route['booking/room/(:num)'] = 'Users/Rooms/roomBooking/$1';
+$route['check-room-availability'] = 'Users/Rooms/check_room_availability';
+
+
+
+
+
+
 
 // Admin Panel Routes
 $route['admin'] = 'Admin/admin/index';
@@ -109,3 +126,8 @@ $route['get-room-images/(:num)'] = 'Admin/Rooms/get_room_image/$1';
 $route['room-image-delete/(:num)'] = 'Admin/Rooms/delete_room_image/$1';
 $route['set-room-thumb'] = 'Admin/Rooms/room_thumb_set';
 
+// User Management Routes
+$route['users'] = 'Admin/Users/index';
+$route['admin/fetch-users']         = 'Admin/Users/fetch_users';
+$route['admin/toggle-user-status']  = 'Admin/Users/toggle_user_status';
+$route['admin/delete-user']         = 'Admin/Users/delete_user';

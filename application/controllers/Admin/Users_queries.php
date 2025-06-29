@@ -111,7 +111,7 @@ class Users_queries extends CI_Controller
                 $data = array(
                     'seen' => 1
                 );
-                
+
                 if ($resp = $this->UsersQueries_model->seen_user_query_all($data)) {
                     echo jresp(true, "Seen Successfully", $resp);
                     exit;
@@ -125,4 +125,5 @@ class Users_queries extends CI_Controller
             exit;
         }
     }
+
 }

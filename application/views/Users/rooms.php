@@ -112,9 +112,22 @@
                         </div>
                         <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">
                             <h6 class="mb-4">₹<?= htmlspecialchars($room['price']) ?> Per Night</h6>
-                            <a href="<?= base_url("room-booking?id=" . $room['id']) ?>" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</a>
-                             <a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
+                            <?php
+                            $data = $this->session->userdata('data');
+                            if (isset($data['shutdown']) && $data['shutdown'] != 1):
+                                $CI = &get_instance();
+                                $loggedUser = $CI->session->userdata('loggedInuser');
+                                $userLogin = 0;
+                                if ($loggedUser && $loggedUser['USER_LOGGEDIN'] == true) {
+                                    $userLogin = 1;
+                                }
+                            ?>
+                                <button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $room['id'] ?>)" class="btn btn-sm w-100 text-white shadow-none custom-bg mb-2 ">Book Now</button>
+                            <?php else: ?>
+                                <button class="btn btn-sm btn-secondary shadow-none mb-2" disabled>Booking Closed</button>
+                            <?php endif; ?>
 
+                            <a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm w-100 btn-outline-dark shadow-none">More Details</a>
                         </div>
                     </div>
                 </div>

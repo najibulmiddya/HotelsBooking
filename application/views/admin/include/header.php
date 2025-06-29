@@ -62,9 +62,13 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white <?= is_active('Rooms'); ?>" href="<?= base_url('rooms') ?>">Rooms</a>
                             </li>
+
+                             <li class="nav-item">
+                                <a class="nav-link text-white <?= is_active('Users'); ?>" href="<?= base_url('users') ?>">Users</a>
+                            </li>
                             
                             <li class="nav-item">
-                                <a class="nav-link text-white  <?= is_active('facilities',); ?>" href="admin-facilities">Feature & Facilities</a>
+                                <a class="nav-link text-white  <?= is_active('facilities'); ?>" href="<?=base_url('admin-facilities')?>">Feature & Facilities</a>
                             </li>
                             
                             <li class="nav-item">

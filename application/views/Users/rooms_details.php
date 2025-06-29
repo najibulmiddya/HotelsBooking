@@ -33,7 +33,7 @@
                     }
 
 
-                   
+
 
                     ?>
                 </div>
@@ -101,7 +101,22 @@
                         </span>
                     </div>
 
-                    <a href="<?= base_url("room-booking?id=" . $roomsData['room']->id) ?>" class="btn w-100 text-white shadow-none custom-bg">Book Now</a>
+                    <?php
+                    $data = $this->session->userdata('data');
+                    if (isset($data['shutdown']) && $data['shutdown'] != 1):
+                        $CI = &get_instance();
+                        $loggedUser = $CI->session->userdata('loggedInuser');
+                        $userLogin = 0;
+                        if ($loggedUser && $loggedUser['USER_LOGGEDIN'] == true) {
+                            $userLogin = 1;
+                        }
+                    ?>
+
+                        <button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $roomsData['room']->id ?>)" class="btn w-100 text-white shadow-none custom-bg">Book Now</button>
+                    <?php else: ?>
+                        <button class="btn w-100 btn-secondary shadow-none" disabled>Booking Closed</button>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>

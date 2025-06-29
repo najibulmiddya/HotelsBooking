@@ -1,7 +1,8 @@
-:root{
-    --teal:#2ec1ac;
-    --teal_hover:#279e8c;
+:root {
+    --teal: #2ec1ac;
+    --teal_hover: #279e8c;
 }
+
 * {
     font-family: 'Poppins', sans-serif;
 }
@@ -16,9 +17,10 @@
 }
 
 .custom-bg:hover {
-    background-color:var(--teal_hover);
+    background-color: var(--teal_hover);
     border-color: var(--teal_hover);
 }
+
 
 .availability-form {
     margin-top: -50px;
@@ -36,23 +38,40 @@
 .custom-shadow:hover {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
-.h-line{
+
+.h-line {
     width: 150px;
     margin: 0 auto;
     height: 1.7px;
 }
-.pop:hover{
+
+.pop:hover {
     border-top-color: var(--teal) !important;
     transform: scale(1.03);
     transition: all 0.3s;
 }
-.box:hover{
+
+.box:hover {
     border-top-color: var(--teal) !important;
 }
 
 /* ja base alart */
-.custom-alert{
+.custom-alert {
     position: fixed;
     top: 80px;
     right: 25px;
-   }
+}
+
+#success_icon {
+    font-size: 60px;
+    color: #2ec1ac;
+}
+ 
+
+#failed_icon {
+    font-size: 60px;
+    color: red;
+}
+.color_Green{
+    color:#2ec1ac ;
+}

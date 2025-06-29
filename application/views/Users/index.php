@@ -69,18 +69,10 @@
 			foreach ($roomsData as $room): ?>
 				<div class="col-lg-4 col-md-6 my-3">
 					<div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
-
 						<img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="card-img-top" alt="">
-
-
-
 						<div class="card-body">
-							<!-- Room Name -->
 							<h5><?= htmlspecialchars($room['room_name']) ?></h5>
-
-							<!-- Room Price -->
 							<h6 class="mb-4">₹<?= htmlspecialchars($room['price']) ?> Per Night</h6>
-
 							<!-- Features -->
 							<div class="features mb-4">
 								<h6 class="mb-1">Features</h6>
@@ -125,7 +117,21 @@
 
 							<!-- Action Buttons -->
 							<div class="d-flex justify-content-evenly mb-2">
-								<a href="<?= base_url('booking/room/' . $room['id']) ?>" class="btn btn-sm text-white shadow-none custom-bg">Book Now</a>
+								<?php
+								$data = $this->session->userdata('data');
+								if (isset($data['shutdown']) && $data['shutdown'] != 1):
+									$CI = &get_instance();
+									$loggedUser = $CI->session->userdata('loggedInuser');
+									$userLogin = 0;
+									if ($loggedUser && $loggedUser['USER_LOGGEDIN'] == true) {
+										$userLogin = 1;
+									}
+								?>
+									<button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $room['id'] ?>)" class="btn btn-sm text-white shadow-none custom-bg">Book Now</button>
+								<?php else: ?>
+									<button class="btn btn-sm btn-secondary shadow-none" disabled>Booking Closed</button>
+								<?php endif; ?>
+
 								<a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm btn-outline-dark shadow-none">More Details</a>
 							</div>
 						</div>
@@ -150,7 +156,7 @@
 						<div class="col-lg-2 col-md-2 text-center bg-white shadow py-4 my-3">
 							<img src="<?= base_url('assets/images/facilities/' . $facility['icon']) ?>" width="60px" alt="">
 							<h5 class="mt-3"><?= $facility['facility_name'] ?></h5>
-							<!-- <p><?=$facility["description"]?></p> -->
+							<!-- <p><?= $facility["description"] ?></p> -->
 						</div>
 				<?php
 						$count++;
@@ -159,7 +165,7 @@
 				?>
 
 				<div class="col-lg-12 text-center mt-5">
-					<a href="<?=base_url("facilities");?>" id="showMoreFacilities" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
+					<a href="<?= base_url("facilities"); ?>" id="showMoreFacilities" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
 				</div>
 			</div>
 		</div>
@@ -242,7 +248,7 @@
 			</div>
 
 			<div class="col-lg-12 text-center mt-5">
-				<a href="<?=base_url("hotels-about");?>" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
+				<a href="<?= base_url("hotels-about"); ?>" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
 			</div>
 		</div>
 
@@ -289,23 +295,25 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
 
-		<script>
-			// Check-in calendar
-			const checkinCalendar = flatpickr("#checkin", {
-				dateFormat: "Y-m-d",
-				minDate: "today",
-				defaultDate: "today",
-				clickOpens: true,
-				onChange: function(selectedDates, dateStr) {
-					checkoutCalendar.set("minDate", dateStr);
-				}
-			});
+<script>
+	// Check-in calendar
+	const checkinCalendar = flatpickr("#checkin", {
+		dateFormat: "Y-m-d",
+		minDate: "today",
+		defaultDate: "today",
+		clickOpens: true,
+		onChange: function(selectedDates, dateStr) {
+			checkoutCalendar.set("minDate", dateStr);
+		}
+	});
 
-			// Check-out calendar
-			const checkoutCalendar = flatpickr("#checkout", {
-				dateFormat: "Y-m-d",
-				minDate: "today",
-				clickOpens: true
-			});
-		</script>
+	// Check-out calendar
+	const checkoutCalendar = flatpickr("#checkout", {
+		dateFormat: "Y-m-d",
+		minDate: "today",
+		clickOpens: true
+	});
+</script>

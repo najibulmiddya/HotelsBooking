@@ -18,7 +18,7 @@ class Contact_model extends CI_Model
 
     public function get_settings()
     {
-        $this->db->select("site_title,site_about");
+        $this->db->select("site_title,site_about,shutdown");
         $this->db->from($this->settings);
         $this->db->where('id', 1);
         return $this->db->get()->row();

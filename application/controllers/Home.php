@@ -16,7 +16,7 @@ class Home extends CI_Controller
 	{
 		try {
 			// OUR ROOMS DATA STRAT
-			$allRooms = $this->Rooms_model->get_all_rooms(3,0,1);
+			$allRooms = $this->Rooms_model->get_all_rooms(3,0,1); 
 			$roomsData = [];
 			// pp($allRooms);
 			foreach ($allRooms as $room) {
@@ -46,8 +46,10 @@ class Home extends CI_Controller
 				$insta = $contact_details->insta;
 
 				if ($settings_data = $this->Contact_model->get_settings()) {
+					// pp($settings_data);
 					$site_title = $settings_data->site_title;
 					$site_about = $settings_data->site_about;
+					$shutdown = $settings_data->shutdown;
 				}
 
 				$data = [
@@ -55,7 +57,8 @@ class Home extends CI_Controller
 					'facebook' => $fb,
 					'instagram' => $insta,
 					'site_title' => $site_title,
-					'site_about' => $site_about
+					'site_about' => $site_about,
+					'shutdown' => $shutdown
 				];
 				$this->session->set_userdata('data', $data);
 			}
