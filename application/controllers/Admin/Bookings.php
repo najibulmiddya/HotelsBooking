@@ -22,7 +22,8 @@ class Bookings extends CI_Controller
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $newBookings = $this->Rooms_model->new_bookings([
                 'booking_status' => 'confirmed',
-                'arraval' => 0
+                'arraval' => 0,
+
             ]);
 
             //  pp($newBookings);
@@ -100,21 +101,49 @@ class Bookings extends CI_Controller
         }
 
         $booking_id = $this->input->post('booking_id');
+        $action = $this->input->post('action');
 
         if (empty($booking_id)) {
             echo json_encode(['status' => false, 'message' => 'Booking ID is required.']);
             return;
         }
 
-        $data = ['booking_status' => 'cancelled', 'refund' => 0];
+        // Initialize data based on action
+        if ($action === "approved") {
+            $data = [
+            'booking_status' => 'cancelled',
+            'cancel_status' => 'approved',
+            'refund' => 0
+            ];
+            $message = 'Booking cancellation approved successfully.';
+        } elseif ($action === "rejected") {
+            $data = [
+                'cancel_status' => 'rejected',
+                'refund' => null
+            ];
+            $message = 'Cancellation request rejected successfully.';
+        } elseif (empty($action)) {
+            // Default to approved if no action provided (fallback)
+            $data = [
+            'booking_status' => 'cancelled',
+            'refund' => 0
+            ];
+            $message = 'Booking cancelled successfully.';
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Invalid action.']);
+            return;
+        }
+
+        // Update booking_order table
         $update = $this->Common_model->updateData('booking_order', ['booking_id' => $booking_id], $data);
 
         if ($update) {
-            echo json_encode(['status' => true, 'message' => 'Booking cancelled successfully.']);
+            echo json_encode(['status' => true, 'message' => $message]);
         } else {
             echo json_encode(['status' => false, 'message' => 'Failed to cancel booking.']);
         }
     }
+
 
     public function refund_booking()
     {
@@ -129,7 +158,7 @@ class Bookings extends CI_Controller
             $cancelBookings = $this->Rooms_model->new_bookings([
                 'booking_status' => 'cancelled',
                 'custom' => [
-                    'bo.refund' => 0
+                    'bo.refund' => 0,
                 ]
             ]);
 
@@ -158,7 +187,7 @@ class Bookings extends CI_Controller
         }
     }
 
-     // Cancel Booking refund 
+    // Cancel Booking refund 
     public function refund_amount()
     {
         if ($this->input->server('REQUEST_METHOD') === 'POST') {
@@ -186,7 +215,7 @@ class Bookings extends CI_Controller
             show_error('Method Not Allowed', 405);
         }
     }
-     
+
     public function all_bookings()
     {
         adminView('admin/booking/all_bookings', [], 'ADMIN PANEL - REFUND BOOKINGS');
@@ -249,6 +278,6 @@ class Bookings extends CI_Controller
         $this->pdf->loadHtml($html);
         $this->pdf->setPaper('A4', 'portrait');
         $this->pdf->render();
-       $this->pdf->stream("Booking_" . date('d.m.Y') . ".pdf", ['Attachment' => 0]);
+        $this->pdf->stream("Booking_" . date('d.m.Y') . ".pdf", ['Attachment' => 0]);
     }
 }

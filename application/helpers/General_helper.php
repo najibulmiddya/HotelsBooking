@@ -239,6 +239,19 @@ if (!function_exists('jresp')) {
       return '';
     }
   }
+
+  if (!function_exists('check_logged_in_user')) {
+    function check_logged_in_user()
+    {
+      $CI = &get_instance();
+      $user = $CI->session->userdata('loggedInuser');
+
+      if (!$user || empty($user['USER_LOGGEDIN']) || $user['USER_LOGGEDIN'] !== true) {
+        redirect(base_url('home'));
+        exit; // Important to stop script execution
+      }
+    }
+  }
 }
 
 

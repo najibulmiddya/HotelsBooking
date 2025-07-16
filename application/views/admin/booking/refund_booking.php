@@ -4,6 +4,13 @@
 
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
+        <!-- Loader for Bookings -->
+<div id="bookingLoader" class="text-center my-3 d-none">
+    <div class="spinner-border text-primary" role="status" aria-label="Loading">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2 fw-bold mb-0">Loading bookings...</p>
+</div>
         <table class="table table-bordered" id="refundBookingTable">
             <thead>
                 <tr>
@@ -17,6 +24,8 @@
         </table>
     </div>
 </div>
+
+
 
 <div class="modal fade" id="confirmRefundModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -45,11 +54,14 @@
         cancelBookings();
 
         function cancelBookings() {
+            $('#bookingLoader').removeClass('d-none');
+            $('#refundBookingsData').html('');
             $.ajax({
                 url: '<?= base_url("admin/fetch-cancel-bookings") ?>',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    $('#bookingLoader').addClass('d-none');
                     if (response.status === true) {
                         let rows = '';
 
@@ -116,6 +128,7 @@
                             $('#refundBookingTable').DataTable().clear().destroy();
                         }
 
+
                         $('#refundBookingsData').html(rows);
                         $('#refundBookingTable').DataTable({
                             responsive: true,
@@ -130,6 +143,7 @@
                     }
                 },
                 error: function() {
+                    $('#bookingLoader').addClass('d-none');
                     $('#refundBookingsData').html(`
                     <tr>
                         <td colspan="3" class="text-center text-danger">Failed to fetch data from server.</td>

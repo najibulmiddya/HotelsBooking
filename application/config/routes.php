@@ -62,6 +62,8 @@ $route['contact'] = 'Users/contact/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
 $route['test'] = 'Users/rooms/test';
 $route['room-details/(:num)'] = 'Users/rooms/room_details/$1';
+
+// Users Registration Management Routes
 $route['user-registration'] = 'Admin/admin/user_Registration';
 $route['check-email-exists'] = 'Admin/admin/check_email_exists';
 $route['user-login'] = 'Admin/admin/userLogin';
@@ -70,17 +72,16 @@ $route['verify-email/(:any)'] = 'Admin/admin/verify_email/$1';
 $route['forgot-password'] = 'Admin/admin/forgot_password';
 $route['check-reset-token'] = 'Admin/admin/check_reset_token';
 $route['update-password'] = 'Admin/admin/update_password';
+
 // Room Booking Management Routes
 $route['booking/room/(:num)'] = 'Users/Rooms/roomBooking/$1';
 $route['check-room-availability'] = 'Users/Rooms/check_room_availability';
-
-
-$route['pay-new'] = 'Users/Rooms/pay_new';
-$route['pay-responce'] = 'Users/Rooms/pay_response';
-
-
 $route['razorpay/pay'] = 'razorpay/pay_new';
 $route['razorpay/verify'] = 'razorpay/verify';
+
+// Booking Management Routes
+$route['user/bookings'] = 'Users/Bookings/index';
+$route['user/request-cancel-booking'] = 'Users/Bookings/request_cancel_booking';
 
 
 // Admin Panel Routes
@@ -146,11 +147,3 @@ $route['admin/refund-amount'] = 'Admin/Bookings/refund_amount';
 $route['admin/all-bookings'] = 'Admin/Bookings/all_bookings';
 $route['admin/fetch-all-booking'] = 'Admin/Bookings/fetch_AllBookings';
 $route['admin/download-pdf/(:num)'] = 'admin/bookings/download_pdf/$1';
-
-
-
-
-
-
-
-

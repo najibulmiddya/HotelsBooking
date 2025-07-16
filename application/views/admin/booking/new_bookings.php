@@ -1,6 +1,13 @@
 <h3 class="mb-4">NEW BOOKINGS</h3>
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
+        <!-- Loader for Bookings -->
+        <div id="bookingLoader" class="text-center my-3 d-none">
+            <div class="spinner-border text-primary" role="status" aria-label="Loading">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 fw-bold mb-0">Loading bookings...</p>
+        </div>
         <table class="table table-bordered" id="newBookingsTable">
             <thead>
                 <tr>
@@ -10,11 +17,12 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody id="newBookingsData"></tbody>
+            <tbody id="newBookingsData">
+
+            </tbody>
         </table>
     </div>
 </div>
-
 
 <!-- Assign Room Modal -->
 <div class="modal fade" id="assignRoomModal" tabindex="-1" aria-labelledby="assignRoomLabel" aria-hidden="true">
@@ -69,16 +77,21 @@
 </div>
 
 
+
+
 <script>
     $(document).ready(function() {
         fetchNewBookings();
 
         function fetchNewBookings() {
+            $('#bookingLoader').removeClass('d-none');
+            $('#newBookingsData').html('');
             $.ajax({
                 url: '<?= base_url("admin/fetch-new-booking") ?>',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    $('#bookingLoader').addClass('d-none');
                     if (response.status === true) {
                         let rows = '';
 
@@ -104,6 +117,68 @@
                             minutes = minutes.toString().padStart(2, '0');
                             let formattedTime = `${hours}:${minutes} ${period}`;
 
+
+                            let btn = "";
+                            let cancel_reason = '';
+                            if (val.cancel_status == "requested") {
+
+                                if (val.cancel_reason && val.cancel_reason.trim() !== '') {
+                                    cancel_reason += `
+                                        <div class="alert alert-warning p-2 mb-2 d-inline-block" style="font-size: 14px;">
+                                            <i class="bi bi-exclamation-circle-fill me-1"></i>
+                                            <strong>Cancellation Reason:</strong> ${val.cancel_reason}
+                                        </div>
+                                    `;
+                                }
+
+                                btn = `
+                                    <div class="btn-group" role="group" aria-label="Cancel Actions">
+                                        <button type="button"
+                                            class="btn btn-success  shadow-none approve-btn"
+                                            data-booking-id="${val.booking_id}"
+                                            title="User cancel request Approve"
+                                            data-bs-toggle="tooltip">
+                                            <i class="bi bi-check-circle-fill"></i> Approve
+                                        </button>
+
+                                        <button type="button"
+                                            class="btn btn-danger shadow-none reject-btn"
+                                            data-booking-id="${val.booking_id}"
+                                            title="User cancel request Reject"
+                                            data-bs-toggle="tooltip">
+                                            <i class="bi bi-x-circle-fill"></i> Reject
+                                        </button>
+                                    </div>
+                                `;
+
+                            } else {
+                                btn = `
+                                        <div class="btn-group d-flex justify-content-center" role="group" aria-label="Cancel Actions">
+                                            <button
+                                                class="btn btn-sm btn-success text-white shadow-none open-assign-room"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#assignRoomModal"
+                                                onclick="assing_room(${val.booking_id})"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Assign room to this booking">
+                                                <i class="bi bi-check2-square"></i> Assign Room
+                                            </button>
+
+                                            <button
+                                                class="btn btn-sm btn-danger text-white shadow-none cancelBooking"
+                                                data-booking-id="${val.booking_id}"
+                                                data-user-name="${val.user_name}"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Cancel this booking by Admin">
+                                                <i class="bi bi-archive-fill"></i> Cancel Booking
+                                            </button>
+                                        </div>
+                                    `;
+                            }
+
+
                             // Render row
                             rows += `
                         <tr>
@@ -117,8 +192,6 @@
                             </td>
                             <td>
                                 <b>Order ID:</b> <span class="bg-primary text-white px-1 rounded">${val.order_id}</span><br>
-
-
                                 <b>Check-in:</b> ${val.check_in}<br>
                                 <b>Check-out:</b> ${val.check_out}<br>
                                 <b>Total Days:</b> ${diffDays}<br>
@@ -127,22 +200,10 @@
                             </td>
 
                            <td class="text-center">
-                            <button
-                                class="btn btn-sm btn-success text-white shadow-none mb-2 open-assign-room"
-                                data-bs-toggle="modal"
-                                data-bs-target="#assignRoomModal"
-                                onclick="assing_room(${val.booking_id})">
-                                <i class="bi bi-check2-square"></i> Assign Room
-                            </button>
-                            <br>
-                           
-                           <button
-                                class="btn btn-sm btn-danger text-white shadow-none cancelBooking"
-                                data-booking-id="${val.booking_id}"
-                                data-user-name="${val.user_name}">
-                                <i class="bi bi-archive-fill"></i> Cancel Booking
-                            </button>
-
+                                ${cancel_reason ? cancel_reason : ''}
+                                 <br>
+                                ${btn}
+                            
                             </td>
                         </tr>`;
                         });
@@ -158,6 +219,7 @@
                             destroy: true,
                             pageLength: 10,
                         });
+                        
                     } else {
                         $('#newBookingsData').html(`
                         <tr>
@@ -166,6 +228,7 @@
                     }
                 },
                 error: function() {
+                    $('#bookingLoader').addClass('d-none');
                     $('#newBookingsData').html(`
                     <tr>
                         <td colspan="3" class="text-center text-danger">Failed to fetch data from server.</td>
@@ -204,6 +267,9 @@
                         $('#assignRoomForm')[0].reset();
                         $('#success_modal_text').text(response.message);
                         $('#successModal').modal('show');
+                        setTimeout(function() {
+                            $('#successModal').modal('hide');
+                        }, 3000); // 3000ms = 3 seconds
                         fetchNewBookings();
                     } else {
                         alert(response.message || 'Something went wrong.');
@@ -244,6 +310,11 @@
                     if (response.status === true) {
                         $('#success_modal_text').text(response.message);
                         $('#successModal').modal('show');
+
+                        setTimeout(function() {
+                            $('#successModal').modal('hide');
+                        }, 3000); // 3000ms = 3 seconds
+
                         fetchNewBookings();
                     } else {
                         alert(response.message || 'Something went wrong.');
@@ -255,6 +326,31 @@
                 }
             });
         });
+
+        $(document).on('click', '.approve-btn, .reject-btn', function() {
+            const bookingId = $(this).data('booking-id');
+            const action = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
+
+            if (confirm(`Are you sure you want to ${action} this cancellation request?`)) {
+                $.post('<?= base_url("admin/cancel-booking") ?>', {
+                    booking_id: bookingId,
+                    action: action
+                }, function(res) {
+                    if (response.status === true) {
+                        $('#success_modal_text').text(response.message);
+                        $('#successModal').modal('show');
+
+                        setTimeout(function() {
+                            $('#successModal').modal('hide');
+                        }, 3000); // 3000ms = 3 seconds
+                        fetchNewBookings();
+                    } else {
+                        alert(response.message || 'Something went wrong.');
+                    }
+                }, 'json');
+            }
+        });
+
 
 
 

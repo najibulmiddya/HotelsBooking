@@ -1,6 +1,13 @@
 <h3 class="mb-4">Users</h3>
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
+        <!-- Loader for Bookings -->
+        <div id="bookingLoader" class="text-center my-3 d-none">
+            <div class="spinner-border text-primary" role="status" aria-label="Loading">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 fw-bold mb-0">Loading Data...</p>
+        </div>
         <table class="" id="usersTable">
             <thead>
                 <tr class="">
@@ -13,7 +20,7 @@
                 </tr>
             </thead>
             <tbody id="usersData">
-                
+
             </tbody>
         </table>
     </div>
@@ -80,11 +87,14 @@
         fetchUsers();
 
         function fetchUsers() {
+            $('#bookingLoader').removeClass('d-none');
+            $('#usersData').html('');
             $.ajax({
                 url: '<?= base_url("admin/fetch-users") ?>',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                        $('#bookingLoader').addClass('d-none');
                     if (response.status === true) {
                         let rows = '';
                         $.each(response.data, function(index, user) {
@@ -145,6 +155,7 @@
                     }
                 },
                 error: function() {
+                    $('#bookingLoader').addClass('d-none');
                     $('#usersData').html(`
                 <tr>
                     <td colspan="6" class="text-center text-danger">Failed to fetch data from server.</td>
@@ -180,7 +191,7 @@
             }
         });
 
-    //  <<---------- unverified uses delete -------------->>
+        //  <<---------- unverified uses delete -------------->>
         let deleteUserId = null;
         $(document).on('click', '.delete-user', function() {
             deleteUserId = $(this).data('id');

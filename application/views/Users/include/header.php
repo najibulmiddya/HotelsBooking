@@ -104,7 +104,11 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
                                 <li><a class="dropdown-item" href="<?= base_url(""); ?>">Profile</a></li>
-                                <li><a class="dropdown-item" href="<?= base_url(""); ?>">Bookings</a></li>
+                                <li>
+                                    <a class="dropdown-item <?= is_active('bookings', 'index'); ?>" href="<?= base_url("user/bookings"); ?>">
+                                        <i class="bi bi-journal-check me-2"></i> My Bookings
+                                    </a>
+                                </li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" id="logoutBtn">Logout</a></li>
                             </ul>
                         </div>

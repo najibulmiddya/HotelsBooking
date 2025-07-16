@@ -194,7 +194,7 @@ class Rooms_model extends CI_Model
     }
 
 
-    public function new_bookings($filters = [])
+    public function new_bookings($filters = [], $order_by = null)
     {
         $this->db->select('*');
         $this->db->from("{$this->booking_order} bo");
@@ -204,6 +204,12 @@ class Rooms_model extends CI_Model
         if (isset($filters['booking_status'])) {
             $this->db->where('bo.booking_status', $filters['booking_status']);
         }
+
+        // Apply default conditions
+        if (isset($filters['cancel_status'])) {
+            $this->db->where('bo.cancel_status', $filters['cancel_status']);
+        }
+
 
         if (isset($filters['arraval'])) {
             $this->db->where('bo.arraval', $filters['arraval']);
@@ -216,8 +222,11 @@ class Rooms_model extends CI_Model
             }
         }
 
-        // Default order
-        $this->db->order_by('bo.booking_id', 'ASC');
+        if ($order_by !== null) {
+            $this->db->order_by('bo.booking_id', $order_by);
+        } else {
+            $this->db->order_by('bo.booking_id', 'ASC');
+        }
 
         return $this->db->get()->result_array();
     }

@@ -92,6 +92,7 @@ class Razorpay extends CI_Controller
     {
         unset($_SESSION['room']);
         $input = $this->input->post();
+    
         $key_secret = 'e6C17e9eTLIpdvHIW0Ns31ZY';
 
         if (!isset($input['razorpay_signature']) || !isset($input['razorpay_order_id']) || !isset($input['razorpay_payment_id'])) {

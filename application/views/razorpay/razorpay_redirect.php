@@ -28,9 +28,10 @@
                 }, function (res) {
                     try {
                         let result = JSON.parse(res);
-                        alert(result.message);
                         if (result.status) {
-                            window.location.href = "<?= base_url('home'); ?>";
+                            window.location.href = "<?= base_url('user/bookings'); ?>";
+                        }else{
+                             window.location.href = "<?= base_url('hotels-rooms'); ?>";
                         }
                     } catch (e) {
                         alert("Payment succeeded, but there was a response error.");
