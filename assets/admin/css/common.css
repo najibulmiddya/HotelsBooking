@@ -19,3 +19,21 @@
     background-color:var(--teal_hover);
     border-color: var(--teal_hover);
 }
+
+.error{
+    color: red;
+}
+
+#success_icon {
+    font-size: 60px;
+    color: #2ec1ac;
+}
+ 
+
+#failed_icon {
+    font-size: 60px;
+    color: red;
+}
+.color_Green{
+    color:#2ec1ac ;
+}

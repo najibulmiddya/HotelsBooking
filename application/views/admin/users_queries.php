@@ -3,18 +3,18 @@
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
         <div class="text-end mb-4">
-            <a id="all-record-seen" class="btn btn-success rounded-pill shadow-none btn-ms" href="javascript:void(0);">
+            <a id="all-record-seen" class="btn btn-success rounded shadow-none btn-ms" href="javascript:void(0);">
                 <i class='bi bi-eye-fill'></i> Mark all read
             </a>
 
-            <a id="all-record-delete" class="btn btn-danger rounded-pill shadow-none btn-ms"
+            <a id="all-record-delete" class="btn btn-danger rounded shadow-none btn-ms"
                 href="javascript:void(0);"><i class="bi bi-archive-fill"></i> Delete all
             </a>
         </div>
         <div class="table-responsive-md">
             <table id="users-queries-table" class="table table-striped table-hover border" style="width:100%">
                 <thead class="text-center">
-                    <tr class="bg-secondary text-light">
+                    <tr>
                         <th width="8%">Name</th>
                         <th width="8%">Email</th>
                         <th width="25%">Subject</th>
@@ -70,16 +70,6 @@
                     }
                     ?>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Subject</th>
-                        <th>Querie</th>
-                        <th>Date & Time</th>
-                        <th>Acction</th>
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>

@@ -81,7 +81,6 @@ if (!function_exists('view')) {
     $ci->load->view($body_path, $body_data);
     $ci->load->view("users/include/footer");
   }
-
 }
 
 if (!function_exists('adminView')) {
@@ -211,12 +210,29 @@ if (!function_exists('jresp')) {
     ]);
   }
 
+  // if (!function_exists('is_active')) {
+  //   function is_active($controller, $method = '')
+  //   {
+  //     $CI = &get_instance();
+  //     $current_controller = $CI->router->fetch_class();
+  //     $current_method = $CI->router->fetch_method();
+  //     if ($controller == $current_controller && ($method == '' || $method == $current_method)) {
+  //       return 'active';
+  //     }
+  //     return '';
+  //   }
+  // }
+
   if (!function_exists('is_active')) {
     function is_active($controller, $method = '')
     {
       $CI = &get_instance();
-      $current_controller = $CI->router->fetch_class();
-      $current_method = $CI->router->fetch_method();
+      $current_controller = strtolower($CI->router->fetch_class());
+      $current_method = strtolower($CI->router->fetch_method());
+
+      $controller = strtolower($controller);
+      $method = strtolower($method);
+
       if ($controller == $current_controller && ($method == '' || $method == $current_method)) {
         return 'active';
       }

@@ -23,9 +23,17 @@ class Common_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    public function getRow($table, $where = [])
+    {
+        $query = $this->db->get_where($table, $where);
+        return $query->row();
+    }
+
     public function updateData($table, $where, $data)
     {
-        return $this->db->update($table, $data, $where);
+        $this->db->where($where);
+        $this->db->update($table, $data);
+        return $this->db->affected_rows(); // returns number of updated rows
     }
 
     public function get_multi($table, $where = [])
@@ -35,9 +43,9 @@ class Common_model extends CI_Model
 
         if (!empty($where)) {
             $this->db->where($where);
-            return $this->db->get()->row(); 
+            return $this->db->get()->row();
         }
 
-        return $this->db->get()->result_array(); 
+        return $this->db->get()->result_array();
     }
 }

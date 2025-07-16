@@ -11,6 +11,9 @@ class Rooms_model extends CI_Model
     private $facilities = "facilities";
     private $rooms_images = "rooms_images";
 
+    private $booking_order = "booking_order";
+    private  $booking_details = "booking_details";
+
     public function __construct()
     {
         parent::__construct();
@@ -187,6 +190,35 @@ class Rooms_model extends CI_Model
     {
         $this->db->select("*");
         $this->db->from($this->rooms_features);
+        return $this->db->get()->result_array();
+    }
+
+
+    public function new_bookings($filters = [])
+    {
+        $this->db->select('*');
+        $this->db->from("{$this->booking_order} bo");
+        $this->db->join("{$this->booking_details} bd", 'bo.booking_id = bd.booking_id');
+
+        // Apply default conditions
+        if (isset($filters['booking_status'])) {
+            $this->db->where('bo.booking_status', $filters['booking_status']);
+        }
+
+        if (isset($filters['arraval'])) {
+            $this->db->where('bo.arraval', $filters['arraval']);
+        }
+
+        // Any other custom condition
+        if (!empty($filters['custom'])) {
+            foreach ($filters['custom'] as $key => $value) {
+                $this->db->where($key, $value);
+            }
+        }
+
+        // Default order
+        $this->db->order_by('bo.booking_id', 'ASC');
+
         return $this->db->get()->result_array();
     }
 }

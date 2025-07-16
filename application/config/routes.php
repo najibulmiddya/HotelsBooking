@@ -75,9 +75,12 @@ $route['booking/room/(:num)'] = 'Users/Rooms/roomBooking/$1';
 $route['check-room-availability'] = 'Users/Rooms/check_room_availability';
 
 
+$route['pay-new'] = 'Users/Rooms/pay_new';
+$route['pay-responce'] = 'Users/Rooms/pay_response';
 
 
-
+$route['razorpay/pay'] = 'razorpay/pay_new';
+$route['razorpay/verify'] = 'razorpay/verify';
 
 
 // Admin Panel Routes
@@ -131,3 +134,23 @@ $route['users'] = 'Admin/Users/index';
 $route['admin/fetch-users']         = 'Admin/Users/fetch_users';
 $route['admin/toggle-user-status']  = 'Admin/Users/toggle_user_status';
 $route['admin/delete-user']         = 'Admin/Users/delete_user';
+
+// Bookings Management Routes
+$route['admin/new-bookings'] = 'Admin/Bookings/index';
+$route['admin/fetch-new-booking'] = 'Admin/Bookings/fetch_newBookings';
+$route['admin/assign-room'] = 'Admin/Bookings/assign_room';
+$route['admin/cancel-booking'] = 'Admin/Bookings/cancel_booking';
+$route['admin/refund-bookings'] = 'Admin/Bookings/refund_booking';
+$route['admin/fetch-cancel-bookings'] = 'Admin/Bookings/fetch_CancelBookings';
+$route['admin/refund-amount'] = 'Admin/Bookings/refund_amount';
+$route['admin/all-bookings'] = 'Admin/Bookings/all_bookings';
+$route['admin/fetch-all-booking'] = 'Admin/Bookings/fetch_AllBookings';
+$route['admin/download-pdf/(:num)'] = 'admin/bookings/download_pdf/$1';
+
+
+
+
+
+
+
+

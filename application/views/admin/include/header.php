@@ -9,6 +9,11 @@
     </title>
     <?php require(APPPATH . 'views/admin/include/link.php') ?>
 
+    <style>
+        #fullscreenLoader {
+            backdrop-filter: blur(3px);
+        }
+    </style>
     <script>
         // ja alert function
         function js_alert(status, message) {
@@ -30,6 +35,7 @@
             $(document.body).append(mes);
             setTimeout(remAlert, 2000);
         }
+
         function remAlert() {
             document.getElementsByClassName('alert')[0].remove();
         }
@@ -56,33 +62,81 @@
                         <ul class="nav nav-pills flex-column">
 
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('dashboard'); ?>" href="<?= base_url('dashboard') ?>">Dashboard</a>
+                                <a class="nav-link text-white <?= is_active('dashboard'); ?>" href="<?= base_url('dashboard') ?>">
+                                    <i class="bi bi-speedometer2"></i> Dashboard
+                                </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('Rooms'); ?>" href="<?= base_url('rooms') ?>">Rooms</a>
+                                <button class="btn text-white px-3 w-100 shadow-none text-start d-flex align-items-center justify-content-between"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#bookingLinks" aria-expanded="false" aria-controls="bookingLinks">
+                                    <span><i class="bi bi-journal-bookmark-fill me-2"></i> Bookings</span>
+                                    <i class="bi bi-caret-down-fill"></i>
+                                </button>
+
+                                <div class="collapse px-3 small mb-1" id="bookingLinks">
+                                    <ul class="nav nav-pills flex-column rounded border border-secondary bg-dark">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white <?= is_active('bookings', 'index'); ?>" href="<?= base_url('admin/new-bookings') ?>">
+                                                <i class="bi bi-plus-circle"></i> New Bookings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white <?= is_active('bookings', 'refund_booking'); ?>" href="<?= base_url('admin/refund-bookings') ?>">
+                                                <i class="bi bi-arrow-counterclockwise"></i> Refund Bookings
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white <?= is_active('bookings', 'all_bookings'); ?>" href="<?= base_url('admin/all-bookings') ?>">
+                                                <i class="bi bi-journal-bookmark-fill"></i> Booking Records
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
                             </li>
 
-                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('Users'); ?>" href="<?= base_url('users') ?>">Users</a>
-                            </li>
-                            
                             <li class="nav-item">
-                                <a class="nav-link text-white  <?= is_active('facilities'); ?>" href="<?=base_url('admin-facilities')?>">Feature & Facilities</a>
+                                <a class="nav-link text-white <?= is_active('users'); ?>" href="<?= base_url('users') ?>">
+                                    <i class="bi bi-people"></i> Users
+                                </a>
                             </li>
-                            
+
+
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('users_queries'); ?>" href="<?= base_url('users-queries') ?>">Users Queries</a>
+                                <a class="nav-link text-white <?= is_active('users_queries'); ?>" href="<?= base_url('users-queries') ?>">
+                                    <i class="bi bi-chat-dots"></i> Users Queries
+                                </a>
                             </li>
-                           
+
+
                             <li class="nav-item">
-                                <a class="nav-link text-white  <?= is_active('carousel'); ?>" href="<?= base_url('carousel') ?>">Carousel</a>
+                                <a class="nav-link text-white <?= is_active('rooms'); ?>" href="<?= base_url('rooms') ?>">
+                                    <i class="bi bi-door-closed me-1"></i> Rooms
+                                </a>
                             </li>
-                            
+
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('settings'); ?>" href="<?= base_url('settings') ?>">Settings</a>
+                                <a class="nav-link text-white <?= is_active('facilities'); ?>" href="<?= base_url('admin-facilities') ?>">
+                                    <i class="bi bi-stars me-1"></i> Facilities
+                                </a>
                             </li>
-                            
+
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white <?= is_active('carousel'); ?>" href="<?= base_url('carousel') ?>">
+                                    <i class="bi bi-images me-1"></i> Carousel
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white <?= is_active('settings'); ?>" href="<?= base_url('settings') ?>">
+                                    <i class="bi bi-gear me-1"></i> Settings
+                                </a>
+                            </li>
+
+
                         </ul>
                     </div>
                 </div>
