@@ -119,7 +119,7 @@ class Bookings extends CI_Controller
         } elseif ($action === "rejected") {
             $data = [
                 'cancel_status' => 'rejected',
-                'refund' => null
+                'refund' => null,
             ];
             $message = 'Cancellation request rejected successfully.';
         } elseif (empty($action)) {

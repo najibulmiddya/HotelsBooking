@@ -82,6 +82,12 @@ $route['razorpay/verify'] = 'razorpay/verify';
 // Booking Management Routes
 $route['user/bookings'] = 'Users/Bookings/index';
 $route['user/request-cancel-booking'] = 'Users/Bookings/request_cancel_booking';
+$route['user/download-booking-invoice/(:num)'] = 'Users/Bookings/invoice_download/$1';
+
+// User Profile Management Routes
+$route['user/profile'] = 'Home/user_profile';
+$route['user/update-profile'] = 'Home/update_profile_Information';
+$route['user/upload-profile-photo'] = 'Home/upload_profile_photo';
 
 
 // Admin Panel Routes

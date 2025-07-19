@@ -19,37 +19,10 @@ class Bookings extends CI_Controller
                 'bo.booking_status !=' => 'pending',
             ]
         ], 'DESC');
-
-        // pp($bookings);
         view('users/bookings', ['bookings' => $bookings], 'BOOKINGS');
     }
 
-    public function cancel_booking()
-    {
-        if ($this->input->method() !== 'post') {
-            show_error('Method Not Allowed', 405);
-            return;
-        }
-
-        $booking_id = $this->input->post('booking_id');
-
-        if (empty($booking_id)) {
-            echo json_encode(['status' => false, 'message' => 'Booking ID is required.']);
-            return;
-        }
-
-        $data = ['booking_status' => 'cancelled', 'refund' => 0];
-        $update = $this->Common_model->updateData('booking_order', ['booking_id' => $booking_id], $data);
-
-        if ($update) {
-            echo json_encode(['status' => true, 'message' => 'Booking cancelled successfully.']);
-        } else {
-            echo json_encode(['status' => false, 'message' => 'Failed to cancel booking.']);
-        }
-    }
-
-
-
+    // User Booking Cancel Request
     public function request_cancel_booking()
     {
         $booking_id = $this->input->post('booking_id');
@@ -69,7 +42,7 @@ class Bookings extends CI_Controller
             return;
         }
 
-        if($booking->cancel_status == 'requested' || $booking->cancel_status == 'approved' || $booking->cancel_status == 'cancelled') {
+        if ($booking->cancel_status == 'requested' || $booking->cancel_status == 'approved' || $booking->cancel_status == 'cancelled') {
             echo json_encode(['status' => false, 'message' => 'Already requested or cancelled.']);
             return;
         }
@@ -85,5 +58,30 @@ class Bookings extends CI_Controller
             'status' => $updated ? true : false,
             'message' => $updated ? 'Cancellation request sent.' : 'Request failed.'
         ]);
+    }
+
+    // Download Booking Invoice
+    public function invoice_download($booking_id)
+    {
+        $booking = $this->Rooms_model->new_bookings(['custom' => [
+            'bo.user_id' => $_SESSION['loggedInuser']['USER_ID'],
+            ' bo.booking_id' => $booking_id
+        ]]);
+
+        // pp($booking);   
+
+        if (!$booking) {
+            redirect('user/bookings');
+        }
+
+        // Load PDF library and generate invoice
+        $this->load->library('pdf');
+        $data['bookings'] = $booking[0];
+        $html = $this->load->view('users/invoice_template', $data, true);
+
+        // Generate PDF
+        $this->pdf->loadHtml($html);
+        $this->pdf->render();
+        $this->pdf->stream("invoice_{$booking_id}.pdf", ['Attachment' => 0]);
     }
 }

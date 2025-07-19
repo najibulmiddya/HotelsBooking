@@ -103,7 +103,7 @@
                                 <?= $loggedUser['NAME'] ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
-                                <li><a class="dropdown-item" href="<?= base_url(""); ?>">Profile</a></li>
+                                <li><a class="dropdown-item  <?= is_active('home', 'user_profile'); ?>" href="<?= base_url("user/profile"); ?>">Profile</a></li>
                                 <li>
                                     <a class="dropdown-item <?= is_active('bookings', 'index'); ?>" href="<?= base_url("user/bookings"); ?>">
                                         <i class="bi bi-journal-check me-2"></i> My Bookings

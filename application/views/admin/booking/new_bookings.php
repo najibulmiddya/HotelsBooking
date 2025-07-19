@@ -117,7 +117,6 @@
                             minutes = minutes.toString().padStart(2, '0');
                             let formattedTime = `${hours}:${minutes} ${period}`;
 
-
                             let btn = "";
                             let cancel_reason = '';
                             if (val.cancel_status == "requested") {
@@ -126,8 +125,10 @@
                                     cancel_reason += `
                                         <div class="alert alert-warning p-2 mb-2 d-inline-block" style="font-size: 14px;">
                                             <i class="bi bi-exclamation-circle-fill me-1"></i>
-                                            <strong>Cancellation Reason:</strong> ${val.cancel_reason}
+                                            <strong>Cancellation Reason:</strong>
+                                            <br> <span style="word-wrap: break-word; width: 70px;"> ${val.cancel_reason} </span>
                                         </div>
+
                                     `;
                                 }
 
@@ -162,7 +163,7 @@
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="top"
                                                 title="Assign room to this booking">
-                                                <i class="bi bi-check2-square"></i> Assign Room
+                                                <i class="bi bi-check2-square"></i> Assign
                                             </button>
 
                                             <button
@@ -172,40 +173,38 @@
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="top"
                                                 title="Cancel this booking by Admin">
-                                                <i class="bi bi-archive-fill"></i> Cancel Booking
+                                                <i class="bi bi-archive-fill"></i> Cancel
                                             </button>
                                         </div>
                                     `;
                             }
 
-
                             // Render row
                             rows += `
-                        <tr>
-                            <td>
-                                <b>Name:</b> ${val.user_name}<br>
-                                <b>Mobile:</b> ${val.phonenum}
-                            </td>
-                            <td>
-                                <b>Room Name:</b> ${val.room_name || 'N/A'}<br>
-                                <b>Price:</b> ₹${val.price || '0'}
-                            </td>
-                            <td>
-                                <b>Order ID:</b> <span class="bg-primary text-white px-1 rounded">${val.order_id}</span><br>
-                                <b>Check-in:</b> ${val.check_in}<br>
-                                <b>Check-out:</b> ${val.check_out}<br>
-                                <b>Total Days:</b> ${diffDays}<br>
-                                <b>Total Pay:</b> ₹${val.total_pay}<br>
-                                <b>Booking Date & Time:</b> ${formattedDate} ${formattedTime}
-                            </td>
+                                    <tr>
+                                        <td>
+                                            <b>Name:</b> ${val.user_name}<br>
+                                            <b>Mobile:</b> ${val.phonenum}
+                                        </td>
+                                        <td>
+                                            <b>Room Name:</b> ${val.room_name || 'N/A'}<br>
+                                            <b>Price:</b> ₹${val.price || '0'}
+                                        </td>
+                                        <td>
+                                            <b>Order ID:</b> <span class="bg-primary text-white px-1 rounded">${val.order_id}</span><br>
+                                            <b>Check-in:</b> ${val.check_in}<br>
+                                            <b>Check-out:</b> ${val.check_out}<br>
+                                            <b>Total Days:</b> ${diffDays}<br>
+                                            <b>Total Pay:</b> ₹${val.total_pay}<br>
+                                            <b>Booking Date & Time:</b> ${formattedDate} ${formattedTime}
+                                        </td>
 
-                           <td class="text-center">
-                                ${cancel_reason ? cancel_reason : ''}
-                                 <br>
-                                ${btn}
-                            
-                            </td>
-                        </tr>`;
+                                    <td class="text-center">
+                                            ${cancel_reason ? cancel_reason : ''}
+                                            <br>
+                                            ${btn}
+                                        </td>
+                                    </tr>`;
                         });
 
                         // Inject new rows
@@ -219,7 +218,7 @@
                             destroy: true,
                             pageLength: 10,
                         });
-                        
+
                     } else {
                         $('#newBookingsData').html(`
                         <tr>
@@ -327,32 +326,46 @@
             });
         });
 
+
+        // Handle approve/reject cancellation requests
+        let selectedBookingId = null;
+        let selectedAction = null;
+
         $(document).on('click', '.approve-btn, .reject-btn', function() {
-            const bookingId = $(this).data('booking-id');
-            const action = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
+            selectedBookingId = $(this).data('booking-id');
+            selectedAction = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
 
-            if (confirm(`Are you sure you want to ${action} this cancellation request?`)) {
-                $.post('<?= base_url("admin/cancel-booking") ?>', {
-                    booking_id: bookingId,
-                    action: action
-                }, function(res) {
-                    if (response.status === true) {
-                        $('#success_modal_text').text(response.message);
-                        $('#successModal').modal('show');
+            // Set modal text
+            $('#confirmActionText').html(`Are you sure you want to <strong>${selectedAction}</strong> this cancellation request?`);
 
-                        setTimeout(function() {
-                            $('#successModal').modal('hide');
-                        }, 3000); // 3000ms = 3 seconds
-                        fetchNewBookings();
-                    } else {
-                        alert(response.message || 'Something went wrong.');
-                    }
-                }, 'json');
-            }
+            // Show modal
+            $('#confirmActionModal').modal('show');
         });
 
+        // Handle confirm button click inside modal
+        $('#confirmActionBtn').on('click', function() {
+            if (!selectedBookingId || !selectedAction) return;
 
+            $.post('<?= base_url("admin/cancel-booking") ?>', {
+                booking_id: selectedBookingId,
+                action: selectedAction
+            }, function(response) {
+                $('#confirmActionModal').modal('hide'); // Hide modal
 
+                if (response.status === true) {
+                    $('#success_modal_text').text(response.message);
+                    $('#successModal').modal('show');
+
+                    setTimeout(function() {
+                        $('#successModal').modal('hide');
+                    }, 3000);
+
+                    fetchNewBookings();
+                } else {
+                    alert(response.message || 'Something went wrong.');
+                }
+            }, 'json');
+        });
 
     });
 

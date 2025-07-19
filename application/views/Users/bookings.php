@@ -9,18 +9,17 @@
                 <span class="text-secondary"> > </span>
                 <a href="<?= base_url("hotels-rooms"); ?>" class="text-secondary text-decoration-none">Rooms</a>
                 <span class="text-secondary"> > </span>
-                <span class="text-secondary">Confirm</span>
+                <span class="text-secondary">Bookings</span>
             </div>
         </div>
 
 
-        <!-- Cancel Booking Modal -->
-        <!-- Cancel Booking Modal -->
+        <!-- Cancel Booking Request Modal -->
         <div class="modal fade" id="cancelBookingModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title">Cancel Booking</h5>
+                        <h5 class="modal-title">Booking Cancel Request</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -40,60 +39,82 @@
         $bookings = $bookings ?? [];
         foreach ($bookings as $data):
 
-            $class = '';
-            $btn = '';
-
             $status = strtolower($data['booking_status'] ?? '');
             $arraval = $data['arraval'] ?? 0;
             $refund = $data['refund'] ?? 0;
+            $cancel_status = $data['cancel_status'] ?? 'none';
 
+            // Status label class
+            $class = match ($status) {
+                'confirmed' => 'text-success',
+                'cancelled' => 'text-danger',
+                'pending' => 'text-warning',
+                'failed' => 'text-muted',
+                default => ''
+            };
+
+            // Status badge
+            $cancel_request = match ($cancel_status) {
+                'requested' => '<span class="badge bg-warning">Cancellation Requested</span>',
+                'approved' => '<span class="badge bg-success">Cancellation Approved</span>',
+                'rejected' => '<span class="badge bg-danger">Cancellation Rejected</span>',
+                default => ($status === 'cancelled' ? '<span class="badge bg-secondary">Cancelled by Admin</span>' : '')
+            };
+
+            // Action buttons
+            $btn = '';
             if ($status === 'confirmed') {
-                $class = 'text-success';
                 if ($arraval == 1) {
-                    $btn .= '<a href="#" class="btn btn-success btn-sm me-1 mb-1"><i class="bi bi-star-fill"></i> Rate & Review</a>';
-                    $btn .= '<a href="' . base_url('download-booking-pdf/' . $data['booking_id']) . '" class="btn btn-primary btn-sm mb-1"><i class="bi bi-download"></i> PDF</a>';
+                    $btn .= '<a href="#" class="btn btn-success btn-sm"><i class="bi bi-star-fill"></i> Rate & Review</a>';
+                    $btn .= '<a href="' . base_url('user/download-booking-invoice/' . $data['booking_id']) . '" class="btn btn-primary btn-sm"><i class="bi bi-download"></i> PDF</a>';
                 } else {
-                    $btn .= '<button class="btn btn-danger btn-sm" onclick="cancelBooking(this)"
-                                        data-id="' . $data['booking_id'] . '"
-                                        data-bs-toggle="modal" data-bs-target="#cancelBookingModal">
-                                    <i class="bi bi-x-circle-fill"></i> Cancel Booking
-                                </button>';
+                    $btn .= '<button class="btn btn-danger btn-sm cancel-booking-btn"
+                        data-id="' . $data['booking_id'] . '"
+                        data-bs-toggle="modal" data-bs-target="#cancelBookingModal">
+                        <i class="bi bi-x-circle-fill"></i> Cancel Booking
+                    </button>';
                 }
             } elseif ($status === 'cancelled') {
-                $class = 'text-danger';
                 $btn = $refund == 0
                     ? '<span class="badge bg-info">Refund processing</span>'
                     : '<span class="badge bg-success">Refunded</span>';
-            } elseif ($status === 'pending') {
-                $class = 'text-warning';
-            } elseif ($status === 'failed') {
-                $class = 'text-muted';
             }
+
         ?>
-
             <!-- Booking Card -->
-            <div class="col-md-4 px-4 mb-4">
-                <div class="bg-white p-3 rounded shadow h-100">
-                    <h5><?= htmlspecialchars($data['room_name'] ?? 'Room') ?></h5>
-                    <p class="mb-1">₹<?= $data['price'] ?? '0.00' ?> <small class="text-muted">/ night</small></p>
+            <div class="col-md-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
 
-                    <p class="mb-1">
-                        <b>Check-in:</b> <?= $data['check_in'] ?><br>
-                        <b>Check-out:</b> <?= $data['check_out'] ?>
-                    </p>
+                        <h5 class="card-title">
+                            <a href="<?= base_url('room-details/' . $data['room_id']); ?>" class="text-decoration-none">
+                                <?= htmlspecialchars($data['room_name'] ?? 'Room') ?>
+                            </a>
+                        </h5>
 
-                    <p class="mb-1">
-                        <b>Order ID:</b> <?= $data['order_id'] ?><br>
-                        <b>Date:</b> <?= date('d-m-Y h:i A', strtotime($data['datetime'])) ?>
-                    </p>
 
-                    <p class="mb-2"><b>Status:</b> <span class="<?= $class ?> text-capitalize"><?= $status ?></span></p>
+                        <p class="text-muted small mb-2">₹<?= $data['price'] ?? '0.00' ?> / night</p>
 
-                    <?= $btn ?>
+                        <ul class="list-unstyled mb-2 small">
+                            <li><b>Check-in:</b> <?= $data['check_in'] ?></li>
+                            <li><b>Check-out:</b> <?= $data['check_out'] ?></li>
+                            <li><b>Order ID:</b> <?= $data['order_id'] ?></li>
+                            <li><b>Booking Date:</b> <?= date('d-m-Y h:i A', strtotime($data['datetime'])) ?></li>
+                            <li><b>Room No:</b> <?= $data['room_no'] ?: 'Not Assigned' ?></li>
+                            <li><b>Status:</b> <span class="<?= $class ?> text-capitalize"><?= $status ?></span></li>
+                            <?php if (!empty($cancel_request)): ?>
+                                <li><b>Cancel Status:</b> <?= $cancel_request ?></li>
+                            <?php endif; ?>
+                        </ul>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <?= $btn ?>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         <?php endforeach; ?>
+
     </div>
 </div>
 
@@ -121,8 +142,21 @@
             },
             dataType: 'json',
             success: function(res) {
-                alert(res.message);
-                if (res.status) location.reload();
+                if (res.status == true) {
+                    $('#cancelReason').val(''); // Clear the textarea
+                    $('#cancelBookingModal').modal('hide');
+                    $('#success_modal_text').text(res.message);
+                    $('#successModal').modal('show');
+                    setTimeout(function() {
+                        $('#successModal').modal('hide');
+                        location.reload();
+                    }, 3000);
+                } else {
+                    $('#cancelReason').val(''); // Clear the textarea
+                    $('#cancelBookingModal').modal('hide');
+                    $('#failed_modal_text').text(res.message);
+                    $('#failedModal').modal('show');
+                }
             },
             error: function() {
                 alert('Request failed.');
