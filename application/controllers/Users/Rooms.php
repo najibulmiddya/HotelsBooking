@@ -82,7 +82,6 @@ class Rooms extends CI_Controller
 	}
 
 
-	// check room availability
 	public function check_room_availability()
 	{
 		$checkin  = $this->input->post('checkin');
@@ -108,42 +107,56 @@ class Rooms extends CI_Controller
 			return;
 		}
 
-		// Calculate number of days
-		$count_days = ($checkout_ts - $checkin_ts) / (60 * 60 * 24);
-		$price_per_night = $_SESSION['room']['price'];
+		// Step 1: Get total quantity from rooms table
+		$this->db->select('quantity, price');
+		$this->db->where('id', $room_id);
+		$room_data = $this->db->get('rooms')->row_array();
 
-		// Calculate base payment
-		$base_payment = $price_per_night * $count_days;
+		// pp($room_data);
 
-		// Initialize discount logic
-		$discount_percent = 0;
-		if ($count_days > 10) {
-			$discount_percent = 20;
-		} elseif ($count_days > 5) {
-			$discount_percent = 15;
-		} elseif ($count_days >= 3) {
-			$discount_percent = 10;
+		if (!$room_data) {
+			echo json_encode([
+				'status' => false,
+				'message' => 'Room not found.'
+			]);
+			return;
 		}
 
-		$discount_amount = ($discount_percent / 100) * $base_payment;
-		$final_payment = $base_payment - $discount_amount;
+		$total_quantity = (int) $room_data['quantity'];
+		$price_per_night = (float) $room_data['price'];
+		// Step 2: Count overlapping bookings
+		$this->db->select('COUNT(*) as total_bookings');
+		$this->db->from('booking_order');
+		$this->db->where('booking_status', 'confirmed');
+		$this->db->where('room_id', $room_id);
+		$this->db->where('check_out >', $checkin);
+		$this->db->where('check_in <', $checkout);
+		$booked = $this->db->get()->row_array();
+		$booked_count = (int) $booked['total_bookings'];
+		
+		if ($booked_count >= $total_quantity) {
+			echo json_encode([
+				'status' => false,
+				'message' => "{$_SESSION["room"]["name"]} not available for selected dates."
+			]);
+			return;
+		}
 
-		// Store in session
+		// Step 3: Calculate payment
+		$count_days = ($checkout_ts - $checkin_ts) / (60 * 60 * 24);
+		$final_payment = $price_per_night * $count_days;
+
+		// Save to session
 		$_SESSION['room']['payment'] = $final_payment;
 		$_SESSION['room']['available'] = true;
-		$_SESSION['room']['discount'] = $discount_amount;
 
 		echo json_encode([
 			'status' => true,
 			'message' => 'Room is available.',
 			'data' => [
 				'days' => $count_days,
-				'base_price' => $base_payment,
-				'discount_percent' => $discount_percent,
-				'discount_amount' => $discount_amount,
 				'payment' => $final_payment
 			]
 		]);
 	}
-
 }

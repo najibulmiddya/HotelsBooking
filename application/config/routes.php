@@ -57,7 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 // Front-End
 $route['facilities'] = 'Users/facilities/index';
 $route['hotels-rooms'] = 'Users/rooms/index';
-$route['hotels-about'] = 'Users/about/index';
+$route['hotels/about'] = 'Users/about/index';
 $route['contact'] = 'Users/contact/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
 $route['test'] = 'Users/rooms/test';
@@ -83,11 +83,18 @@ $route['razorpay/verify'] = 'razorpay/verify';
 $route['user/bookings'] = 'Users/Bookings/index';
 $route['user/request-cancel-booking'] = 'Users/Bookings/request_cancel_booking';
 $route['user/download-booking-invoice/(:num)'] = 'Users/Bookings/invoice_download/$1';
+$route['user/submit-room-review'] = 'Users/Bookings/submit_room_review';
 
 // User Profile Management Routes
 $route['user/profile'] = 'Home/user_profile';
 $route['user/update-profile'] = 'Home/update_profile_Information';
 $route['user/upload-profile-photo'] = 'Home/upload_profile_photo';
+$route['user/send-email-otp'] = 'Home/send_email_otp';
+$route['user/verify-email-otp'] = 'Home/verify_email_otp';
+$route['user/update-email'] = 'Home/update_email';
+$route['user/verify-new-email-otp'] = 'Home/verify_new_email_otp';
+$route['user/change-password'] = 'Home/user_change_password';
+
 
 
 // Admin Panel Routes
@@ -153,3 +160,9 @@ $route['admin/refund-amount'] = 'Admin/Bookings/refund_amount';
 $route['admin/all-bookings'] = 'Admin/Bookings/all_bookings';
 $route['admin/fetch-all-booking'] = 'Admin/Bookings/fetch_AllBookings';
 $route['admin/download-pdf/(:num)'] = 'admin/bookings/download_pdf/$1';
+
+//  Room Rate & Review Management Routes
+$route['admin/room-rate-review'] = 'Admin/Users/room_review';
+$route['admin/fetch-room-reviews'] = 'Admin/Users/fetch_room_reviews';
+$route['admin/delete-room-review'] = 'Admin/Users/delete_room_review';
+$route['admin/fetch-room-review-list'] = 'Admin/Users/fetch_rooms_review_list';

@@ -64,29 +64,31 @@ class Home extends CI_Controller
 				$this->session->set_userdata('data', $data);
 			}
 
-			view('users/index', compact('contact_details', 'carousel_image'), 'HOME');
+			$reviews = $this->Common_model->get_latest_room_reviews($limit = 10);
+
+			// pp($reviews);
+			view('users/index', compact('contact_details', 'carousel_image', 'reviews'), 'HOME');
 		} catch (\Throwable $th) {
 			alert("danger", "Server Internal error");
 		}
 	}
 
+	// User Profile Page
 	public function user_profile()
 	{
-		// Check if user is logged in
 		if (!$this->session->userdata('loggedInuser')) {
 			redirect('home');
 		}
 
 		if ($user_id = $_SESSION['loggedInuser']['USER_ID']) {
-			// Fetch user data from the database
 			$user_data = $this->Common_model->getRow('users', ['id' => $user_id, 'status' => 1, 'is_verified' => 1]);
-			// pp($user_data);
 		} else {
 			redirect('home');
 		}
 		view('users/user_profile', compact('user_data'), 'PROFILE');
 	}
 
+	// Update user profile information
 	public function update_profile_Information()
 	{
 		$post = $this->input->post();
@@ -94,9 +96,17 @@ class Home extends CI_Controller
 		$user_id = trim($post['user_id']);
 		$name = trim($post['name']);
 		$number = trim($post['number']);
-		$dob = trim($post['dob']);
 		$pincode = trim($post['pincode']);
 		$address = trim($post['address']);
+		$day   = $this->input->post('dob_day');
+		$month = $this->input->post('dob_month');
+		$year  = $this->input->post('dob_year');
+
+		if ($day && $month && $year && checkdate($month, $day, $year)) {
+			$dob = sprintf('%04d-%02d-%02d', $year, $month, $day); // Format: YYYY-MM-DD
+		} else {
+			$response['errors']['dob'] = 'Please select a valid date.';
+		}
 
 		// Validate required fields
 		if (empty($user_id) || empty($name) || $number === '') {
@@ -136,7 +146,7 @@ class Home extends CI_Controller
 		}
 	}
 
-
+	// Upload user profile photo
 	public function upload_profile_photo()
 	{
 		$user_id = $this->input->post('user_id');
@@ -211,6 +221,244 @@ class Home extends CI_Controller
 				'status'  => false,
 				'message' => 'Failed to update database.'
 			]);
+		}
+	}
+
+	// Send email OTP for profile update
+	public function send_email_otp()
+	{
+		$current_email = $this->input->post('current_email');
+		$otp = rand(100000, 999999);
+		// Store OTP and timestamp in session
+		$this->session->set_userdata('email_otp', $otp);
+		$this->session->set_userdata('email_otp_time', time());
+		$subject = "Your OTP for Email Change";
+		$message = "Hi, your OTP for email update is: <strong>$otp</strong>. Please use this to verify your email change request.";
+
+		if (send_custom_email($current_email, $subject, $message)) {
+			echo json_encode(['status' => true, 'message' => 'OTP sent to your current email.']);
+		} else {
+			echo json_encode(['status' => false, 'message' => 'Failed to send OTP. Please try again.']);
+		}
+	}
+
+	// Verify email OTP
+	public function verify_email_otp()
+	{
+		$otp_input = $this->input->post('otp');
+		$stored_otp = $this->session->userdata('email_otp');
+		$stored_time = $this->session->userdata('email_otp_time');
+		$current_time = time();
+
+		// Validate OTP existence and expiry
+		if (!$stored_otp || !$stored_time || ($current_time - $stored_time) > 600) {
+			echo json_encode([
+				'status' => false,
+				'message' => 'OTP expired. Please request again.'
+			]);
+			return;
+		}
+
+		// Check OTP match
+		if ($otp_input != $stored_otp) {
+			echo json_encode([
+				'status' => false,
+				'message' => 'Invalid OTP.'
+			]);
+			return;
+		}
+
+		// Optionally: Mark OTP as verified (can use session flag)
+		$this->session->set_userdata('email_otp_verified', true);
+
+		echo json_encode([
+			'status' => true,
+			'message' => 'OTP verified successfully.'
+		]);
+	}
+
+	// Update Email
+	public function update_email()
+	{
+		// 1. OTP Verification
+		if (!$this->session->userdata('email_otp_verified')) {
+			echo json_encode(['status' => false, 'message' => 'OTP verification failed or expired.']);
+			return;
+		}
+
+		// 2. Input Retrieval
+		$new_email     = trim($this->input->post('new_email'));
+		$confirm_email = trim($this->input->post('confirm_email'));
+
+		// 4. User Session Validation
+		$user = $this->session->userdata('loggedInuser');
+		if (!$user || !isset($user['USER_ID'])) {
+			echo json_encode(['status' => false, 'message' => 'User not logged in.']);
+			return;
+		}
+
+		// 5. Check if email already exists
+		$exists = $this->db->get_where('users', ['email' => $new_email])->row();
+		if ($exists) {
+			echo json_encode(['status' => false, 'message' => 'Email is already in use.']);
+			return;
+		}
+
+		// 6. Update Email + Verification Token
+		$otp = rand(100000, 999999);
+		$this->session->set_userdata('new_email_verify_otp', $otp);
+		$this->session->set_userdata('new_email_verify_otp_time', time());
+		$data = [
+			'email' => $new_email,
+			'is_verified' => 0,
+		];
+
+		$updated = $this->db->where('id', $user['USER_ID'])->update('users', $data);
+
+		// 7. If Updated, Send Email
+		if ($updated) {
+			$name = htmlspecialchars($user['NAME']);
+			$subject = "Verify Your New Email";
+			$message = "<p>Hello <strong>{$name}</strong>,</p>";
+			$message .= "<p>Please use the following OTP to verify your new email address:</p>";
+			$message .= "<p><strong>{$otp}</strong></p>";
+
+			$email_sent = send_custom_email($new_email, $subject, $message);
+
+			// Update session email
+			$user['email'] = $new_email;
+			$this->session->set_userdata('loggedInuser', $user);
+
+			// Optional: Clear OTP
+			$this->session->unset_userdata('email_otp');
+			$this->session->unset_userdata('email_otp_verified');
+			$this->session->unset_userdata('email_otp_time');
+
+			echo json_encode([
+				'status'  => true,
+				'message' => $email_sent
+					? 'Email updated. A verification link has been sent to your new email.'
+					: 'Email updated, but failed to send verification email.'
+			]);
+		} else {
+			echo json_encode(['status' => false, 'message' => 'Failed to update email. Try again later.']);
+		}
+	}
+
+	// Verify New Email OTP
+	public function verify_new_email_otp()
+	{
+		$input_otp = trim($this->input->post('otp'));
+		$stored_otp = $this->session->userdata('new_email_verify_otp');
+		$stored_time = $this->session->userdata('new_email_verify_otp_time');
+		$current_time = time();
+
+		// Validate OTP presence
+		if (!$stored_otp || !$stored_time) {
+			echo json_encode(['status' => false, 'message' => 'OTP session expired or missing.']);
+			return;
+		}
+
+		// Expiry: 10 minutes (600 seconds)
+		if (($current_time - $stored_time) > 600) {
+			$this->session->unset_userdata('new_email_verify_otp');
+			$this->session->unset_userdata('new_email_verify_otp_time');
+			echo json_encode(['status' => false, 'message' => 'OTP expired. Please update your email again.']);
+			return;
+		}
+
+		// Compare OTP
+		if ($input_otp != $stored_otp) {
+			echo json_encode(['status' => false, 'message' => 'Invalid OTP.']);
+			return;
+		}
+
+		// Mark as verified
+		$user = $this->session->userdata('loggedInuser');
+		if (!$user || !isset($user['USER_ID'])) {
+			echo json_encode(['status' => false, 'message' => 'User session expired.']);
+			return;
+		}
+
+		// Update verification status in DB
+		$this->db->where('id', $user['USER_ID'])->update('users', ['is_verified' => 1]);
+
+		// Cleanup session OTP
+		$this->session->unset_userdata('new_email_verify_otp');
+		$this->session->unset_userdata('new_email_verify_otp_time');
+
+		echo json_encode(['status' => true, 'message' => 'Your new email has been successfully verified.']);
+	}
+
+	// user password change function 
+	public function user_change_password()
+	{
+		$this->load->library('form_validation');
+		$user = $this->session->userdata('loggedInuser');
+
+		if (!$user || empty($user['USER_ID'])) {
+			echo json_encode(['status' => false, 'message' => 'User not logged in.']);
+			return;
+		}
+
+		$this->form_validation->set_rules('user_current_password', 'Current Password', 'required');
+		$this->form_validation->set_rules('user_new_password', 'New Password', 'required|min_length[8]');
+		$this->form_validation->set_rules('user_confirm_password', 'Confirm Password', 'required|matches[user_new_password]');
+
+		if ($this->form_validation->run() === FALSE) {
+			echo json_encode([
+				'status' => false,
+				'errors' => [
+					'user_current_password'   => form_error('user_current_password'),
+					'user_new_password'      => form_error('user_new_password'),
+					'user_confirm_password'  => form_error('user_confirm_password')
+				]
+			]);
+			return;
+		}
+
+		$user_id = $user['USER_ID'];
+		$current_password = $this->input->post('user_current_password', TRUE);
+		$new_password = $this->input->post('user_new_password', TRUE);
+
+		// Fetch user from DB
+		$db_user = $this->db->get_where('users', ['id' => $user_id])->row();
+
+		if (!$db_user) {
+			echo json_encode(['status' => false, 'message' => 'User not found.']);
+			return;
+		}
+
+		// Verify current password
+		if (!password_verify($current_password, $db_user->password)) {
+			echo json_encode(['status' => false, 'errors' => [
+				'user_current_password' => 'Current password is incorrect.'
+			]]);
+			return;
+		}
+
+		// Prevent using the same password
+		if (password_verify($new_password, $db_user->password)) {
+			echo json_encode(['status' => false, 'errors' => [
+				'user_new_password' => 'New password cannot be the same as the current password.'
+			]]);
+			return;
+		}
+
+		$hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+		$resp = $this->db->where('id', $user_id)->update('users', ['password' => $hashed_password]);
+		if ($resp) {
+			// Send email notification to user
+			$user_email = $db_user->email;
+			$user_name = htmlspecialchars($db_user->name);
+			$subject = "Your Password Has Been Changed";
+			$message = "<p>Hello <strong>{$user_name}</strong>,</p>";
+			$message .= "<p>Your password has been changed successfully. If you did not perform this action, please contact support immediately.</p>";
+
+			send_custom_email($user_email, $subject, $message);
+			echo json_encode(['status' => true, 'message' => 'Password changed successfully.']);
+		} else {
+			echo json_encode(['status' => false, 'message' => 'Failed to update password. Please try again.']);
 		}
 	}
 }

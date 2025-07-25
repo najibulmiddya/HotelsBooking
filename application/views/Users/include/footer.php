@@ -4,25 +4,50 @@
 if ($data = $this->session->userdata('data')) {
 }
 ?>
-<div class="container-fluid bg-white mt-5">
+
+<!-- <div class="container-fluid bg-white mt-5">
     <div class="row">
         <div class="col-lg-4 p-4 custom-shadow">
-            <h3 class="h-font fw-bold fs-3 mb-2"><?= $data['site_title'] ?></h3>
-            <p>
-                <?= $data['site_about'] ?>
+            <h3 class="fw-bold fs-3 mb-2 h-font">
+                <i class="bi bi-building me-1"></i> <?= htmlspecialchars($data['site_title']) ?>
+            </h3>
+            <p class="text-muted lh-base">
+                <?= nl2br(htmlspecialchars($data['site_about'])) ?>
             </p>
+
         </div>
         <div class="col-lg-4 p-4 custom-shadow">
-            <h5 class="mb-2">Links</h5>
-            <a href="home" class="d-inline-block mb-2 text-dark text-decoration-none">Home</a><br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none">Rooms</a><br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none">Facilites</a><br>
-            <a href="<?= base_url('contact') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">Contact us</a><br>
-            <a href="<?= base_url('about') ?>" class="d-inline-block mb-2 text-dark text-decoration-none ">About</a>
+            <h5 class="mb-3">
+                <i class="bi bi-link-45deg me-1 text-primary"></i> Links
+            </h5>
+
+            <a href="<?= base_url('home') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">
+                <i class="bi bi-house-door me-1"></i> Home
+            </a><br>
+
+            <a href="<?= base_url('hotels-rooms') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">
+                <i class="bi bi-door-open me-1"></i> Rooms
+            </a><br>
+
+            <a href="<?= base_url('facilities') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">
+                <i class="bi bi-wrench-adjustable me-1"></i> Facilities
+            </a><br>
+
+            <a href="<?= base_url('contact') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">
+                <i class="bi bi-envelope me-1"></i> Contact us
+            </a><br>
+
+            <a href="<?= base_url('about') ?>" class="d-inline-block mb-2 text-dark text-decoration-none">
+                <i class="bi bi-info-circle me-1"></i> About
+            </a>
         </div>
 
+
         <div class="col-lg-4 p-4 custom-shadow">
-            <h5 class="mb-3">Follow us</h5>
+            <h5 class="mb-3">
+                <i class="bi bi-share-fill me-1 text-danger"></i> Follow us
+            </h5>
+
             <a class="d-inline-block mb-2 text-dark text-decoration-none" href="<?= $data['twitter']; ?>">
                 <i class="bi bi-twitter me-1"></i> Twitter</a><br>
 
@@ -33,7 +58,81 @@ if ($data = $this->session->userdata('data')) {
                 <i class="bi bi-instagram me-1"></i> Instagram</a><br>
         </div>
     </div>
+</div> -->
+
+<div class="container-fluid bg-light mt-5 border-top pt-3">
+    <div class="row">
+        <!-- About Section -->
+        <div class="col-lg-4 p-4">
+            <h3 class="fw-bold fs-4 mb-3 h-font text-dark">
+                <i class="bi bi-building me-2 text-primary"></i> <?= htmlspecialchars($data['site_title']) ?>
+            </h3>
+            <p class="text-muted lh-base" style="font-size: 15px;">
+                <?= nl2br(htmlspecialchars($data['site_about'])) ?>
+            </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-4 p-4">
+            <h5 class="mb-3 text-dark fw-semibold">
+                <i class="bi bi-link-45deg me-2 text-primary"></i> Quick Links
+            </h5>
+            <ul class="list-unstyled footer-links">
+                <li class="mb-2">
+                    <a href="<?= base_url('home') ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                        <i class="bi bi-house-door-fill me-2 text-primary"></i> Home
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="<?= base_url('hotels-rooms') ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                        <i class="bi bi-door-open-fill me-2 text-success"></i> Rooms
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="<?= base_url('facilities') ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                        <i class="bi bi-wrench-adjustable-circle me-2 text-danger"></i> Facilities
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="<?= base_url('contact') ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                        <i class="bi bi-envelope-fill me-2 text-info"></i> Contact Us
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('hotels/about') ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-2 text-warning"></i> About
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Social Media -->
+        <div class="col-lg-4 p-4">
+            <h5 class="mb-3 text-dark fw-semibold">
+                <i class="bi bi-share-fill me-2 text-danger"></i> Follow Us
+            </h5>
+            <ul class="list-unstyled">
+                <li class="mb-2">
+                    <a href="<?= $data['twitter']; ?>" target="_blank" class="text-decoration-none text-dark">
+                        <i class="bi bi-twitter me-2 text-primary"></i> Twitter
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="<?= $data['facebook']; ?>" target="_blank" class="text-decoration-none text-dark">
+                        <i class="bi bi-facebook me-2 text-primary"></i> Facebook
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $data['instagram']; ?>" target="_blank" class="text-decoration-none text-dark">
+                        <i class="bi bi-instagram me-2 text-danger"></i> Instagram
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+
 
 <h6 class="text-center bg-dark text-white p-3 m-0">Designed and Developed by Najibul Middya ||
     <a href="#" class="text-decoration-none">
@@ -46,12 +145,12 @@ if ($data = $this->session->userdata('data')) {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-success">
             <div class="modal-header custom-bg text-white">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <h5 class="modal-title" id="successModalLabel"><i class="bi bi-check-circle-fill"></i> Success</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 <i id="success_icon" class="bi bi-check-circle"></i>
-                <p id="success_modal_text"></p>
+                <p id="success_modal_text" class="text-success fw-bold"></p>
             </div>
             <div class="modal-footer" id="successButtonAdd">
 
@@ -70,7 +169,7 @@ if ($data = $this->session->userdata('data')) {
             </div>
             <div class="modal-body  text-center">
                 <i id="failed_icon" class="bi bi-x-circle-fill"></i>
-                <p id="failed_modal_text"></p>
+                <p id="failed_modal_text" class="text-danger fw-bold"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger shadow-none" data-bs-dismiss="modal">Close</button>
@@ -333,7 +432,7 @@ if ($data = $this->session->userdata('data')) {
     // Check Login and Room booking
     function checkLoginToBook(isLoggedIn, roomId) {
         if (isLoggedIn == 1) {
-            let base_url ="<?=base_url('');?>"
+            let base_url = "<?= base_url(''); ?>"
             window.location.href = base_url + 'booking/room/' + roomId;
         } else {
             $('#loginAlertModal').modal('show');

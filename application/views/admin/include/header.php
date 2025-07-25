@@ -98,7 +98,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-white <?= is_active('users'); ?>" href="<?= base_url('users') ?>">
+                                <a class="nav-link text-white <?= is_active('users','index'); ?>" href="<?= base_url('users') ?>">
                                     <i class="bi bi-people"></i> Users
                                 </a>
                             </li>
@@ -120,6 +120,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white <?= is_active('facilities'); ?>" href="<?= base_url('admin-facilities') ?>">
                                     <i class="bi bi-stars me-1"></i> Facilities
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white <?= is_active('Users', 'room_review'); ?>" href="<?= base_url('admin/room-rate-review') ?>">
+                                    <i class="bi bi-star-half me-1"></i> Rate & Review
                                 </a>
                             </li>
 

@@ -73,8 +73,6 @@ class Razorpay extends CI_Controller
                 show_error("Razorpay order creation failed.");
                 return;
             }
-
-            // Load Razorpay view
             $data = [
                 'key_id' => $key_id,
                 'razorpay_order_id' => $response['id'],
@@ -92,7 +90,7 @@ class Razorpay extends CI_Controller
     {
         unset($_SESSION['room']);
         $input = $this->input->post();
-    
+
         $key_secret = 'e6C17e9eTLIpdvHIW0Ns31ZY';
 
         if (!isset($input['razorpay_signature']) || !isset($input['razorpay_order_id']) || !isset($input['razorpay_payment_id'])) {
@@ -113,9 +111,10 @@ class Razorpay extends CI_Controller
             }
 
             // Restore session if needed
+            $user_data = $this->Common_model->getRow('users', ['id' => $booking->user_id]);
             $user = $this->session->userdata('loggedInuser');
             if (!$user || $user['USER_LOGGEDIN'] !== true) {
-                $user_data = $this->Common_model->getRow('users', ['id' => $booking->user_id]);
+
                 if ($user_data) {
                     $this->session->set_userdata("loggedInuser", [
                         'USER_ID' => $user_data->id,
@@ -136,10 +135,27 @@ class Razorpay extends CI_Controller
             ];
 
             $resp = $this->Common_model->updateData('booking_order', ['order_id' => $order_id], $data);
+            if ($resp) {
+                if ($resp) {
+                    $user_email = $user_data->email;
+                    $name = $user_data->name;
+                    $amount =  $input['amount'];
+                    $subject = "Booking Confirmed - Order #" . $order_id;
+                    $message = "
+                    <h3>Dear $name,</h3>
+                    <p>Your booking with Order ID <strong>$order_id</strong> has been successfully confirmed.</p>
+                    <p><b>Payment ID:</b> {$input['razorpay_payment_id']}</p>
+                   <p><b>Amount Paid:</b> ₹ $amount</p>
+                    <br>
+                    <p>Thank you for choosing us!</p>
+                    <p>- Hotel Booking Team</p>
+                    ";
+                    send_custom_email($user_email, $subject, $message);
+                }
+            }
 
             echo json_encode(['status' => true, 'message' => 'Payment successful']);
         } else {
-            // ❌ Signature mismatch
             $this->Common_model->updateData('booking_order', [
                 'trans_status' => 'TXN_FAILED',
                 'trans_respmgs' => 'Signature mismatch',

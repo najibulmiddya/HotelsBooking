@@ -70,7 +70,10 @@ class Bookings extends CI_Controller
 
             // Update both tables
             $data1 = ['room_no' => $room_number];
-            $data2 = ['arraval' => 1];
+            $data2 = [
+                'arraval' => 1,
+                'rate_review' => 0
+            ];
             $update1 = $this->Common_model->updateData('booking_details', ['booking_id' => $booking_id], $data1);
             $update2 = $this->Common_model->updateData('booking_order', ['booking_id' => $booking_id], $data2);
 

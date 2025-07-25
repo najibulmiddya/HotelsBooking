@@ -52,15 +52,50 @@
             <div class="card mb-4 border-0 shadow-ms rounded-3">
                 <div class="card-body">
                     <h4>Price ₹<?= $roomsData['room']->price ?> Per Night</h4>
+
+                    <!-- ⭐ Dynamic Rating -->
+                    <?php
+                    $this->db->select('rating');
+                    $this->db->from('room_reviews');
+                    $this->db->where('room_id', $roomsData['room']->id);
+                    $this->db->order_by('created_at', 'DESC');
+                    $this->db->limit(10);
+                    $query = $this->db->get();
+                    $ratings = $query->result_array();
+
+                    $avg_rating = 0;
+
+                    if (!empty($ratings)) {
+                        $total = array_sum(array_column($ratings, 'rating'));
+                        $avg_rating = round($total / count($ratings), 1); // e.g. 4.3
+                    }
+                    ?>
                     <!-- Static Rating -->
                     <div class="rating mb-3">
                         <span class="badge rounded-pill bg-light">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
+                            <?php
+                            $fullStars = floor($avg_rating);
+                            $hasHalfStar = ($avg_rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+
+                            for ($i = 0; $i < $fullStars; $i++) {
+                                echo '<i class="bi bi-star-fill text-warning"></i>';
+                            }
+
+                            if ($hasHalfStar) {
+                                echo '<i class="bi bi-star-half text-warning"></i>';
+                            }
+
+                            for ($i = 0; $i < $emptyStars; $i++) {
+                                echo '<i class="bi bi-star text-muted"></i>';
+                            }
+                            ?>
                         </span>
+                        <?php if ($avg_rating > 0): ?>
+                            <span class="ms-2 text-muted" style="font-size: 14px;"><?= $avg_rating ?>/5</span>
+                        <?php endif; ?>
                     </div>
+
 
                     <!-- Features -->
                     <div class="features mb-3">

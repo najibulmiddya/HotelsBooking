@@ -3,12 +3,12 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-success">
             <div class="modal-header custom-bg text-white">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <h5 class="modal-title" id="successModalLabel"><i class="bi bi-check-circle-fill"></i> Success</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
                 <i id="success_icon" class="bi bi-check-circle"></i>
-                <p id="success_modal_text"></p>
+                <p id="success_modal_text" class="text-success fw-bold"></p>
             </div>
             <div class="modal-footer" id="successButtonAdd">
 
@@ -27,7 +27,7 @@
             </div>
             <div class="modal-body  text-center">
                 <i id="failed_icon" class="bi bi-x-circle-fill"></i>
-                <p id="failed_modal_text"></p>
+                <p id="failed_modal_text" class="text-danger fw-bold"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger shadow-none" data-bs-dismiss="modal">Close</button>

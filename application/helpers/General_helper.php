@@ -252,6 +252,28 @@ if (!function_exists('jresp')) {
       }
     }
   }
+
+
+
+  if (!function_exists('send_custom_email')) {
+    function send_custom_email($to, $subject, $message)
+    {
+      $CI = &get_instance(); // Get CI instance
+      $CI->load->library('email');
+
+      $CI->email->from('hospitalmh79604904@gmail.com', 'Hotels Booking');
+      $CI->email->to($to);
+      $CI->email->subject($subject);
+      $CI->email->message($message);
+
+      if ($CI->email->send()) {
+        return true;
+      } else {
+        log_message('error', $CI->email->print_debugger());
+        return false;
+      }
+    }
+  }
 }
 
 

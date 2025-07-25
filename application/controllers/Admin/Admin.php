@@ -36,6 +36,8 @@ class Admin extends CI_Controller
                             $adminData = [
                                 'adminId' => $bd_data->id,
                                 'userName' => $bd_data->username,
+                                'name' =>$bd_data->name,
+                                'email'=>$bd_data->email,
                                 'ADMIN_LOGIN' => TRUE
                             ];
                             $this->session->set_userdata("loggedInAdmin", $adminData);

@@ -20,7 +20,11 @@
 <div class="container availability-form">
 	<div class="row">
 		<div class="col-lg-12 bg-white shadow p-4 rounded">
-			<h5 class="mb-4">Chack Booking Availability</h5>
+			<h5 class="mb-4">
+				<i class="bi bi-calendar-check-fill text-primary me-2"></i>
+				Check Booking Availability
+			</h5>
+
 			<form>
 				<div class="row align-items-end">
 					<div class="col-lg-3 mb-3">
@@ -60,7 +64,10 @@
 </div>
 
 <!-- Our Rooms -->
-<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
+<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">
+	<i class="bi-houses-fill text-success me-2"></i> OUR ROOMS
+</h2>
+
 <div class="container">
 	<div class="row">
 		<?php
@@ -72,10 +79,16 @@
 						<img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="card-img-top" alt="">
 						<div class="card-body">
 							<h5><?= htmlspecialchars($room['room_name']) ?></h5>
-							<h6 class="mb-4">₹<?= htmlspecialchars($room['price']) ?> Per Night</h6>
+							<h6 class="text-success mb-4">
+								<i class="bi bi-currency-rupee"></i><?= htmlspecialchars($room['price']) ?>
+								<small class="text-muted">/ night</small>
+							</h6>
 							<!-- Features -->
 							<div class="features mb-4">
-								<h6 class="mb-1">Features</h6>
+								<h6 class="mb-1">
+									<i class="bi bi-grid-fill text-primary me-2"></i> Features
+								</h6>
+
 								<?php if (!empty($room['features'])):
 									foreach ($room['features'] as $feature): ?>
 										<span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($feature['feature_name']) ?></span>
@@ -87,7 +100,10 @@
 
 							<!-- Facilities -->
 							<div class="facilities mb-4">
-								<h6 class="mb-1">Facilities</h6>
+								<h6 class="mb-1">
+									<i class="bi bi-building-check text-success me-2"></i> Facilities
+								</h6>
+
 								<?php if (!empty($room['facilities'])):
 									foreach ($room['facilities'] as $facility): ?>
 										<span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($facility['facility_name']) ?></span>
@@ -99,21 +115,58 @@
 
 							<!-- Guests -->
 							<div class="gueste mb-4">
-								<h6 class="mb-1">Guests</h6>
+								<h6 class="mb-1">
+									<i class="bi bi-people-fill text-primary me-2"></i> Guests
+								</h6>
 								<span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($room['adult']) ?> Adults</span>
 								<span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($room['children']) ?> Children</span>
 							</div>
 
-							<!-- Static Rating (can be dynamic if you have rating data) -->
+
+							<!-- Dynamic Rating Section -->
+							<?php
+							$this->db->select('rating');
+							$this->db->from('room_reviews');
+							$this->db->where('room_id', $room['id']);
+							$this->db->order_by('created_at', 'DESC');
+							$this->db->limit(10);
+							$query = $this->db->get();
+							$ratings = $query->result_array();
+
+							$avg_rating = 0;
+
+							if (!empty($ratings)) {
+								$total = array_sum(array_column($ratings, 'rating'));
+								$avg_rating = round($total / count($ratings), 1); // e.g. 4.3
+							}
+							?>
+
+							<!-- Rating Section -->
 							<div class="rating mb-4">
-								<h6 class="mb-1">Rating</h6>
+								<h6 class="mb-1"> Rating</h6>
 								<span class="badge rounded-pill bg-light">
-									<i class="bi bi-star-fill text-warning"></i>
-									<i class="bi bi-star-fill text-warning"></i>
-									<i class="bi bi-star-fill text-warning"></i>
-									<i class="bi bi-star-fill text-warning"></i>
+									<?php
+									$fullStars = floor($avg_rating);
+									$hasHalfStar = ($avg_rating - $fullStars) >= 0.5;
+									$emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+									for ($i = 0; $i < $fullStars; $i++) {
+										echo '<i class="bi bi-star-fill text-warning"></i>';
+									}
+
+									// Half star
+									if ($hasHalfStar) {
+										echo '<i class="bi bi-star-half text-warning"></i>';
+									}
+
+									// Empty stars
+									for ($i = 0; $i < $emptyStars; $i++) {
+										echo '<i class="bi bi-star text-muted"></i>';
+									}
+									?>
 								</span>
+								<span class="ms-2 text-muted" style="font-size: 14px;"><?= $avg_rating ?>/5</span>
 							</div>
+
 
 							<!-- Action Buttons -->
 							<div class="d-flex justify-content-evenly mb-2">
@@ -127,12 +180,22 @@
 										$userLogin = 1;
 									}
 								?>
-									<button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $room['id'] ?>)" class="btn btn-sm text-white shadow-none custom-bg">Book Now</button>
+									<!-- <button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $room['id'] ?>)" class="btn btn-sm text-white shadow-none custom-bg">Book Now</button> -->
+									<button onclick="checkLoginToBook(<?= $userLogin ?>, <?= $room['id'] ?>)"
+										class="btn btn-sm text-white shadow-none custom-bg">
+										<i class="bi bi-calendar-check-fill me-1"></i> Book Now
+									</button>
+
 								<?php else: ?>
-									<button class="btn btn-sm btn-secondary shadow-none" disabled>Booking Closed</button>
+									<button class="btn btn-sm btn-secondary shadow-none" disabled>
+										<i class="bi bi-lock-fill me-1"></i> Booking Closed
+									</button>
 								<?php endif; ?>
 
-								<a href="<?= base_url('room-details/' . $room['id']); ?>" class="btn btn-sm btn-outline-dark shadow-none">More Details</a>
+								<a href="<?= base_url('room-details/' . $room['id']); ?>"
+									class="btn btn-sm btn-outline-dark shadow-none">
+									<i class="bi bi-info-circle me-1"></i> More Details
+								</a>
 							</div>
 						</div>
 					</div>
@@ -143,7 +206,10 @@
 		endif;
 		?>
 		<!-- Our Facilities -->
-		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR FACILITIES</h2>
+		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">
+			<i class="bi bi-building-check text-primary me-2"></i> OUR FACILITIES
+		</h2>
+
 		<div class="container">
 			<div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
 				<?php
@@ -165,95 +231,76 @@
 				?>
 
 				<div class="col-lg-12 text-center mt-5">
-					<a href="<?= base_url("facilities"); ?>" id="showMoreFacilities" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
+					<a href="<?= base_url("facilities"); ?>"
+						id="showMoreFacilities"
+						class="btn  btn-outline-dark p-2 rounded-0 fw-bold shadow-none">
+						<i class="bi bi-plus-circle me-1"></i> More Facilities >>>
+					</a>
 				</div>
 			</div>
 		</div>
 
 		<!-- Testimonials -->
-		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">TASTIMONIALS</h2>
-		<div class="container mt-5">
+		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">
+			<i class="bi bi-chat-quote-fill text-warning me-2"></i> TESTIMONIALS
+		</h2>
+
+		<div class="container mt-3">
 			<!-- Swiper -->
 			<div class="swiper testimonials">
 				<div class="swiper-wrapper mb-5">
+					<?php if (!empty($reviews)) : ?>
+						<?php foreach ($reviews as $review) : ?>
+							<div class="swiper-slide" style="background:#fff; border-radius:12px; padding:20px; box-shadow:0 0 12px rgba(0,0,0,0.05); border:1px solid #eee; transition:all 0.3s ease;">
 
-					<div class="swiper-slide bg-white p-4 shadow">
-						<div class="profile d-flex align-items-center mb-3">
-							<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="">
-							<h6 class="m-0 ms-2">Rendon user</h6>
-						</div>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-							Excepturi amet officiis laborum
-							veritatis similique, sequi accusantium asperiores odio aliquid aut?
-						</p>
-						<div class="rating">
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-						</div>
-					</div>
+								<!-- Profile -->
+								<div style="display:flex; align-items:center; margin-bottom:16px;">
+									<img src="<?= USER_PROFILE_SITE_PATH . $review['profile'] ?>"
+										alt="<?= htmlspecialchars($review['name']) ?>"
+										style="width:40px; height:40px; border-radius:50%; border:1px solid #ccc; object-fit:cover;">
+									<div style="margin-left:12px;">
+										<h6 style="margin:0; font-weight:600; font-size:15px;"><?= htmlspecialchars($review['name']) ?></h6>
+										<small style="color:#6c757d;"><?= htmlspecialchars($review['room_name']) ?></small>
+									</div>
+								</div>
 
-					<div class="swiper-slide bg-white p-4 shadow">
-						<div class="profile d-flex align-items-center mb-3">
-							<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="">
-							<h6 class="m-0 ms-2">Rendon user</h6>
-						</div>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-							Excepturi amet officiis laborum
-							veritatis similique, sequi accusantium asperiores odio aliquid aut?
-						</p>
-						<div class="rating">
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-						</div>
-					</div>
+								<!-- Review Text -->
+								<p style="color:#6c757d; font-size:14px; line-height:1.5; min-height:60px; margin-bottom:16px;">
+									“<?= htmlspecialchars($review['review']) ?>”
+								</p>
 
-					<div class="swiper-slide bg-white p-4 shadow">
-						<div class="profile d-flex align-items-center mb-3">
-							<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="">
-							<h6 class="m-0 ms-2">Rendon user</h6>
-						</div>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-							Excepturi amet officiis laborum
-							veritatis similique, sequi accusantium asperiores odio aliquid aut?
-						</p>
-						<div class="rating">
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-						</div>
-					</div>
-					<div class="swiper-slide bg-white p-4 shadow">
-						<div class="profile d-flex align-items-center mb-3">
-							<img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="">
-							<h6 class="m-0 ms-2">Rendon user</h6>
-						</div>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-							Excepturi amet officiis laborum
-							veritatis similique, sequi accusantium asperiores odio aliquid aut?
-						</p>
-						<div class="rating">
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-							<i class="bi bi-star-fill text-warning"></i>
-						</div>
-					</div>
+								<!-- Star Rating -->
+								<div style="display:flex; align-items:center; margin-bottom:6px;">
+									<?php for ($i = 1; $i <= 5; $i++) : ?>
+										<i class="bi <?= ($i <= $review['rating']) ? 'bi-star-fill text-warning' : 'bi-star text-muted' ?>"
+											style="margin-right:4px; font-size:16px; color:<?= ($i <= $review['rating']) ? '#f1c40f' : '#ccc' ?>;"></i>
+									<?php endfor; ?>
+								</div>
+
+								<!-- Date -->
+								<small style="color:#999; font-size:13px;"><?= date('d M, Y', strtotime($review['created_at'])) ?></small>
+							</div>
+						<?php endforeach; ?>
+					<?php else : ?>
+						<div class="swiper-slide p-4 text-center text-danger">No reviews found.</div>
+					<?php endif; ?>
 				</div>
-				<div class="swiper-pagination"></div>
-			</div>
 
+				<div class="swiper-pagination" style="margin-top:16px;"></div>
+			</div>
 			<div class="col-lg-12 text-center mt-5">
-				<a href="<?= base_url("hotels-about"); ?>" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
+				<a href="<?= base_url("hotels/about"); ?>"
+					class="btn btn-outline-dark p-2 rounded-0 fw-bold shadow-none">
+					<i class="bi bi-info-circle-fill me-1"></i> Know More >>>
+				</a>
 			</div>
 		</div>
 
 		<!-- Reach us -->
-		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">REACH US</h2>
+		<h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">
+			<i class="bi bi-geo-alt-fill text-danger me-2"></i> REACH US
+		</h2>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8 col-md-8 shadow p-3 mb-lg-0 mb-3 bg-white rounded">

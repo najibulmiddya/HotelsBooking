@@ -74,23 +74,40 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                     <li class="nav-item">
-                        <a class="nav-link <?= is_active('home'); ?> me-2" aria-current="page" href="<?= base_url('home') ?>">Home</a>
+                        <a class="nav-link <?= is_active('home'); ?> me-2" href="<?= base_url('home') ?>">
+                            <i class="bi bi-house-door-fill me-1 text-primary"></i> Home
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link me-2  <?= is_active('rooms'); ?>" href="<?= base_url('hotels-rooms') ?>">Rooms</a>
+                        <a class="nav-link me-2 <?= is_active('rooms'); ?>" href="<?= base_url('hotels-rooms') ?>">
+                            <i class="bi bi-door-open-fill me-1 text-success"></i> Rooms
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link me-2  <?= is_active('facilities'); ?>" href="<?= base_url('facilities') ?>">Facilities</a>
+                        <a class="nav-link me-2 <?= is_active('facilities'); ?>" href="<?= base_url('facilities') ?>">
+                            <i class="bi bi-grid-fill me-1 text-warning"></i> Facilities
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?= base_url('contact') ?>">Contact us</a>
+                        <a class="nav-link me-2 <?= is_active('contact'); ?>" href="<?= base_url('contact') ?>">
+                            <i class="bi bi-envelope-fill me-1 text-info"></i> Contact Us
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link <?= is_active('about'); ?>" href="<?= base_url('hotels-about') ?>">About</a>
+                        <a class="nav-link <?= is_active('about'); ?>" href="<?= base_url('hotels/about') ?>">
+                            <i class="bi bi-info-circle-fill me-1 text-danger"></i> About
+                        </a>
                     </li>
 
                 </ul>
+
+
                 <div class="d-flex">
                     <?php
                     $CI = &get_instance();
@@ -98,30 +115,39 @@
                     ?>
                     <?php if ($loggedUser && $loggedUser['USER_LOGGEDIN'] == true): ?>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-dark shadow-none  dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-dark shadow-none dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                                 <img src="<?= USER_PROFILE_SITE_PATH . $loggedUser['PROFILE'] ?>" width="30" height="27px" class="rounded-circle me-1">
                                 <?= $loggedUser['NAME'] ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
-                                <li><a class="dropdown-item  <?= is_active('home', 'user_profile'); ?>" href="<?= base_url("user/profile"); ?>">Profile</a></li>
+                                <li>
+                                    <a class="dropdown-item <?= is_active('home', 'user_profile'); ?>" href="<?= base_url("user/profile"); ?>">
+                                        <i class="bi bi-person-circle me-2"></i> Profile
+                                    </a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item <?= is_active('bookings', 'index'); ?>" href="<?= base_url("user/bookings"); ?>">
                                         <i class="bi bi-journal-check me-2"></i> My Bookings
                                     </a>
                                 </li>
-                                <li><a class="dropdown-item" href="javascript:void(0);" id="logoutBtn">Logout</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0);" id="logoutBtn">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Button trigger Login -->
-                        <button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2" data-bs-toggle="modal"
-                            data-bs-target="#loginModal">
-                            Login
+                        <!-- Login Button -->
+                        <button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2"
+                            data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="bi bi-box-arrow-in-right text-primary me-1"></i> Login
                         </button>
-                        <!-- Button trigger Register -->
-                        <button type="button" class="btn btn-outline-dark shadow-none" data-bs-toggle="modal"
-                            data-bs-target="#registerModal">
-                            Register
+
+                        <!-- Register Button -->
+                        <button type="button" class="btn btn-outline-dark shadow-none"
+                            data-bs-toggle="modal" data-bs-target="#registerModal">
+                            <i class="bi bi-person-plus-fill text-success me-1"></i> Register
                         </button>
                     <?php endif; ?>
                 </div>
@@ -131,13 +157,13 @@
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="loginFrom">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-white">
                         <h5 class="modal-title d-flex align-items-center" id="staticBackdropLabel"> <i
-                                class="bi bi-person-circle fs-3 me-2 color_Green"></i> User Login</h5>
+                                class="bi bi-person-circle fs-3 me-2 "></i> User Login</h5>
                         <button type="reset" id="closeLogin" class="btn-close shadow-none" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
@@ -153,14 +179,20 @@
                             <input type="password" id="loginPassword" name="login_password" class="form-control shadow-none">
                             <span id="login_password_error" class="error"></span>
                         </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between align-items-center px-3">
 
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <button class="btn btn-dark shadow-none custom-bg" type="submit" id="login">Login</button>
-                            <button type="button" class="btn text-secondary shadow-none p-0" data-bs-toggle="modal"
-                                data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
-                                FrogotPassword?
-                            </button>
-                        </div>
+                        <!-- Login Button -->
+                        <button type="submit" id="login" class="btn btn-dark shadow-none custom-bg">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                        </button>
+
+                        <!-- Forgot Password Link -->
+                        <button type="button" class="btn btn-link text-decoration-none text-secondary shadow-none p-0"
+                            data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                            <i class="bi bi-key-fill me-1 text-primary"></i> Forgot Password?
+                        </button>
+
                     </div>
                 </form>
             </div>
@@ -168,13 +200,12 @@
     </div>
 
     <!-- Register Modal step 1 -->
-    <div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="registerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-blur="true" style="backdrop-filter: blur(1px);">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-info text-white">
                     <h5 class="modal-title d-flex align-items-center" id="staticBackdropLabel"> <i
-                            class="bi bi-person-lines-fill fs-3 me-2 color_Green"></i> User Registration</h5>
+                            class="bi bi-person-lines-fill fs-3 me-2 "></i> User Registration</h5>
                     <button type="reset" class="btn-close shadow-none step1Back" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -241,12 +272,11 @@
     </div>
 
     <!-- Register Modal Step 2 -->
-    <div class="modal fade" id="registerModalStep2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="registerModalStep2" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-blur="true" style="backdrop-filter: blur(1px);">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="registration_from_stap2" enctype="multipart/form-data">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-white">
                         <h5 class="modal-title d-flex align-items-center">Create a Password</h5>
                         <button type="reset" class="btn-close shadow-none backStap2" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>

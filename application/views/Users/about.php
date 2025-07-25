@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-lg-5 col-md-5 mb-4 order-lg-2 order-md-2 order-1">
-            <img src="assets/images/about/about.jpg" class="w-100">
+            <img src="<?=base_url('assets/images/about/about.jpg')?>" class="w-100">
         </div>
 
     </div>
@@ -31,28 +31,28 @@
 
         <div class="col-lg-3 col-md-6 mb-4 px-4">
             <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                <img src="assets/images/about/customers.svg" width="70px">
+                <img src="<?=base_url('assets/images/about/customers.svg')?>" width="70px">
                 <h5 class="mt-3">200+ CUSTOMERS</h5>
             </div>
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4 px-4">
             <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                <img src="assets/images/about/hotel.svg" width="70px">
+                <img src="<?=base_url('assets/images/about/hotel.svg')?>" width="70px">
                 <h5 class="mt-3">100+ Rooms</h5>
             </div>
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4 px-4">
             <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                <img src="assets/images/about/rating.svg" width="70px">
+                <img src="<?=base_url('assets/images/about/rating.svg')?>" width="70px">
                 <h5 class="mt-3">150+ REVIEWS</h5>
             </div>
         </div>
 
         <div class="col-lg-3 col-md-6 mb-4 px-4">
             <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                <img src="assets/images/about/staff.svg" width="70px">
+                <img src="<?=base_url('assets/images/about/staff.svg')?>" width="70px">
                 <h5 class="mt-3">200+ STAFFS</h5>
             </div>
         </div>

@@ -84,4 +84,54 @@ class Bookings extends CI_Controller
         $this->pdf->render();
         $this->pdf->stream("invoice_{$booking_id}.pdf", ['Attachment' => 0]);
     }
+
+    // Submit Room Review
+    public function submit_room_review()
+    {
+        $booking_id = $this->input->post('booking_id');
+        $room_id = $this->input->post('room_id');
+        $rating = $this->input->post('rating');
+        $review = $this->input->post('review');
+
+        if (!$booking_id || !$room_id || !$rating || !$review) {
+            echo json_encode(['status' => false, 'message' => 'All fields are required.']);
+            return;
+        }
+        // Check if booking exists and belongs to user
+        $booking = $this->Common_model->get('booking_order', 'booking_id', $booking_id);
+
+        if (!$booking || $booking->user_id != $_SESSION['loggedInuser']['USER_ID']) {
+            echo json_encode(['status' => false, 'message' => 'Invalid booking.']);
+            return;
+        }
+
+        // Check if review already exists for this booking
+        $existing = $this->Common_model->getRow('room_reviews', ['booking_id' => $booking_id, 'user_id' => $_SESSION['loggedInuser']['USER_ID']]);
+        if ($existing) {
+            echo json_encode(['status' => false, 'message' => 'You have already submitted a review for this booking.']);
+            return;
+        }
+
+        $data = [
+            'booking_id' => $booking_id,
+            'room_id' => $room_id,
+            'user_id' => $_SESSION['loggedInuser']['USER_ID'],
+            'rating' => $rating,
+            'review' => $review,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $inserted = $this->Common_model->insertData('room_reviews', $data);
+        if ($inserted) {
+            $data = [
+                'rate_review' => 1,
+            ];
+            $this->Common_model->updateData('booking_order', ['booking_id' => $booking_id, 'user_id' => $_SESSION['loggedInuser']['USER_ID']], $data);
+        }
+
+        echo json_encode([
+            'status' => $inserted ? true : false,
+            'message' => $inserted ? 'Thank you for your review! We appreciate your feedback.' : 'Failed to submit review.',
+        ]);
+    }
 }

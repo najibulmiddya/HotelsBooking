@@ -126,14 +126,7 @@
                 if (response.status === true) {
                     const nights = response.data?.days || 0;
                     const total = response.data?.payment || 0;
-                    const discount = response.data?.discount_amount || 0;
-                    const percent = response.data?.discount_percent || 0;
-
                     let msg = `Available! Total nights: ${nights} | Total: ₹${total}`;
-                    if (percent > 0) {
-                        msg += `(₹${discount} off - ${percent}% discount)`;
-                    }
-
                     payInfo.removeClass('text-danger')
                         .addClass('text-success')
                         .text(msg);
