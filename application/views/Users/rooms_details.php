@@ -1,12 +1,14 @@
 <div class="container">
     <div class="row">
         <!-- Room Details  -->
-        <div class="col-12 my-5 mb-4 px-4">
+        <div class="col-12 my-4 mb-4 px-4">
             <h2 class="fw-bold"><?= $roomsData['room']->room_name; ?></h2>
             <div style="font-size: 14px;">
                 <a href="<?= base_url("home") ?>" class="text-secondary text-decoration-none">Home</a>
                 <span class="text-secondary"> > </span>
                 <a href="<?= base_url("hotels-rooms"); ?>" class="text-secondary text-decoration-none">Rooms</a>
+                <span class="text-secondary"> > </span>
+                <a href="#" class="active text-decoration-none text-dark">Room Details</a>
             </div>
         </div>
         <div class="col-lg-7 col-md-12 px-4">
@@ -31,10 +33,6 @@
                         <img src="' . base_url('assets/images/rooms/7686_thumbnail.jpg') . '" class="d-block w-100 rounded">
                         </div>';
                     }
-
-
-
-
                     ?>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
@@ -55,8 +53,9 @@
 
                     <!-- ⭐ Dynamic Rating -->
                     <?php
-                    $this->db->select('rating');
+                    $this->db->select('room_reviews.rating,room_reviews.review,room_reviews.created_at,users.name, users.profile,');
                     $this->db->from('room_reviews');
+                    $this->db->join('users', 'users.id = room_reviews.user_id', 'left');
                     $this->db->where('room_id', $roomsData['room']->id);
                     $this->db->order_by('created_at', 'DESC');
                     $this->db->limit(10);
@@ -96,10 +95,11 @@
                         <?php endif; ?>
                     </div>
 
-
                     <!-- Features -->
                     <div class="features mb-3">
-                        <h6 class="mb-1">Features</h6>
+                        <h6 class="mb-1">
+                            <i class="bi bi-tools me-1 text-warning"></i> Features
+                        </h6>
                         <?php if (!empty($roomsData['features'])):
                             foreach ($roomsData['features'] as $feature): ?>
                                 <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($feature['feature_name']) ?></span>
@@ -111,7 +111,9 @@
 
                     <!-- Facilities -->
                     <div class="facilities mb-3">
-                        <h6 class="mb-1">Facilities</h6>
+                        <h6 class="mb-1">
+                            <i class="bi bi-wrench-adjustable-circle me-1 text-success"></i> Facilities
+                        </h6>
                         <?php if (!empty($roomsData['facilities'])):
                             foreach ($roomsData['facilities'] as $facility): ?>
                                 <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($facility['facility_name']) ?></span>
@@ -123,14 +125,19 @@
 
                     <!-- Guests -->
                     <div class="mb-3">
-                        <h6 class="mb-1">Guests</h6>
+                        <h6 class="mb-1">
+                            <i class="bi bi-people-fill me-1 text-primary"></i> Guests
+                        </h6>
                         <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($roomsData['room']->adult) ?> Adults</span>
                         <span class="badge bg-light text-dark text-wrap"><?= htmlspecialchars($roomsData['room']->children) ?> Children</span>
                     </div>
 
                     <!-- area -->
                     <div class="mb-3">
-                        <h6 class="mb-1">Area</h6>
+                        <h6 class="mb-1">
+                            <i class="bi bi-aspect-ratio-fill me-1 text-info"></i> Area
+                        </h6>
+
                         <span class="badge rounded-pill bg-light text-dark text-wrap me-1">
                             <?= $roomsData['room']->area ?> sq. ft .
                         </span>
@@ -147,44 +154,79 @@
                         }
                     ?>
 
-                        <button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $roomsData['room']->id ?>)" class="btn w-100 text-white shadow-none custom-bg">Book Now</button>
-                    <?php else: ?>
-                        <button class="btn w-100 btn-secondary shadow-none" disabled>Booking Closed</button>
-                    <?php endif; ?>
+                        <button onclick="checkLoginToBook(<?= $userLogin ?>,<?= $roomsData['room']->id ?>)" class="btn w-100 text-white shadow-none custom-bg">
+                            <i class="bi bi-calendar-check-fill me-1"></i> Book Now
+                        </button>
 
+                    <?php else: ?>
+                        <button class="btn w-100 btn-secondary shadow-none" disabled>
+                            <i class="bi bi-lock-fill me-1"></i> Booking Closed
+                        </button>
+
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
 
         <div class="col-12 px-4">
             <div class="">
-                <h5>Description</h5>
+                <h5 class="mb-3">
+                    <i class="bi bi-card-text text-primary me-2"></i> Description
+                </h5>
                 <p><?= $roomsData['room']->description; ?></p>
             </div>
-
             <div class="mb-3">
-                <h5>Reviews & Rating</h5>
-                <div>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="<?= base_url('assets/images/facilities/wifi.svg') ?>" width="30px" alt="...">
-                        <h6 class="m-0 ms-2">Rendon user</h6>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Excepturi amet officiis laborum
-                        veritatis similique, sequi accusantium asperiores odio aliquid aut?
+                <h5 class="mb-3">
+                    <i class="bi bi-star-fill text-warning me-2"></i> Reviews & Rating
+                </h5>
+                <?php if (!empty($ratings)) : ?>
+                    <?php foreach ($ratings as $review) : ?>
+                        <div class="bg-white p-3 rounded shadow-sm mb-3">
+                            <!-- User Info -->
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="<?= USER_PROFILE_SITE_PATH . $review['profile']; ?>" width="40" height="40" class="rounded-circle border" style="object-fit:cover;">
+                                <div class="ms-2">
+                                    <h6 class="mb-0"><?= htmlspecialchars($review['name']) ?></h6>
+                                    <small class="text-muted"><?= date('d M Y', strtotime($review['created_at'])) ?></small>
+                                </div>
+                            </div>
+
+                            <!-- Review Text -->
+                            <p class="mb-2 text-muted" style="font-size:14px;">
+                                “<?= htmlspecialchars($review['review']) ?>”
+                            </p>
+
+                            <!-- Star Rating -->
+                            <div class="rating">
+                                <?php
+                                $fullStars = floor($review['rating']);
+                                $hasHalf = ($review['rating'] - $fullStars) >= 0.5;
+                                $emptyStars = 5 - $fullStars - ($hasHalf ? 1 : 0);
+
+                                for ($i = 0; $i < $fullStars; $i++) {
+                                    echo '<i class="bi bi-star-fill text-warning me-1"></i>';
+                                }
+
+                                if ($hasHalf) {
+                                    echo '<i class="bi bi-star-half text-warning me-1"></i>';
+                                }
+
+                                for ($i = 0; $i < $emptyStars; $i++) {
+                                    echo '<i class="bi bi-star text-muted me-1"></i>';
+                                }
+                                ?>
+                                <span class="ms-1 text-muted small">(<?= $review['rating'] ?>/5)</span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p class="text-muted">
+                        <i class="bi bi-chat-left-dots text-danger me-1"></i> No reviews found.
                     </p>
-                    <div class="rating">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                    </div>
-                </div>
+                <?php endif; ?>
+
             </div>
-
         </div>
-
-
     </div>
 </div>
 
@@ -207,3 +249,4 @@
         clickOpens: true
     });
 </script>
+

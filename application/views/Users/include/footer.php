@@ -63,21 +63,21 @@ if ($data = $this->session->userdata('data')) {
 <div class="container-fluid bg-light mt-5 border-top pt-3">
     <div class="row">
         <!-- About Section -->
-        <div class="col-lg-4 p-4">
+        <div class="col-lg-4 col-md-6 p-4 text-center mx-auto shadow-sm">
             <h3 class="fw-bold fs-4 mb-3 h-font text-dark">
                 <i class="bi bi-building me-2 text-primary"></i> <?= htmlspecialchars($data['site_title']) ?>
             </h3>
-            <p class="text-muted lh-base" style="font-size: 15px;">
+            <p class="text-muted d-inline-block text-start" style="font-size: 15px; max-width: 100%;">
                 <?= nl2br(htmlspecialchars($data['site_about'])) ?>
             </p>
         </div>
 
         <!-- Quick Links -->
-        <div class="col-lg-4 p-4">
+        <div class="col-lg-4 col-md-6 p-4 text-center mx-auto shadow-sm">
             <h5 class="mb-3 text-dark fw-semibold">
                 <i class="bi bi-link-45deg me-2 text-primary"></i> Quick Links
             </h5>
-            <ul class="list-unstyled footer-links">
+            <ul class="list-unstyled footer-links d-inline-block text-start">
                 <li class="mb-2">
                     <a href="<?= base_url('home') ?>" class="text-decoration-none text-dark d-flex align-items-center">
                         <i class="bi bi-house-door-fill me-2 text-primary"></i> Home
@@ -104,15 +104,14 @@ if ($data = $this->session->userdata('data')) {
                     </a>
                 </li>
             </ul>
-
         </div>
 
         <!-- Social Media -->
-        <div class="col-lg-4 p-4">
+        <div class="col-lg-4 col-md-6 p-4 text-center mx-auto">
             <h5 class="mb-3 text-dark fw-semibold">
                 <i class="bi bi-share-fill me-2 text-danger"></i> Follow Us
             </h5>
-            <ul class="list-unstyled">
+            <ul class="list-unstyled d-inline-block text-start">
                 <li class="mb-2">
                     <a href="<?= $data['twitter']; ?>" target="_blank" class="text-decoration-none text-dark">
                         <i class="bi bi-twitter me-2 text-primary"></i> Twitter
@@ -130,6 +129,7 @@ if ($data = $this->session->userdata('data')) {
                 </li>
             </ul>
         </div>
+
     </div>
 </div>
 

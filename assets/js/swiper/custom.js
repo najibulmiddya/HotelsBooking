@@ -1,4 +1,14 @@
 
+// uses index page
+var swiper = new Swiper(".mySwiper", {
+    spaceBetween: 30,
+    effect: "fade",
+    loop: true,
+    autoplay: {
+        delay: 2500, disableOnInteraction: false,
+    }
+});
+
 var swiper = new Swiper(".testimonials", {
     effect: "coverflow",
     grabCursor: true,
@@ -37,7 +47,6 @@ var swiper = new Swiper(".testimonials", {
 });
 
 
-
 // use about page
 var swiper = new Swiper(".MANAGEMENT-TEAMS", {
     slidesPerView: 4,
@@ -63,7 +72,6 @@ var swiper = new Swiper(".MANAGEMENT-TEAMS", {
 
 $(document).ready(function () {
     $('#js-alert').hide();
-
     // js bs alert
     function js_alert(status, message) {
         if (status == true) {
@@ -81,3 +89,8 @@ $(document).ready(function () {
         $('#js-alert').show();
     }
 });
+
+
+
+
+

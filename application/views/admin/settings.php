@@ -1,51 +1,171 @@
-<h3 class="mb-4">SETTINGS</h3>
-<!-- General Settings Section -->
+<h3 class="mb-3">
+    <i class="bi bi-gear-fill me-2 text-primary"></i> SETTINGS
+</h3>
+
+<!-- General Settings Card -->
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">General Settings</h5>
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                data-bs-target="#general-s">
-                <i class="bi bi-pencil-square"></i> Edit
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 text-dark">
+                <i class="bi bi-sliders me-1 text-secondary"></i> General Settings
+            </h5>
+            <button type="button" class="btn btn-outline-primary shadow-none" data-bs-toggle="modal" data-bs-target="#general-s">
+                <i class="bi bi-pencil-square me-1"></i> Edit
             </button>
         </div>
-        <h6 class="card-subtitle mb-1 fw-bold">Site Title</h6>
-        <p class="card-text" id="site_title"></p>
-        <h6 class="card-subtitle mb-1 fw-bold">About us</h6>
-        <p class="card-text" id="site_about"></p>
+
+        <!-- Site Title -->
+        <div class="mb-3">
+            <h6 class="fw-semibold text-muted mb-1">Site Title</h6>
+            <p class="mb-0 text-dark" id="site_title">...</p>
+        </div>
+
+        <!-- About Us -->
+        <div>
+            <h6 class="fw-semibold text-muted mb-1">About Us</h6>
+            <p class="mb-0 text-dark" id="site_about">...</p>
+        </div>
     </div>
 </div>
-<!-- General Settings Section End -->
+<!-- General Settings Card Section End -->
+
+<!-- Shutdown Website Section -->
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-0 text-danger">
+                <i class="bi bi-power me-2"></i> Shutdown Website
+            </h5>
+            <div class="form-check form-switch form-switch-lg">
+                <input class="form-check-input btn-lg" type="checkbox" id="shutdown-toggle">
+            </div>
+        </div>
+        <p class="mb-0 text-muted small">
+            Enabling shutdown mode will prevent customers from booking hotel rooms.
+        </p>
+    </div>
+</div>
+
+<!-- Contact Us Settings Section -->
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">
+                <i class="bi bi-geo-alt-fill text-primary me-2"></i> Contact Us Settings
+            </h5>
+            <button type="button" class="btn  btn-outline-primary shadow-none" data-bs-toggle="modal" data-bs-target="#contacts-s">
+                <i class="bi bi-pencil-square me-1"></i> Edit
+            </button>
+        </div>
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-1">Address</h6>
+                    <p class="text-muted mb-0" id="address"></p>
+                </div>
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-1">Google Map</h6>
+                    <p class="text-muted mb-0" id="gmap"></p>
+                </div>
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-1">Phone Numbers</h6>
+                    <p class="mb-1 text-muted">
+                        <i class="bi bi-telephone-fill me-1"></i><span id="pn1"></span>
+                    </p>
+                    <p class="text-muted">
+                        <i class="bi bi-telephone-fill me-1"></i><span id="pn2"></span>
+                    </p>
+                </div>
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-1">Email</h6>
+                    <p class="text-muted mb-0" id="email"></p>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-1">Social Links</h6>
+                    <p class="mb-1 text-muted">
+                        <i class="bi bi-twitter me-1"></i><span id="twitter"></span>
+                    </p>
+                    <p class="mb-1 text-muted">
+                        <i class="bi bi-facebook me-1"></i><span id="facbook"></span>
+                    </p>
+                    <p class="text-muted">
+                        <i class="bi bi-instagram me-1"></i><span id="instagram"></span>
+                    </p>
+                </div>
+                <div class="mb-2">
+                    <h6 class="fw-bold mb-2">Embedded Map</h6>
+                    <iframe id="iframe" class="border rounded w-100" height="200" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Management Teams Section -->
+<section class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <!-- Section Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h5 class="mb-0 text-primary d-flex align-items-center">
+                <i class="bi bi-people-fill me-2 fs-5"></i>
+                <span>Management Teams</span>
+            </h5>
+            <button type="button" class="btn btn-sm btn-dark shadow-none d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#team-s">
+                <i class="bi bi-person-plus me-1"></i> Add Member
+            </button>
+        </div>
+
+        <!-- Team Data Container -->
+        <div id="team-data" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <!-- Team cards will be dynamically inserted here -->
+        </div>
+    </div>
+</section>
+
 
 <!-- General Settings Modal -->
 <div class="modal fade" id="general-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
     <div class="modal-dialog" id="general-model">
         <form id="general-from">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">General Settings</h5>
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-gear-fill me-2"></i> General Settings
+                    </h5>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Site Titel</label>
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-card-heading me-1 text-primary"></i> Site Title
+                        </label>
                         <input id="site_title_inp" type="text" name="site_title" value=""
                             class="form-control shadow-none">
-
-                        <div id="site_title_error" class="text-danger" style="display:none;">Site title is required
-                        </div>
+                        <div id="site_title_error" class="text-danger d-none">Site title is required</div>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold">About us</label>
-                        <textarea id="site_about_inp" required name="site_about" class="form-control shadow-none"
-                            rows="6"></textarea>
-                        <div id="site_about_error" class="text-danger" style="display:none;">About us is required</div>
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-info-circle-fill me-1 text-primary"></i> About Us
+                        </label>
+                        <textarea id="site_about_inp" name="site_about" class="form-control shadow-none"
+                            rows="6" required></textarea>
+                        <div id="site_about_error" class="text-danger d-none">About us is required</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="cencel-modal" class="btn text-secondary shadow-none"
-                        data-bs-dismiss="modal">CENCEL</button>
-                    <button type="submit" class="btn custom-bg text-white shadow-none">SUBMIT</button>
+                    <button type="button" id="cencel-modal" class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn custom-bg text-white shadow-none">
+                        <i class="bi bi-check-circle-fill me-1"></i> Submit
+                    </button>
                 </div>
             </div>
         </form>
@@ -53,205 +173,142 @@
 </div>
 <!-- General Settings Modal End -->
 
-<!-- Shutdown Section -->
-<div class="card border-0 shadow mb-4">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">Shutdown Website</h5>
-            <form>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" id="shutdown-toggle" type="checkbox">
-                </div>
-            </form>
-        </div>
-        <p class="card-text">No Customers wile be allowed to book hotel room, when shutdown mode is turned on.</p>
-    </div>
-</div>
-<!-- Shutdown Section End -->
 
-<!--  Contacts us Section  -->
-<div class="card border-0 shadow mb-4">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">Contacts us Settings</h5>
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                data-bs-target="#contacts-s">
-                <i class="bi bi-pencil-square"></i> Edit
-            </button>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">Address</h6>
-                    <p class="card-text" id="address"></p>
-                </div>
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">Google Map</h6>
-                    <p class="card-text" id="gmap"></p>
-                </div>
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">Phone Number</h6>
-                    <p class="card-text mb-1">
-                        <i class="bi bi-telephone-fill"></i>
-                        <span id="pn1"></span>
-                    </p>
-                    <p class="card-text">
-                        <i class="bi bi-telephone-fill"></i>
-                        <span id="pn2"></span>
-                    </p>
-                </div>
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">E-mail</h6>
-                    <p class="card-text" id="email"></p>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">Social Links</h6>
-                    <p class="card-text mb-1">
-                        <i class="bi bi-twitter me-1"></i>
-                        <span id="twitter"></span>
-                    </p>
-                    <p class="card-text mb-1">
-                        <i class="bi bi-facebook me-1"></i>
-                        <span id="facbook"></span>
-                    </p>
-                    <p class="card-text">
-                        <i class="bi bi-instagram me-1"></i>
-                        <span id="instagram"></span>
-                    </p>
-                </div>
-                <div class="mb-4">
-                    <h6 class="card-subtitle mb-1 fw-bold">iFrame</h6>
-                    <iframe id="iframe" class="border p-2 w-100" loading="lazy"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--  Contacts us Section end  -->
-
-<!-- Contacts us Modal -->
+<!-- Contacts Settings Modal -->
 <div class="modal fade" id="contacts-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" id="contacts-model">
+    aria-labelledby="contactsModalLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
+    <div class="modal-dialog modal-lg">
         <form id="contacts-from">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Contacts Settings</h5>
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="contactsModalLabel">
+                        <i class="bi bi-geo-alt-fill me-2"></i> Contacts Settings
+                    </h5>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid p-0">
                         <div class="row">
+                            <!-- Left Column -->
                             <div class="col-md-6">
+                                <!-- Address -->
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Address</label>
-                                    <input id="address_inp" type="text" name="address" class="form-control shadow-none">
-                                    <div id="address_inp_error" class="text-danger" style="display:none;">
+                                    <label for="address_inp" class="form-label fw-bold">
+                                        <i class="bi bi-geo-alt me-1"></i> Address
+                                    </label>
+                                    <input type="text" id="address_inp" name="address" class="form-control shadow-none">
+                                    <div id="address_inp_error" class="text-danger d-none"></div>
+                                </div>
+
+                                <!-- Google Map -->
+                                <div class="mb-3">
+                                    <label for="gmap_inp" class="form-label fw-bold">
+                                        <i class="bi bi-map me-1"></i> Google Map
+                                    </label>
+                                    <input type="text" id="gmap_inp" name="gmap" class="form-control shadow-none">
+                                    <div id="gmap_inp_error" class="text-danger d-none"></div>
+                                </div>
+
+                                <!-- Phone 1 -->
+                                <div class="mb-3">
+                                    <label for="pn1_inp" class="form-label fw-bold">
+                                        <i class="bi bi-telephone-fill me-1"></i> Phone Number 1
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                        <input type="text" id="pn1_inp" name="pn1" class="form-control shadow-none">
+                                    </div>
+                                    <div id="pn1_inp_error" class="text-danger d-none"></div>
+                                </div>
+
+                                <!-- Phone 2 -->
+                                <div class="mb-3">
+                                    <label for="pn2_inp" class="form-label fw-bold">
+                                        <i class="bi bi-telephone-fill me-1"></i> Phone Number 2
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                        <input type="text" id="pn2_inp" name="pn2" class="form-control shadow-none">
                                     </div>
                                 </div>
 
+                                <!-- Email -->
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Google Map</label>
-                                    <input id="gmap_inp" type="text" class="form-control shadow-none">
-                                    <div id="gmap_inp_error" class="text-danger" style="display:none;">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Phone Numbers (whit country code)</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-telephone-fill"></i>
-                                        </span>
-                                        <input type="text" id="pn1_inp" class="form-control shadow-none">
-                                    </div>
-                                    <div id="pn1_inp_error" class="text-danger" style="display:none;"></div>
-
-
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-telephone-fill"></i>
-                                        </span>
-                                        <input type="text" id="pn2_inp" class="form-control shadow-none">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Email</label>
-                                    <input id="email_inp" type="email" class="form-control shadow-none">
-                                    <div id="email_inp_error" class="text-danger" style="display:none;"></div>
+                                    <label for="email_inp" class="form-label fw-bold">
+                                        <i class="bi bi-envelope-fill me-1"></i> Email
+                                    </label>
+                                    <input type="email" id="email_inp" name="email" class="form-control shadow-none">
+                                    <div id="email_inp_error" class="text-danger d-none"></div>
                                 </div>
                             </div>
 
+                            <!-- Right Column -->
                             <div class="col-md-6">
-
+                                <!-- Social Links -->
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Social Links</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-twitter me-1"></i>
-                                        </span>
-                                        <input type="text" id="twitter_inp" class="form-control shadow-none">
-                                        <div id="twitter_inp_error" class="text-danger" style="display:none;"></div>
-                                    </div>
 
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-facebook me-1"></i>
-                                        </span>
-                                        <input type="text" id="facbook_inp" class="form-control shadow-none">
-                                        <div id="facbook_inp_error" class="text-danger" style="display:none;"></div>
+                                    <!-- Twitter -->
+                                    <label for="twitter_inp" class="form-label fw-semibold">
+                                        <i class="bi bi-twitter me-1 text-primary"></i> Twitter
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="bi bi-twitter"></i></span>
+                                        <input type="url" id="twitter_inp" name="twitter" class="form-control shadow-none" placeholder="Twitter URL">
                                     </div>
+                                    <div id="twitter_inp_error" class="text-danger d-none"></div>
 
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-instagram me-1"></i>
-                                        </span>
-                                        <input type="text" id="instagram_inp" class="form-control shadow-none">
-                                        <div id="instagram_inp_error" class="text-danger" style="display:none;"></div>
+                                    <!-- Facebook -->
+                                    <label for="facbook_inp" class="form-label fw-semibold">
+                                        <i class="bi bi-facebook me-1 text-primary"></i> Facebook
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                                        <input type="url" id="facbook_inp" name="facebook" class="form-control shadow-none" placeholder="Facebook URL">
                                     </div>
+                                    <div id="facbook_inp_error" class="text-danger d-none"></div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">iFrame Scr</label>
-                                        <input id="iframe_inp" type="text" class="form-control shadow-none">
-                                        <div id="iframe_inp_error" class="text-danger" style="display:none;">
-                                        </div>
+                                    <!-- Instagram -->
+                                    <label for="instagram_inp" class="form-label fw-semibold">
+                                        <i class="bi bi-instagram me-1 text-danger"></i> Instagram
+                                    </label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+                                        <input type="url" id="instagram_inp" name="instagram" class="form-control shadow-none" placeholder="Instagram URL">
                                     </div>
+                                    <div id="instagram_inp_error" class="text-danger d-none"></div>
+                                </div>
 
+                                <!-- iFrame -->
+                                <div class="mb-3">
+                                    <label for="iframe_inp" class="form-label fw-bold">
+                                        <i class="bi bi-code-slash me-1"></i> iFrame Source
+                                    </label>
+                                    <input type="text" id="iframe_inp" name="iframe" class="form-control shadow-none" placeholder="Paste embed iframe src">
+                                    <div id="iframe_inp_error" class="text-danger d-none"></div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal Footer -->
                 <div class="modal-footer">
-                    <button type="button" id="cencel-contacts-modal" class="btn text-secondary shadow-none"
-                        data-bs-dismiss="modal">CENCEL</button>
-                    <button type="submit" class="btn custom-bg text-white shadow-none">SUBMIT</button>
+                    <button type="button" id="cancel-contacts-modal" class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-info text-white shadow-none">
+                        <i class="bi bi-check-circle-fill me-1"></i> Submit
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-<!-- Contacts us Modal End -->
+<!-- End Contacts Settings Modal -->
 
-<!-- Management Teams  Section -->
-<div class="card border-0 shadow mb-4">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">MANAGEMENT TEAMS</h5>
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                data-bs-target="#team-s">
-                <i class="bi bi-person-add"></i> Add
-            </button>
-        </div>
-        <div class="row" id="team-data">
 
-        </div>
-    </div>
-</div>
-<!--  Management Teams Section End -->
+
+
 
 <!-- Management Teams Modal -->
 <div class="modal fade" id="team-s" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
@@ -608,17 +665,17 @@
                         let picture = resp.response[i]['picture'];
                         let id = resp.response[i]['id'];
                         teamHtml += `
-        <div class="col-md-2 mb-3 team-member" data-id="${id}">
-            <div class="card bg-dark text-white">
-                <img class="card-img" src="<?= TEAM_IMAGE_SITE_PATH ?>${picture}">
-                <div class="card-img-overlay text-end">
-                    <button type="button" class="btn btn-danger btn-ms text-end shadow-none delete-btn">
-                        <i class="bi bi-trash"></i> 
-                    </button>
-                </div>
-                <p class="card-text text-center px-3 py-2">${name}</p>
-            </div>
-        </div>`;
+                        <div class="col-md-2 mb-3 team-member" data-id="${id}">
+                            <div class="card bg-dark text-white">
+                                <img class="card-img" src="<?= TEAM_IMAGE_SITE_PATH ?>${picture}">
+                                <div class="card-img-overlay text-end">
+                                    <button type="button" class="btn btn-danger btn-ms text-end shadow-none delete-btn">
+                                        <i class="bi bi-trash"></i> 
+                                    </button>
+                                </div>
+                                <p class="card-text text-center px-3 py-2">${name}</p>
+                            </div>
+                        </div>`;
                     }
                     $('#team-data').html(teamHtml);
                 },

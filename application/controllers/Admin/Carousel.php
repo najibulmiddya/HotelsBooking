@@ -36,7 +36,8 @@ class Carousel extends CI_Controller
                     exit;
                 } else {
                     $data = array(
-                        'image' => $image
+                        'image' => $image,
+                        'status' =>1
                     );
 
                     if ($resp = $this->carousel_model->add_image($data)) {
@@ -58,7 +59,7 @@ class Carousel extends CI_Controller
     {
         try {
             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                if ($data = $this->carousel_model->getall_image()) {
+                if ($data = $this->carousel_model->getall_image(null)) {
                     echo jresp(true, "data get Successfully", $data);
                     exit;
                 } else {
@@ -100,6 +101,19 @@ class Carousel extends CI_Controller
         } catch (\Throwable $th) {
             echo jresp(false, "Server Internal error");
             exit;
+        }
+    }
+
+    public function carousel_toggle_status()
+    {
+        $id = $this->input->post('id');
+        $image = $this->db->get_where('carousel_image', ['id' => $id])->row();
+        if ($image) {
+            $new_status = ($image->status == 1) ? 0 : 1;
+            $this->db->where('id', $id)->update('carousel_image', ['status' => $new_status]);
+            echo json_encode(['status' => true, 'message' => 'Image status updated successfully.']);
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Image not found.']);
         }
     }
 }

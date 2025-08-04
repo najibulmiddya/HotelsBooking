@@ -1,5 +1,4 @@
 <h4 class="mb-4"><i class="bi bi-star-fill"></i> Users Rating & Review [Rooms]</h4>
-
 <!-- Filter Section -->
 <div class="row">
     <div class="col-md-3">
@@ -43,13 +42,13 @@
         </div>
         <table class="" id="rate_review_table">
             <thead>
-                <tr class="">
-                    <th>User Name</th>
-                    <th>Room</th>
-                    <th>Rating</th>
-                    <th>Review</th>
-                    <th>Date</th>
-                    <th>Action</th>
+                <tr>
+                    <th style="width: 14%;">Name</th>
+                    <th style="width: 18%;">Room</th>
+                    <th style="width: 12%;">Rating</th>
+                    <th style="width: 32%;">Review</th>
+                    <th style="width: 14%;">Date</th>
+                    <th style="width: 4%;" class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody id="rate_review_data">
@@ -130,7 +129,7 @@
                             <td>${stars}</td>
                             <td>${review.review}</td>
                             <td>${formattedDate}</td>
-                            <td>${deleteBtn}</td>
+                            <td class="text-center">${deleteBtn}</td>
                         </tr>`;
                         });
 

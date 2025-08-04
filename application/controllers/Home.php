@@ -19,7 +19,8 @@ class Home extends CI_Controller
 			// OUR ROOMS DATA STRAT
 			$allRooms = $this->Rooms_model->get_all_rooms(3, 0, 1);
 			$roomsData = [];
-			// pp($allRooms);
+			$max_adult = 1;
+			$max_children = 0;
 			foreach ($allRooms as $room) {
 				$room_status = $room['status'];
 				if ($room_status == 1) {
@@ -30,6 +31,13 @@ class Home extends CI_Controller
 					$room['facilities'] = $this->Rooms_model->get_room_facilities($room_id);
 					$roomsData[] = $room;
 				}
+
+				if ((int)$room['adult'] > $max_adult) {
+					$max_adult = (int)$room['adult'];
+				}
+				if ((int)$room['children'] > $max_children) {
+					$max_children = (int)$room['children'];
+				}
 			}
 			// pp($images);
 			$this->session->set_userdata('roomsData', $roomsData);
@@ -38,8 +46,6 @@ class Home extends CI_Controller
 			// pp($allFacilities);
 			$this->session->set_userdata('facilities', $allFacilities);
 
-			if ($carousel_image = $this->Contact_model->getall_image()) {
-			}
 			if ($contact_details = $this->Contact_model->get_contacts()) {
 
 				$tw = $contact_details->tw;
@@ -62,12 +68,13 @@ class Home extends CI_Controller
 					'shutdown' => $shutdown
 				];
 				$this->session->set_userdata('data', $data);
+				
 			}
 
+			$carousel_image = $this->Contact_model->getall_image(1);
 			$reviews = $this->Common_model->get_latest_room_reviews($limit = 10);
 
-			// pp($reviews);
-			view('users/index', compact('contact_details', 'carousel_image', 'reviews'), 'HOME');
+			view('users/index', compact('contact_details', 'carousel_image', 'reviews', 'max_adult', 'max_children'), 'HOME');
 		} catch (\Throwable $th) {
 			alert("danger", "Server Internal error");
 		}

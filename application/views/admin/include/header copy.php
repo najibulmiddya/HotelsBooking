@@ -40,28 +40,22 @@
             document.getElementsByClassName('alert')[0].remove();
         }
     </script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-white">
     <?php if (isset($_SESSION['loggedInAdmin']) == true) { ?>
-        <div class="container-fluid bg-dark text-light p-2 d-flex align-item-center justify-content-between sticky-top">
+
+
+
+        <div class="container-fluid bg-dark text-light p-3 d-flex align-item-center justify-content-between sticky-top">
             <h3 class="h-font">HOTELS ADMIN PANEL</h3>
 
-            <!-- <a href="<?= base_url('logout') ?>" class="btn text-white text-b btn-ms custom-bg">Log out</a> -->
-            <div class="d-flex">
-                <div class="dropdown">
-                    <button class="btn custom-bg btn-ms text-white dropdown-toggle d-flex align-items-center shadow-none" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?= USER_PROFILE_SITE_PATH . '1498_NajibulMiddya.jpg' ?>" width="30" height="30" class="rounded-circle me-2">
-                        <?= $_SESSION['loggedInAdmin']['name'] ?? 'Admin'; ?>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item text-danger" href="<?= base_url('logout') ?>"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+            <a href="<?= base_url('logout') ?>" class="btn text-white text-b btn-ms custom-bg">Log out</a>
+
         </div>
+
+
+
 
         <div class="col-lg-2 bg-dark border-top border-3 border-secondary" id="dashboard-menu">
             <nav class="navbar navbar-expand-lg navbar-dark">

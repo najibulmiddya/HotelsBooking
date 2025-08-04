@@ -1,18 +1,16 @@
 <div class="container">
     <div class="row">
-
         <!-- Page Heading -->
         <div class="col-12 my-2 mb-3">
             <h2 class="fw-bold">MY BOOKINGS</h2>
-            <div class="bg-info p-2" style="font-size: 14px;">
-                <a href="<?= base_url("home") ?>" class="text-white text-decoration-none">Home</a>
-                <span class="text-white"> > </span>
-                <a href="<?= base_url("hotels-rooms"); ?>" class="text-white text-decoration-none">Rooms</a>
-                <span class="text-white"> > </span>
+            <div class=" p-2" style="font-size: 14px;">
+                <a href="<?= base_url("home") ?>" class=" text-decoration-none">Home</a>
+                <span> > </span>
+                <a href="<?= base_url("hotels-rooms"); ?>" class=" text-decoration-none">Rooms</a>
+                <span> > </span>
                 <span class="active">Bookings</span>
             </div>
         </div>
-
 
         <!-- Cancel Booking Request Modal -->
         <div class="modal fade" id="cancelBookingModal" tabindex="-1">
@@ -172,12 +170,10 @@
 
         if (!empty($bookings)):
             foreach ($bookings as $data):
-
                 $status = strtolower($data['booking_status'] ?? '');
                 $arraval = $data['arraval'] ?? 0;
                 $refund = $data['refund'] ?? 0;
                 $cancel_status = $data['cancel_status'] ?? 'none';
-
                 // Status label class
                 $class = match ($status) {
                     'confirmed' => 'text-success',
@@ -245,9 +241,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
             <?php
             endforeach;
         else: ?>
@@ -263,8 +256,6 @@
                 </div>
             </div>
         <?php endif; ?>
-
-
     </div>
 </div>
 
@@ -316,3 +307,4 @@
         $('#cancelBookingModal').modal('hide');
     });
 </script>
+

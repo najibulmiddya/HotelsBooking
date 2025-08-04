@@ -1,45 +1,77 @@
-<h3 class="mb-4">Rooms</h3>
+<h3 class="mb-2"><i class="bi bi-door-open-fill  text-primary"></i> OUR ALL ROOMS</h3>
 <!-- Room Table -->
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="card-title m-0">ROOMS</h5>
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                data-bs-target="#add-room">
-                <i class="bi bi-person-add"></i> Add
-            </button>
+        <!-- Filter & Add Room Section -->
+        <div class="row align-items-end mb-3">
+            <!-- Filter by Status -->
+            <div class="col-md-3">
+                <label for="filterStatus" class="form-label fw-semibold">Filter by Status</label>
+                <select id="filterStatus" class="form-select shadow-none">
+                    <option value="">All</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="col-md-6 d-flex gap-2">
+                <button class="btn btn-primary shadow-none mt-4" id="applyFilter">
+                    <i class="bi bi-funnel-fill me-1"></i> Filter
+                </button>
+                <button class="btn btn-secondary shadow-none mt-4" id="resetFilter">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                </button>
+            </div>
+
+            <!-- Add Room Button -->
+            <div class="col-md-3 text-md-end mt-4">
+                <button type="button" class="btn btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#add-room">
+                    <i class="bi bi-plus-circle-fill me-1"></i> Add Room
+                </button>
+            </div>
         </div>
-        <table class="table table-hover table-bordered">
+
+
+        <!-- Loader for Bookings -->
+        <div id="bookingLoader" class="text-center my-3 d-none">
+            <div class="spinner-border text-primary" role="status" aria-label="Loading">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 fw-bold mb-0">Loading Data...</p>
+        </div>
+
+        <table id="roomsTable">
             <thead>
-                <tr class="bg-secondary text-light">
-                    <th scope="col">S.NO</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Area</th>
-                    <th scope="col">Gueste</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                <tr class="">
+                    <th>S.NO</th>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>Guests</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="room-data">
 
             </tbody>
         </table>
-
     </div>
 </div>
 
 <!-- add Room Modal -->
-<div class="modal fade" id="add-room" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="add-room" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
     <div class="modal-dialog modal-lg">
 
         <form id="room-from">
             <!-- autocomplete="off" -->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Room</h5>
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title"> <i class="bi bi-plus-circle-fill me-1"></i> Add Room</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -75,7 +107,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Children (Max.)</label>
-                            <input name="children" type="number" min="1" class="form-control shadow-none">
+                            <input name="children" type="number" class="form-control shadow-none">
                             <div id="children_error" class="text-danger" style="display:none;"></div>
                         </div>
 
@@ -135,11 +167,11 @@
 
 <!-- Edit Room Modal -->
 <div class="modal fade" id="edit-room-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
-    aria-labelledby="editRoomModalLabel" aria-hidden="true">
+     aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
     <div class="modal-dialog modal-lg">
         <form id="edit-room-form" autocomplete="off">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-info text-white">
                     <h5 class="modal-title" id="editRoomModalLabel">Edit Room</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -173,7 +205,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Children (Max.)</label>
-                            <input id="editRoomChildren" name="children" type="number" min="1" class="form-control shadow-none">
+                            <input id="editRoomChildren" name="children" type="number" class="form-control shadow-none">
                             <div id="e_children_error" class="text-danger" style="display:none;"></div>
                         </div>
                         <div class="mb-3">
@@ -231,10 +263,10 @@
 <!-- Edit Model end  -->
 
 <!-- Room details view Model -->
-<div class="modal fade" id="room-details-modal" tabindex="-1" aria-labelledby="roomDetailsModalLabel" aria-hidden="true">
+<div class="modal fade" id="room-details-modal" tabindex="-1" aria-labelledby="roomDetailsModalLabel"  aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title" id="roomDetailsModalLabel">Room Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -250,10 +282,10 @@
 <!-- Room details view Model End -->
 
 <!-- Room Image Upload Model  -->
-<div class="modal fade" id="room-image-upload-Modal" data-bs-backdrop="static" aria-labelledby="uploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="room-image-upload-Modal" data-bs-backdrop="static" aria-labelledby="uploadModalLabel" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="backdrop-filter: blur(1px);">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title room-img-model-room_name" id="uploadModalLabel"></h5>
                 <button type="button" id="room-image-upload-Modal-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -291,6 +323,9 @@
     </div>
 </div>
 <!-- Room Image Upload Model End -->
+
+
+
 
 <script>
     $(document).ready(function() {
@@ -335,63 +370,135 @@
         });
 
         // Get all Rooms
+        // function get_rooms() {
+        //     $('#room-data').html('');
+        //     $.ajax({
+        //         url: "<?php echo base_url('get-all-rooms'); ?>",
+        //         type: "GET",
+        //         dataType: "json",
+        //         success: function(resp) {
+        //             if (resp.status == true) {
+        //                 let i = 0
+        //                 $.each(resp.response, function(key, val) {
+
+        //                     let statusText = val.status == 1 ? "Active" : "Inactive";
+        //                     let statusClass = val.status == 1 ? "btn-success" : "btn-warning";
+        //                     let toggleStatusText = val.status == 1 ? "Deactivate" : "Activate";
+        //                     i++
+        //                     $('#room-data').append(`
+        //                             <tr id="${val.id}" class="align-middle"> 
+        //                                 <td>${i}</td>
+        //                                 <td>${val.room_name}</td>
+        //                                 <td>${val.area} sq. ft.</td>
+
+        //                                 <td> 
+        //                                 <span class="badge rounded-pill bg-ligth text-dark">
+        //                                 Adult: ${val.adult}
+        //                                 </span><br>
+        //                                 <span class="badge rounded-pill bg-ligth text-dark">
+        //                                 Children: ${val.children}
+        //                                 </span>
+        //                                 </td>
+
+        //                                 <td>₹${val.price}</td>
+        //                                 <td>${val.quantity}</td>
+        //                                 <td><span class="badge ${statusClass}">${statusText}</span></td>
+        //                                 <td>
+        //                                     <button type="button" class="btn btn-primary shadow-none"data-id="${val.id}" id="room-update-btn"><i class="bi bi-pencil-square"></i></button>
+
+        //                                     <button type="button" class="btn btn-info shadow-none"data-id="${val.id}" data-name="${val.room_name}"  id="room-image-upload-btn"><i class="bi bi-images"></i></button>
+
+        //                                     <button type="button" class="btn btn-success shadow-none"data-id="${val.id}" id="room-details-view-btn"><i class="bi bi-eye-fill"></i></button>
+
+        //                                     <button type="button" class="btn btn-danger shadow-none"data-id="${val.id}" id="room-delete-btn"><i class="bi bi-archive-fill"></i></button>
+
+        //                                      <button type="button" class="btn ${statusClass} shadow-none toggle-status-btn" data-id="${val.id}" data-status="${val.status}">
+        //                                     ${toggleStatusText}
+        //                                     </button>
+        //                                 </td>
+        //                             </tr>`);
+        //                 });
+        //             } else {
+        //                 $('#room-data').append(` <tr> <td class="text-danger text-center" colspan="8">${resp.message}</td></tr>`);
+        //             }
+        //         },
+        //         error: function() {
+        //             alert("Error fetching data");
+        //         }
+        //     });
+        // }
+
         function get_rooms() {
+            $('#bookingLoader').removeClass('d-none');
             $('#room-data').html('');
             $.ajax({
-                url: "<?php echo base_url('get-all-rooms'); ?>",
+                url: "<?= base_url('get-all-rooms'); ?>",
                 type: "GET",
                 dataType: "json",
                 success: function(resp) {
-                    if (resp.status == true) {
-                        let i = 0
+                    $('#bookingLoader').addClass('d-none');
+                    if (resp.status === true) {
+                        let i = 0;
+                        let tableRows = '';
                         $.each(resp.response, function(key, val) {
+                            i++;
+                            const statusText = val.status == 1 ? "Active" : "Inactive";
+                            const statusClass = val.status == 1 ? "btn-success" : "btn-warning";
+                            const toggleStatusText = val.status == 1 ? "Deactivate" : "Activate";
 
-                            let statusText = val.status == 1 ? "Active" : "Inactive";
-                            let statusClass = val.status == 1 ? "btn-success" : "btn-warning";
-                            let toggleStatusText = val.status == 1 ? "Deactivate" : "Activate";
-                            i++
-                            $('#room-data').append(`
-                                    <tr id="${val.id}" class="align-middle"> 
-                                        <td>${i}</td>
-                                        <td>${val.room_name}</td>
-                                        <td>${val.area} sq. ft.</td>
-
-                                        <td> 
-                                        <span class="badge rounded-pill bg-ligth text-dark">
-                                        Adult: ${val.adult}
-                                        </span><br>
-                                        <span class="badge rounded-pill bg-ligth text-dark">
-                                        Children: ${val.children}
-                                        </span>
-                                        </td>
-
-                                        <td>₹${val.price}</td>
-                                        <td>${val.quantity}</td>
-                                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary shadow-none"data-id="${val.id}" id="room-update-btn"><i class="bi bi-pencil-square"></i></button>
-
-                                            <button type="button" class="btn btn-info shadow-none"data-id="${val.id}" data-name="${val.room_name}"  id="room-image-upload-btn"><i class="bi bi-images"></i></button>
-
-                                            <button type="button" class="btn btn-success shadow-none"data-id="${val.id}" id="room-details-view-btn"><i class="bi bi-eye-fill"></i></button>
-
-                                            <button type="button" class="btn btn-danger shadow-none"data-id="${val.id}" id="room-delete-btn"><i class="bi bi-archive-fill"></i></button>
-
-                                             <button type="button" class="btn ${statusClass} shadow-none toggle-status-btn" data-id="${val.id}" data-status="${val.status}">
-                                            ${toggleStatusText}
-                                            </button>
-                                        </td>
-                                    </tr>`);
+                            tableRows += `
+                        <tr>
+                            <td>${i}</td>
+                            <td>${val.room_name}</td>
+                            <td>${val.area} sq. ft.</td>
+                            <td>
+                                <span class="badge rounded-pill bg-light text-dark">Adult: ${val.adult}</span><br>
+                                <span class="badge rounded-pill bg-light text-dark">Children: ${val.children}</span>
+                            </td>
+                            <td>₹${val.price}</td>
+                            <td>${val.quantity}</td>
+                            <td><span class="badge ${statusClass}">${statusText}</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm shadow-none" data-id="${val.id}" id="room-update-btn"><i class="bi bi-pencil-square"></i></button>
+                                <button class="btn btn-info btn-sm shadow-none" data-id="${val.id}" data-name="${val.room_name}" id="room-image-upload-btn"><i class="bi bi-images"></i></button>
+                                <button class="btn btn-success btn-sm shadow-none" data-id="${val.id}" id="room-details-view-btn"><i class="bi bi-eye-fill"></i></button>
+                                <button class="btn btn-danger btn-sm shadow-none" data-id="${val.id}" id="room-delete-btn"><i class="bi bi-archive-fill"></i></button>
+                                <button class="btn ${statusClass} btn-sm shadow-none toggle-status-btn" data-id="${val.id}" data-status="${val.status}">${toggleStatusText}</button>
+                            </td>
+                        </tr>`;
                         });
+
+                        $('#room-data').html(tableRows);
+
+                        // Re-initialize DataTable
+                        if ($.fn.DataTable.isDataTable('#roomsTable')) {
+                            $('#roomsTable').DataTable().destroy();
+                        }
+
+                        $('#roomsTable').DataTable({
+                            responsive: true,
+                            autoWidth: false,
+                            language: {
+                                search: "🔍 Search:",
+                                lengthMenu: "Show _MENU_ entries",
+                                info: "Showing _START_ to _END_ of _TOTAL_ rooms",
+                                paginate: {
+                                    next: "Next",
+                                    previous: "Prev"
+                                }
+                            }
+                        });
+
                     } else {
-                        $('#room-data').append(` <tr> <td class="text-danger text-center" colspan="8">${resp.message}</td></tr>`);
+                        $('#room-data').html(`<tr><td colspan="8" class="text-danger text-center">${resp.message}</td></tr>`);
                     }
                 },
                 error: function() {
-                    alert("Error fetching data");
+                    alert("Error fetching data.");
                 }
             });
         }
+
         get_rooms();
 
         // Room Activate / Deactivate 
@@ -409,8 +516,8 @@
                 dataType: "json",
                 success: function(resp) {
                     if (resp.status == true) {
-                        get_rooms();
                         js_alert(resp.status, resp.message);
+                        location.reload();
                     } else {
                         alert("Failed to update room status. Please try again.");
                     }
@@ -649,8 +756,8 @@
                             if (response.errors) {
                                 if (response.errors && response.errors.room_image) {
                                     $('#room_image_error').text(response.errors.room_image).show();
-                                }else{
-                                   
+                                } else {
+
                                 }
                             }
                             if (response.status == false) {
@@ -723,12 +830,12 @@
                 },
                 dataType: 'json',
                 success: function(resp) {
-                  if (resp.status==true) {
-                    alert(resp.message);
-                    get_room_image(room_id);
-                  }else{
-                    alert(resp.message);
-                  }
+                    if (resp.status == true) {
+                        alert(resp.message);
+                        get_room_image(room_id);
+                    } else {
+                        alert(resp.message);
+                    }
                 },
                 error: function() {
                     alert('An error occurred while updating the thumb. Please try again.');

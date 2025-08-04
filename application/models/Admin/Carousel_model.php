@@ -22,7 +22,6 @@ class Carousel_model extends CI_Model
         return $this->db->get()->result_array();
     }
 
-
     public function get_image($id)
     {
         $this->db->select("*");
@@ -35,6 +34,4 @@ class Carousel_model extends CI_Model
     {
         return $this->db->delete($this->carousel_image, ['id' => $id]);
     }
-
-
 }

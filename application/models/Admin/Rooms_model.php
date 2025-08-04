@@ -81,7 +81,7 @@ class Rooms_model extends CI_Model
     }
 
     // get singal facilities by roomId
-    public function get_room_facilities($room_id)
+    public function get_room_facilities($room_id=null)
     {
         $this->db->select('*');
         $this->db->from("{$this->rooms_facilities} rf");
@@ -225,7 +225,7 @@ class Rooms_model extends CI_Model
         if ($order_by !== null) {
             $this->db->order_by('bo.booking_id', $order_by);
         } else {
-            $this->db->order_by('bo.booking_id', 'ASC');
+            $this->db->order_by('bo.booking_id', 'DESC');
         }
 
         return $this->db->get()->result_array();

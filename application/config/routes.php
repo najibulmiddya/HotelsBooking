@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 // Front-End
 $route['facilities'] = 'Users/facilities/index';
 $route['hotels-rooms'] = 'Users/rooms/index';
+$route['rooms/get_filtered_rooms'] = 'Users/rooms/get_filtered_rooms';
 $route['hotels/about'] = 'Users/about/index';
 $route['contact'] = 'Users/contact/index';
 $route['contact-from-submit'] = 'Users/contact/contact_from_submit';
@@ -115,6 +116,10 @@ $route['carousel'] = 'Admin/carousel/index';
 $route['carousel-add-image'] = 'Admin/carousel/add_image';
 $route['carousel-get-image'] = 'Admin/carousel/get_image';
 $route['carousel-delete-image'] = 'Admin/carousel/delete_image';
+$route['carousel-toggle-status'] = 'Admin/carousel/carousel_toggle_status';
+
+
+
 $route['users-queries'] = 'Admin/users_queries/index';
 $route['users-querie-delete'] = 'Admin/users_queries/delete_user_querie';
 $route['users-querie-seen'] = 'Admin/users_queries/user_querie_seen';
@@ -166,3 +171,7 @@ $route['admin/room-rate-review'] = 'Admin/Users/room_review';
 $route['admin/fetch-room-reviews'] = 'Admin/Users/fetch_room_reviews';
 $route['admin/delete-room-review'] = 'Admin/Users/delete_room_review';
 $route['admin/fetch-room-review-list'] = 'Admin/Users/fetch_rooms_review_list';
+
+
+$route['admin/bookings-chart-data'] = 'Admin/dashboard/bookings_chart_data';
+

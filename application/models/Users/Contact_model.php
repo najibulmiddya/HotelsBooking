@@ -24,10 +24,13 @@ class Contact_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function getall_image()
+    public function getall_image($status = null)
     {
         $this->db->select("*");
         $this->db->from($this->carousel_image);
+        if (($status)) {
+            $this->db->where('status', $status);  // cast to string to match ENUM
+        }
         return $this->db->get()->result_array();
     }
 
@@ -36,6 +39,4 @@ class Contact_model extends CI_Model
         $this->db->insert($this->users_query, $data);
         return $this->db->insert_id();
     }
-
-   
 }

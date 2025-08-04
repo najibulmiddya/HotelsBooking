@@ -25,33 +25,33 @@
 				Check Booking Availability
 			</h5>
 
-			<form>
+			<form action="<?= base_url('hotels-rooms') ?>" method="GET">
 				<div class="row align-items-end">
 					<div class="col-lg-3 mb-3">
-						<label class="form-label" style="font-size: 500;">Chack-in</label>
-						<input id="checkin" type="date" class="form-control shadow-none">
+						<label class="form-label" style="font-weight: 500;">Check-in</label>
+						<input id="checkin" name="checkin" type="date" class="form-control shadow-none text-dark bg-white" placeholder="DD-MM-YYYY">
 					</div>
 					<div class="col-lg-3 mb-3">
-						<label class="form-label" style="font-size: 500;">Chack-out</label>
-						<input id="checkout" type="date" class="form-control shadow-none">
+						<label class="form-label" style="font-weight: 500;">Check-out</label>
+						<input id="checkout" name="checkout" type="date" class="form-control shadow-none text-dark bg-white" placeholder="DD-MM-YYYY">
 					</div>
 
 					<div class="col-lg-3 mb-3">
-						<label class="form-label" style="font-size: 500;">Adult</label>
-						<select class="form-select shadow-none">
-							<option selected>select menu</option>
-							<option value="1">One</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
+						<label class="form-label" style="font-weight: 500;">Adult</label>
+						<select name="adults" class="form-select shadow-none">
+							<option value="">Select</option>
+							<?php for ($i = 1; $i <= $max_adult; $i++): ?>
+								<option value="<?= $i ?>"><?= $i ?></option>
+							<?php endfor; ?>
 						</select>
 					</div>
 					<div class="col-lg-2 mb-3">
-						<label class="form-label" style="font-size: 500;">Children</label>
-						<select class="form-select shadow-none">
-							<option selected>select menu</option>
-							<option value="1">One</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
+						<label class="form-label" style="font-weight: 500;">Children</label>
+						<select name="children" class="form-select shadow-none">
+							<option value="">Select</option>
+							<?php for ($i = 0; $i <= $max_children; $i++): ?>
+								<option value="<?= $i ?>"><?= $i ?></option>
+							<?php endfor; ?>
 						</select>
 					</div>
 					<div class="col-lg-1 mb-lg-3 mt-2">
@@ -59,6 +59,7 @@
 					</div>
 				</div>
 			</form>
+
 		</div>
 	</div>
 </div>
@@ -76,9 +77,16 @@
 			foreach ($roomsData as $room): ?>
 				<div class="col-lg-4 col-md-6 my-3">
 					<div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
-						<img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="card-img-top" alt="">
+
+
+						<a href="<?= base_url('room-details/' . $room['id']); ?>">
+							<img src="<?= base_url('assets/images/rooms/' . $room['image']) ?>" class="card-img-top" alt="">
+						</a>
+
 						<div class="card-body">
 							<h5><?= htmlspecialchars($room['room_name']) ?></h5>
+
+
 							<h6 class="text-success mb-4">
 								<i class="bi bi-currency-rupee"></i><?= htmlspecialchars($room['price']) ?>
 								<small class="text-muted">/ night</small>
@@ -310,35 +318,45 @@
 				</div>
 				<div class="col-lg-4 col-md-4">
 					<div class="bg-white p-4 rounded mb-4 shadow">
-						<h5>Call us</h5>
-						<a class="text-decoration-none d-inline-block mb-2 text-dark" href="tel:<?= $contact_details->ph1 ?>"> <i
-								class="bi bi-telephone-fill"></i> <?= $contact_details->ph1 ?>
+						<h5 class="mb-3"><i class="bi bi-telephone-outbound-fill text-primary me-2"></i>Call Us</h5>
+
+						<a class="text-decoration-none d-inline-block mb-2 text-dark" href="tel:<?= $contact_details->ph1 ?>">
+							<i class="bi bi-telephone-fill text-success me-1"></i> <?= $contact_details->ph1 ?>
 						</a>
 						<br>
 
-						<?php if ($contact_details->ph2) {
-						?>
-							<a class="text-decoration-none d-inline-block text-dark" href="tel:<?= $contact_details->ph2 ?>"> <i
-									class="bi bi-telephone-fill"></i> <?= $contact_details->ph2 ?>
+						<?php if (!empty($contact_details->ph2)) : ?>
+							<a class="text-decoration-none d-inline-block text-dark" href="tel:<?= $contact_details->ph2 ?>">
+								<i class="bi bi-telephone-fill text-success me-1"></i> <?= $contact_details->ph2 ?>
 							</a>
-						<?php
-						} ?>
+						<?php endif; ?>
 					</div>
+
 
 					<div class="bg-white p-4 rounded mb-4 shadow">
-						<h5>Follow us</h5>
-						<a class="d-inline-block mb-3 text-dark" href="<?= $contact_details->tw ?>">
-							<span class="badge bg-light text-dark fs-6 p-2"><i class="bi bi-twitter me-1"></i> Twitter</span>
+						<h5 class="mb-2 fw-semibold"><i class="bi bi-share-fill text-danger me-1"></i> Follow us</h5>
+
+						<a class="d-inline-block mb-2 text-dark" href="<?= $contact_details->tw ?>" target="_blank">
+							<span class="badge bg-light text-dark fs-6 p-2">
+								<i class="bi bi-twitter me-1" style="color: #1DA1F2;"></i> Twitter
+							</span>
 						</a>
 						<br>
-						<a class="d-inline-block mb-3 text-dark" href="<?= $contact_details->fb ?>">
-							<span class="badge bg-light text-dark fs-6 p-2"><i class="bi bi-facebook me-1"></i> Facebook</span>
+
+						<a class="d-inline-block mb-2 text-dark" href="<?= $contact_details->fb ?>" target="_blank">
+							<span class="badge bg-light text-dark fs-6 p-2">
+								<i class="bi bi-facebook me-1" style="color: #1877F2;"></i> Facebook
+							</span>
 						</a>
 						<br>
-						<a class="d-inline-block text-dark" href="<?= $contact_details->insta ?>">
-							<span class="badge bg-light text-dark fs-6 p-2"><i class="bi bi-instagram me-1"></i> Instagram</span>
+
+						<a class="d-inline-block text-dark" href="<?= $contact_details->insta ?>" target="_blank">
+							<span class="badge bg-light text-dark fs-6 p-2">
+								<i class="bi bi-instagram me-1" style="color: #E4405F;"></i> Instagram
+							</span>
 						</a>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -348,19 +366,21 @@
 <script>
 	// Check-in calendar
 	const checkinCalendar = flatpickr("#checkin", {
-		dateFormat: "Y-m-d",
+		dateFormat: "d/m/Y",
 		minDate: "today",
-		defaultDate: "today",
-		clickOpens: true,
-		onChange: function(selectedDates, dateStr) {
-			checkoutCalendar.set("minDate", dateStr);
-		}
+		 clickOpens: true,
+        onChange: function(selectedDates, dateStr) {
+            // Set minDate for checkout to +1 day after check-in
+            const nextDay = new Date(selectedDates[0]);
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkoutCalendar.set("minDate", nextDay);
+        }
 	});
 
 	// Check-out calendar
 	const checkoutCalendar = flatpickr("#checkout", {
-		dateFormat: "Y-m-d",
-		minDate: "today",
-		clickOpens: true
+		dateFormat: "d-m-Y",
+        minDate: new Date().fp_incr(1), // today + 1
+        clickOpens: true
 	});
 </script>
