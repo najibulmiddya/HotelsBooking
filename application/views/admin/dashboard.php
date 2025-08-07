@@ -193,6 +193,27 @@
 </div>
 
 
+
+<div class="row mt-3" id="chartTotals">
+  <div class="col-md-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="fw-bold mb-3">
+          <i class="bi bi-bar-chart-steps me-2"></i>Booking & Revenue Summary
+        </h6>
+        <div class="row text-muted small">
+          <div class="col-md-2">Total Bookings: <span id="totalBookings">0</span></div>
+          <div class="col-md-2">Cancelled Bookings: <span id="cancelledBookings">0</span></div>
+          <div class="col-md-2">Total Revenue: ₹<span id="totalRevenue">0.00</span></div>
+          <div class="col-md-2">Processed Refunds: ₹<span id="processedRefunds">0.00</span></div>
+          <div class="col-md-2">Refunded: ₹<span id="refundedRevenue">0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Booking & Revenue Analytics Section -->
 <div class="shadow p-2">
 
@@ -205,10 +226,10 @@
     </h5>
 
     <!-- Start Date -->
-    <input type="text" id="filterStartDate" class="form-control form-control shadow-none" placeholder="Start Date" autocomplete="off" style="max-width: 120px;">
+    <input type="text" id="filterStartDate" class="form-control form-control shadow-none text-dark bg-white" placeholder="Start Date" autocomplete="off" style="max-width: 120px;">
 
     <!-- End Date -->
-    <input type="text" id="filterEndDate" class="form-control form-control shadow-none" placeholder="End Date" autocomplete="off" style="max-width: 120px;">
+    <input type="text" id="filterEndDate" class="form-control form-control shadow-none text-dark bg-white" placeholder="End Date" autocomplete="off" style="max-width: 120px;">
 
     <!-- Apply -->
     <button id="applyFilter" class="btn btn btn-primary shadow-none">
@@ -240,6 +261,7 @@
             <i class="bi bi-bar-chart-fill me-2"></i>Bookings Analytics
           </h6>
           <canvas id="bookingChart" height="150"></canvas>
+          <div id="bookingDateRange" class="text-muted small text-center mt-2"></div>
         </div>
       </div>
     </div>
@@ -252,6 +274,7 @@
             <i class="bi bi-currency-rupee me-2"></i>Revenue Analytics
           </h6>
           <canvas id="revenueChart" height="150"></canvas>
+          <div id="revenueDateRange" class="text-muted small text-center mt-2"></div>
         </div>
       </div>
     </div>
@@ -283,17 +306,163 @@
 </script>
 
 <script>
-  function renderCharts(viewMode) {
+  // function renderCharts(viewMode) {
+  //   let labels = [];
+  //   const confirmed = [],
+  //     cancelled = [],
+  //     newBookings = [],
+  //     total_revenue = [],
+  //     processed_refunds = [],
+  //     refunded_revenue = [];
+
+  //   if (viewMode === 'all') {
+  //     // Aggregate all data into a single label
+  //     labels = ['All Time'];
+  //     const filtered = chartData;
+
+  //     confirmed.push(filtered.reduce((sum, d) => sum + parseInt(d.confirmed_bookings || 0), 0));
+  //     cancelled.push(filtered.reduce((sum, d) => sum + parseInt(d.cancelled_bookings || 0), 0));
+  //     newBookings.push(filtered.reduce((sum, d) => sum + parseInt(d.new_bookings || 0), 0));
+
+  //     total_revenue.push(filtered.reduce((sum, d) => sum + parseFloat(d.total_revenue || 0), 0));
+  //     processed_refunds.push(filtered.reduce((sum, d) => sum + parseFloat(d.processed_refunds || 0), 0));
+  //     refunded_revenue.push(filtered.reduce((sum, d) => sum + parseFloat(d.refunded_revenue || 0), 0));
+  //   } else {
+  //     // Unique labels based on selected viewMode
+  //     labels = [...new Set(chartData.map(d => d[viewMode]))];
+
+  //     labels.forEach(label => {
+  //       const filtered = chartData.filter(d => d[viewMode] == label);
+
+  //       confirmed.push(filtered.reduce((sum, d) => sum + parseInt(d.confirmed_bookings || 0), 0));
+  //       cancelled.push(filtered.reduce((sum, d) => sum + parseInt(d.cancelled_bookings || 0), 0));
+  //       newBookings.push(filtered.reduce((sum, d) => sum + parseInt(d.new_bookings || 0), 0));
+
+  //       total_revenue.push(filtered.reduce((sum, d) => sum + parseFloat(d.total_revenue || 0), 0));
+  //       processed_refunds.push(filtered.reduce((sum, d) => sum + parseFloat(d.processed_refunds || 0), 0));
+  //       refunded_revenue.push(filtered.reduce((sum, d) => sum + parseFloat(d.refunded_revenue || 0), 0));
+  //     });
+  //   }
+
+  //   // Format labels
+  //   const formattedLabels =
+  //     viewMode === 'week' ?
+  //     labels.map(w => 'W' + w.slice(4) + ' - ' + w.slice(0, 4)) :
+  //     viewMode === 'day' ?
+  //     labels.map(d => {
+  //       const [y, m, d2] = d.split('-');
+  //       return `${d2}-${m}-${y}`;
+  //     }) :
+  //     viewMode === 'month' ?
+  //     labels.map(m => {
+  //       const [y, m2] = m.split('-');
+  //       return `${m2}-${y}`;
+  //     }) :
+  //     labels; // year or all (just show raw labels)
+
+  //   if (window.Chart && typeof bookingChart?.destroy === 'function') bookingChart.destroy();
+  //   if (window.Chart && typeof revenueChart?.destroy === 'function') revenueChart.destroy();
+
+
+  //   // Booking Chart
+  //   bookingChart = new Chart(document.getElementById('bookingChart'), {
+  //     type: 'bar',
+  //     data: {
+  //       labels: formattedLabels,
+  //       datasets: [{
+  //           label: 'Confirmed Bookings',
+  //           data: confirmed,
+  //           backgroundColor: '#198754'
+  //         },
+  //         {
+  //           label: 'Cancelled Bookings',
+  //           data: cancelled,
+  //           backgroundColor: '#dc3545'
+  //         },
+  //         {
+  //           label: 'New Bookings',
+  //           data: newBookings,
+  //           backgroundColor: '#0dcaf0'
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       plugins: {
+  //         legend: {
+  //           position: 'bottom'
+  //         }
+  //       },
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true
+  //         }
+  //       }
+  //     }
+  //   });
+
+  //   // Revenue Chart
+  //   revenueChart = new Chart(document.getElementById('revenueChart'), {
+  //     type: 'line',
+  //     data: {
+  //       labels: formattedLabels,
+  //       datasets: [{
+  //           label: 'Total Revenue (₹)',
+  //           data: total_revenue,
+  //           borderColor: '#4caf50',
+  //           backgroundColor: 'rgba(76, 175, 80, 0.2)',
+  //           fill: true,
+  //           tension: 0.3
+  //         },
+  //         {
+  //           label: 'Processed Refunds (₹)',
+  //           data: processed_refunds,
+  //           borderColor: '#2196f3',
+  //           backgroundColor: 'rgba(33, 150, 243, 0.2)',
+  //           fill: true,
+  //           tension: 0.3
+  //         },
+  //         {
+  //           label: 'Refunded (₹)',
+  //           data: refunded_revenue,
+  //           borderColor: '#ff9800',
+  //           backgroundColor: 'rgba(255, 152, 0, 0.2)',
+  //           fill: true,
+  //           tension: 0.3
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       plugins: {
+  //         legend: {
+  //           position: 'bottom'
+  //         }
+  //       },
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true,
+  //           ticks: {
+  //             callback: value => '₹' + value.toLocaleString()
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+
+  function renderCharts(viewMode, startDate = '', endDate = '') {
+
+    
     let labels = [];
     const confirmed = [],
       cancelled = [],
-      newBookings = [],
-      total_revenue = [],
+      newBookings = [];
+    const total_revenue = [],
       processed_refunds = [],
       refunded_revenue = [];
 
     if (viewMode === 'all') {
-      // Aggregate all data into a single label
       labels = ['All Time'];
       const filtered = chartData;
 
@@ -305,7 +474,6 @@
       processed_refunds.push(filtered.reduce((sum, d) => sum + parseFloat(d.processed_refunds || 0), 0));
       refunded_revenue.push(filtered.reduce((sum, d) => sum + parseFloat(d.refunded_revenue || 0), 0));
     } else {
-      // Unique labels based on selected viewMode
       labels = [...new Set(chartData.map(d => d[viewMode]))];
 
       labels.forEach(label => {
@@ -321,25 +489,29 @@
       });
     }
 
-    // Format labels
     const formattedLabels =
-      viewMode === 'week' ?
-      labels.map(w => 'W' + w.slice(4) + ' - ' + w.slice(0, 4)) :
-      viewMode === 'day' ?
-      labels.map(d => {
+      viewMode === 'week' ? labels.map(w => 'W' + w.slice(4) + ' - ' + w.slice(0, 4)) :
+      viewMode === 'day' ? labels.map(d => {
         const [y, m, d2] = d.split('-');
         return `${d2}-${m}-${y}`;
       }) :
-      viewMode === 'month' ?
-      labels.map(m => {
+      viewMode === 'month' ? labels.map(m => {
         const [y, m2] = m.split('-');
         return `${m2}-${y}`;
-      }) :
-      labels; // year or all (just show raw labels)
+      }) : labels;
+
+    let displayRange = '';
+    if (startDate && endDate) {
+      displayRange = `${startDate} → ${endDate}`;
+      $('#bookingDateRange').text(displayRange).show();
+      $('#revenueDateRange').text(displayRange).show();
+    } else {
+      $('#bookingDateRange').hide();
+      $('#revenueDateRange').hide();
+    }
 
     if (window.Chart && typeof bookingChart?.destroy === 'function') bookingChart.destroy();
     if (window.Chart && typeof revenueChart?.destroy === 'function') revenueChart.destroy();
-
 
     // Booking Chart
     bookingChart = new Chart(document.getElementById('bookingChart'), {
@@ -376,6 +548,7 @@
           }
         }
       }
+
     });
 
     // Revenue Chart
@@ -418,15 +591,14 @@
         },
         scales: {
           y: {
-            beginAtZero: true,
-            ticks: {
-              callback: value => '₹' + value.toLocaleString()
-            }
+            beginAtZero: true
           }
         }
       }
+
     });
   }
+
 
   $(document).ready(function() {
     $.getJSON("<?= base_url('admin/bookings-chart-data') ?>", function(data) {
@@ -435,36 +607,57 @@
     });
 
     $('#chartViewMode').on('change', function() {
+      $('#filterStartDate').val('');
+      $('#filterEndDate').val('');
+      fetchChartData();
       renderCharts($(this).val());
     });
 
+
     $('#applyFilter').on('click', function() {
-      let start = $('#filterStartDate').val();
-      let end = $('#filterEndDate').val();
-      if (start, end) {
-        renderCharts(start, end);
-
+      const start = $('#filterStartDate').val();
+      const end = $('#filterEndDate').val();
+      if (start && end) {
+        fetchChartData(start, end);
       }
-
     });
+
+    function fetchChartData(start = '', end = '') {
+      $.getJSON("<?= base_url('admin/bookings-chart-data') ?>", {
+        start_date: start,
+        end_date: end
+      }, function(data) {
+        chartData = data;
+        renderCharts($('#chartViewMode').val(), start, end);
+      });
+    }
 
     $('#resetFilter').on('click', function() {
       $('#filterStartDate').val('');
       $('#filterEndDate').val('');
-     renderCharts($('#chartViewMode').val());
+      fetchChartData();
     });
 
   });
 </script>
 
 <script>
-  flatpickr("#filterStartDate", {
+  let startPicker, endPicker;
+  startPicker = flatpickr("#filterStartDate", {
+    dateFormat: "d-m-Y",
+    maxDate: "today",
+    onChange: function(selectedDates, dateStr) {
+      if (selectedDates.length > 0) {
+        endPicker.set('minDate', selectedDates[0]);
+      } else {
+        endPicker.set('minDate', null);
+      }
+    }
+  });
+
+  endPicker = flatpickr("#filterEndDate", {
     dateFormat: "d-m-Y",
     maxDate: "today"
   });
 
-  flatpickr("#filterEndDate", {
-    dateFormat: "d-m-Y",
-    maxDate: "today"
-  });
 </script>

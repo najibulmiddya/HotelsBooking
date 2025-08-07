@@ -75,8 +75,47 @@ class Dashboard extends CI_Controller
     }
 
 
+    // public function bookings_chart_data()
+    // {
+    //     $query = $this->db->query("
+    //     SELECT 
+    //         DATE_FORMAT(datetime, '%Y') AS year,
+    //         DATE_FORMAT(datetime, '%m-%Y') AS month,
+    //         DATE_FORMAT(datetime, '%d-%m-%Y') AS day,
+    //         YEARWEEK(datetime, 1) AS week,
+
+    //         -- Revenue
+    //         SUM(CASE WHEN booking_status = 'confirmed' AND arraval = 1 THEN trans_amt ELSE 0 END) AS total_revenue,
+    //         SUM(CASE WHEN booking_status = 'cancelled' AND refund = 0 THEN trans_amt ELSE 0 END) AS processed_refunds,
+    //         SUM(CASE WHEN booking_status = 'cancelled' AND refund = 1 THEN trans_amt ELSE 0 END) AS refunded_revenue,
+
+    //         -- Booking Stats
+    //         COUNT(CASE WHEN booking_status = 'confirmed' AND arraval = 1 THEN 1 END) AS confirmed_bookings,
+    //         COUNT(CASE WHEN booking_status = 'confirmed' AND arraval = 0 THEN 1 END) AS new_bookings,
+    //         COUNT(CASE WHEN booking_status = 'cancelled' THEN 1 END) AS cancelled_bookings
+
+    //     FROM booking_order
+    //     GROUP BY year, month, day, week
+    //     ORDER BY STR_TO_DATE(day, '%d-%m-%Y') ASC
+    // ")->result_array();
+
+    //     echo json_encode($query);
+    // }
+
+
     public function bookings_chart_data()
     {
+        $start_date = $this->input->get('start_date'); // Expected in d-m-Y
+        $end_date = $this->input->get('end_date');     // Expected in d-m-Y
+
+        $where_clause = "";
+
+        if (!empty($start_date) && !empty($end_date)) {
+            $start = DateTime::createFromFormat('d-m-Y', $start_date)->format('Y-m-d') . ' 00:00:00';
+            $end   = DateTime::createFromFormat('d-m-Y', $end_date)->format('Y-m-d') . ' 23:59:59';
+            $where_clause = "WHERE datetime BETWEEN '$start' AND '$end'";
+        }
+
         $query = $this->db->query("
         SELECT 
             DATE_FORMAT(datetime, '%Y') AS year,
@@ -95,6 +134,7 @@ class Dashboard extends CI_Controller
             COUNT(CASE WHEN booking_status = 'cancelled' THEN 1 END) AS cancelled_bookings
 
         FROM booking_order
+        $where_clause
         GROUP BY year, month, day, week
         ORDER BY STR_TO_DATE(day, '%d-%m-%Y') ASC
     ")->result_array();

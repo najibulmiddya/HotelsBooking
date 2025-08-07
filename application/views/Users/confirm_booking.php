@@ -22,7 +22,7 @@
         <div class="col-lg-5 col-md-12 px-4">
             <div class="card mb-4 border-0 shadow-ms rounded-3">
                 <div class="card-body">
-                    <form id="bookingDetailsForm" action="<?=base_url('razorpay/pay')?>" method="post">
+                    <form id="bookingDetailsForm" action="<?= base_url('razorpay/pay') ?>" method="post">
                         <h6 class="mb-3">BOOKING DETAILS</h6>
                         <div class="row">
                             <div class="col-md-6 mb-2">
@@ -46,12 +46,12 @@
 
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Chack-in</label>
-                                <input id="checkin" name="checkin" onchange="check_availability()" type="date" class="form-control shadow-none">
+                                <input id="checkin" name="checkin" onchange="check_availability()" type="text" class="form-control shadow-none text-dark bg-white" placeholder="DD-MM-YYYY">
                             </div>
 
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Chack-out</label>
-                                <input id="checkout" name="checkout" onchange="check_availability()" type="date" class="form-control shadow-none">
+                                <input id="checkout" name="checkout" onchange="check_availability()" type="text" class="form-control shadow-none text-dark bg-white" placeholder="DD-MM-YYYY">
                             </div>
 
                             <span id="checkout_and_checkout_error" class="error col-md-12"></span>
@@ -151,16 +151,41 @@
 
 
     $(document).ready(function() {
+
+
         let checkoutCalendar;
-        // Initialize Flatpickr for check-in
+        // // Initialize Flatpickr for check-in
+        // const checkinCalendar = flatpickr("#checkin", {
+        //     dateFormat: "d-m-Y",
+        //     minDate: "today",
+        //     clickOpens: true,
+        //     onChange: function(selectedDates, dateStr) {
+        //         if (checkoutCalendar) {
+        //             checkoutCalendar.set("minDate", selectedDates[0]);
+        //         }
+        //         check_availability();
+        //     }
+        // });
+        // // Initialize Flatpickr for check-out
+        // checkoutCalendar = flatpickr("#checkout", {
+        //     dateFormat: "d-m-Y",
+        //     minDate: "today",
+        //     clickOpens: true,
+        //     onChange: function() {
+        //         check_availability();
+        //     }
+        // });
+
+
         const checkinCalendar = flatpickr("#checkin", {
             dateFormat: "d-m-Y",
             minDate: "today",
-            defaultDate: "today",
             clickOpens: true,
             onChange: function(selectedDates, dateStr) {
                 if (checkoutCalendar) {
-                    checkoutCalendar.set("minDate", selectedDates[0]);
+                    const nextDay = new Date(selectedDates[0]);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    checkoutCalendar.set("minDate", nextDay);
                 }
                 check_availability();
             }
@@ -168,11 +193,12 @@
         // Initialize Flatpickr for check-out
         checkoutCalendar = flatpickr("#checkout", {
             dateFormat: "d-m-Y",
-            minDate: "today",
+            minDate: new Date().fp_incr(1), // today + 1
             clickOpens: true,
             onChange: function() {
                 check_availability();
             }
         });
+
     });
 </script>
