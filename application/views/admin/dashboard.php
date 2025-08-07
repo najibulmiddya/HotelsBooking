@@ -9,12 +9,6 @@
   <?php endif; ?>
 </div>
 
-
-
-
-
-
-
 <!-- Booking Statistics Cards -->
 <div class="row g-4 mb-4">
 
